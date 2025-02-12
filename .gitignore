@@ -1,0 +1,25 @@
+# Игнорируем папки сборки
+/build/
+/app/build/
+/.gradle/
+/.idea/
+/captures/
+.navigation/
+*.iml
+
+# Файлы конфигурации
+local.properties
+*.keystore
+*.jks
+*.bak
+*.log
+
+# Кеши и временные файлы
+.DS_Store
+*.swp
+*.swo
+*.tmp
+
+# Игнорируем файлы CI/CD
+.github/
+.vscode/

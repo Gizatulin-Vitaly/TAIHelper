@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TAIHelper</string>
+    <string name="converter_fragment">Конвертор</string>
+    <string name="oxygen_fragment">Кислород</string>
+    <string name="ajk_fragment">АЖК</string>
+    <string name="reference_fragment">Справка</string>
+    <string name="settings">Настройки</string>
+
+</resources>

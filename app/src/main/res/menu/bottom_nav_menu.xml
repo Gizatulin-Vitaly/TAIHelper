@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/converterFragment"
+        android:icon="@drawable/ic_converter"
+        android:title="@string/converter_fragment" />
+
+    <item
+        android:id="@+id/oxygenMeasurementFragment"
+        android:icon="@drawable/ic_oxygen"
+        android:title="@string/oxygen_fragment" />
+
+    <item
+        android:id="@+id/verificationAjkFragment"
+        android:icon="@drawable/ic_ajk"
+        android:title="@string/ajk_fragment" />
+
+    <item
+        android:id="@+id/referenceFragment"
+        android:icon="@drawable/ic_reference"
+        android:title="@string/reference_fragment" />
+</menu>
