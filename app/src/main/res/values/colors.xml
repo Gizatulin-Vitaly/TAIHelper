@@ -17,5 +17,6 @@
     <color name="graphite_gray">#1E1E2E</color>
     <color name="dark_metallic">#2D2D42</color>
     <color name="light_gray">#E5E7EB</color>
+    <color name="red">#FF2400</color>
 
 </resources>

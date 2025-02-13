@@ -5,5 +5,8 @@
     <string name="ajk_fragment">АЖК</string>
     <string name="reference_fragment">Справка</string>
     <string name="settings">Настройки</string>
+    <string name="voltage_0_5_ma">0 - 5 mA</string>
+    <string name="_4_20_ma">4 - 20 mA</string>
+    <string name="electric_output">Токовый выход</string>
 
 </resources>
