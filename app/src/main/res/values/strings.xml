@@ -8,5 +8,7 @@
     <string name="voltage_0_5_ma">0 - 5 mA</string>
     <string name="_4_20_ma">4 - 20 mA</string>
     <string name="electric_output">Токовый выход</string>
+    <string name="result_format"> %.2f</string>
+    <string name="error_invalid_input">Ошибка: Некорректный ввод</string>
 
 </resources>

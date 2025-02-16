@@ -74,7 +74,11 @@
                     android:id="@+id/start_value"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="28sp"
                     android:hint="Начало шкалы датчика"
+                    android:inputType="numberDecimal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:background="@color/background_light"
                     app:boxStrokeColor="@color/text_secondary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,6 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="4 - 20 mA"
+
                     android:gravity="center"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -119,6 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Конец шкалы датчика"
+                    android:textSize="28sp"
+                    android:inputType="numberDecimal"
                     android:background="@color/background_light"
                     app:boxStrokeColor="@color/text_secondary"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,6 +138,7 @@
                 android:gravity="center"
                 android:textColor="@color/text_secondary"
                 android:textSize="18sp"
+                android:inputType="numberDecimal"
                 android:textStyle="bold"
                 android:layout_marginTop="18dp"
                 app:layout_constraintTop_toBottomOf="@id/card_420"
@@ -157,6 +165,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/background_light"
                     app:boxStrokeColor="@color/text_secondary"
+                    android:textSize="28sp"
                     app:boxCornerRadiusTopStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"/>
             </com.google.android.material.textfield.TextInputLayout>
