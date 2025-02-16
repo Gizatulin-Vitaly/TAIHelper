@@ -1,76 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.reftgres.taihelper.ui.converter.ConverterViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingBottom="80dp"
+        android:fillViewport="true">
 
-        <include
-            android:id="@+id/change_voltage_layout"
-            layout="@layout/change_voltage_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="28dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:alpha="0" />
+            android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/input_material_card"
-            layout="@layout/input_material_card_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:alpha="0"
-            app:layout_constraintTop_toBottomOf="@id/change_voltage_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputUsers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="18dp"
-            android:alpha="0"
-            app:layout_constraintTop_toBottomOf="@id/input_material_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputUsersText"
+            <include
+                android:id="@+id/change_voltage_layout"
+                layout="@layout/change_voltage_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Введите ваше значение"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/resultTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="18dp"
-            android:gravity="center"
-            android:text=""
-            android:textSize="64sp"
-            android:alpha="0"
-            app:layout_constraintTop_toBottomOf="@id/inputUsers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/word_scale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/change_voltage_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="24sp"
+                android:text="Что необходимо найти"
+                android:gravity="center"
+                android:textColor="?attr/colorOnBackground"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/resultButton"
-            android:layout_width="0dp"
-            android:layout_height="74dp"
-            android:layout_margin="18dp"
-            android:text="Рассчитать"
-            android:textSize="24sp"
-            android:alpha="0"
-            app:layout_constraintTop_toBottomOf="@id/resultTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/mode_switch"
+                app:checkedButton="@id/btn_current"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/word_scale"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                android:layout_marginBottom="8dp"
+                app:backgroundTint="?attr/colorSurface">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_current"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Токовые"
+                    android:textSize="20sp"
+                    app:icon="@drawable/ic_bolt"
+                    app:iconSize="32dp"
+                    app:iconPadding="8dp"
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimaryVariant"
+                    app:strokeColor="?attr/colorPrimary"
+                    app:backgroundTint="@color/primary_blue"
+                    app:iconTint="@color/surface_white"
+                    android:textColor="@color/surface_white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_sensor"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Датчик "
+                    android:textSize="20sp"
+                    app:icon="@drawable/ic_current"
+                    app:iconSize="32dp"
+                    app:iconPadding="8dp"
+                    app:cornerRadius="16dp"
+                    app:rippleColor="?attr/colorPrimaryVariant"
+                    app:strokeColor="?attr/colorPrimary"
+                    app:backgroundTint="?attr/colorSurface"
+                    app:iconTint="?attr/colorOnSurface"
+                    android:textColor="?attr/colorOnSurface" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/resultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:gravity="center"
+                android:text="ТАИ"
+                android:textSize="64sp"
+                android:textColor="?attr/colorOnBackground"
+                app:layout_constraintTop_toBottomOf="@id/mode_switch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/resultButton"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resultButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_margin="24dp"
+                android:text="Рассчитать"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@id/resultTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

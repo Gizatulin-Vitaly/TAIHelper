@@ -6,6 +6,6 @@ class ConverterUseCase @Inject constructor(
     private val repository: ConverterRepository
 ) {
     fun convert(value: Double): Double {
-        return repository.convertMeasurement(value)
+        return repository.converter(value)
     }
 }

@@ -1,22 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="deep_blue">#1E3A8A</color>
-    <color name="dark_blue">#172554</color>
-    <color name="turquoise">#06B6D4</color>
-    <color name="dark_turquoise">#0E7490</color>
-    <color name="neon_indigo">#4F46E5</color>
-    <color name="dark_ultramarine">#312E81</color>
-    <color name="neon_turquoise">#14B8A6</color>
-    <color name="graphite_gray">#1E1E2E</color>
-    <color name="dark_metallic">#2D2D42</color>
-    <color name="light_gray">#E5E7EB</color>
-    <color name="red">#FF2400</color>
+    <!-- Основные цвета -->
+    <color name="primary_blue">#3173B1</color>
+    <color name="primary_dark_blue">#2B5E8E</color>
+    <color name="secondary_sky_blue">#6EC6FF</color>
+    <color name="accent_coral">#FF6F61</color>
 
+    <!-- Текст -->
+    <color name="text_primary">#222831</color>
+    <color name="text_secondary">#556070</color>
+    <color name="text_tertiary">#66788A</color>
+    <color name="text_on_dark">#FFFFFF</color>
+
+    <!-- Фоны -->
+    <color name="background_light">#F2F5F9</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="divider_gray">#D1D9E6</color>
+
+    <!-- Кнопки и интерактивные элементы -->
+    <color name="button_primary">@color/primary_blue</color>
+    <color name="button_primary_pressed">@color/primary_dark_blue</color>
+    <color name="button_secondary">#CBD4E6</color>
+    <color name="button_stroke">#3173B1</color>
+
+    <!-- Поля ввода -->
+    <color name="input_background">@color/surface_white</color>
+    <color name="input_text">@color/text_primary</color>
+    <color name="input_border">#3173B1</color>
+    <color name="input_hint">#66788A</color>
+
+    <!-- Системные -->
+    <color name="success_green">#43A047</color>
+    <color name="error_red">#E53935</color>
+    <color name="warning_orange">#FFA000</color>
+
+    <!-- Градиенты -->
+    <color name="gradient_start">#3173B1</color>
+    <color name="gradient_end">#6EC6FF</color>
 </resources>
