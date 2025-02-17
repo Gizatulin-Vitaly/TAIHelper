@@ -23,11 +23,14 @@ class FragmentConverter : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentConverterBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         // Подписка на изменение цвета карточек
         viewModel.isVoltagePrimary.observe(viewLifecycleOwner) { isPrimary ->
