@@ -4,6 +4,7 @@ plugins {
     kotlin("kapt")
     id ("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+
 }
 
 android {
@@ -78,17 +79,33 @@ dependencies {
     // Data Store
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation ("com.google.firebase:firebase-auth:21.0.1")
-    implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
+
 
     // Biometric (для отпечатков пальцев)
     implementation ("androidx.biometric:biometric:1.1.0")
     implementation("androidx.biometric:biometric:1.4.0-alpha02")
 
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
+
+
+
+    // Firebase
+    implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    // Add the dependency for the Firebase SDK for Google Analytics
+    implementation("com.google.firebase:firebase-analytics")
+
+    // TODO: Add the dependencies for any other Firebase products you want to use
+    // See https://firebase.google.com/docs/android/setup#available-libraries
+    // For example, add the dependencies for Firebase Authentication and Cloud Firestore
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-firestore:24.7.1")
+    implementation ("com.google.firebase:firebase-database:19.2.1")
+
 }
 
 kapt {

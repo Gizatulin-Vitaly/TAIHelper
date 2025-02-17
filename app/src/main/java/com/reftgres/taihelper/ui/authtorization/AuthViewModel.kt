@@ -4,43 +4,54 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class AuthViewModel : ViewModel() {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-
-    // Закрытая переменная для хранения результата аутентификации
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val _authResult = MutableLiveData<Boolean>()
-
-    // Публичная LiveData для наблюдения в Fragment
     val authResult: LiveData<Boolean> get() = _authResult
-
-    // Дополнительно создаем переменную для состояния авторизации
     private val _isUserLoggedIn = MutableLiveData<Boolean>()
-
-    // Публичная LiveData для состояния авторизации
     val isUserLoggedIn: LiveData<Boolean> get() = _isUserLoggedIn
 
     init {
-        // Инициализация состояния, проверяем авторизован ли пользователь при запуске
         _isUserLoggedIn.value = firebaseAuth.currentUser != null
     }
 
-    // Функция для входа по email и паролю
     fun signIn(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                _authResult.value = task.isSuccessful
                 if (task.isSuccessful) {
-                    _isUserLoggedIn.value = true
+                    val user = firebaseAuth.currentUser
+                    if (user?.isEmailVerified == true) {
+                        _isUserLoggedIn.value = true
+                    } else {
+                        _authResult.value = false
+                        firebaseAuth.signOut()
+                    }
+                } else {
+                    _authResult.value = false
                 }
-            }
-            .addOnFailureListener {
-                _authResult.value = false
             }
     }
 
-    // Функция для выхода
+    fun signUp(email: String, password: String, name: String) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = firebaseAuth.currentUser
+                    user?.sendEmailVerification()
+                    val userData = hashMapOf("name" to name, "accessLevel" to "user")
+                    firestore.collection("users").document(user!!.uid).set(userData)
+                    _authResult.value = true
+                } else {
+                    _authResult.value = false
+                }
+            }
+    }
+
     fun signOut() {
         firebaseAuth.signOut()
         _isUserLoggedIn.value = false
