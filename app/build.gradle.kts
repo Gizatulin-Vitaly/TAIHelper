@@ -3,6 +3,7 @@ plugins {
     id ("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id ("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -76,6 +77,18 @@ dependencies {
 
     // Data Store
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
+
+    // Biometric (для отпечатков пальцев)
+    implementation ("androidx.biometric:biometric:1.1.0")
+    implementation("androidx.biometric:biometric:1.4.0-alpha02")
+
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
 }
 
 kapt {

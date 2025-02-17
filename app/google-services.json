@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451253313305",
+    "project_id": "tai-workshop",
+    "storage_bucket": "tai-workshop.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451253313305:android:d4e989f9ee3b0304d4ef88",
+        "android_client_info": {
+          "package_name": "com.reftgres.taihelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKh8oDKKQsGfFqsfZXrJuWwrMBJ0WpwWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

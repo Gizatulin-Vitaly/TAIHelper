@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_converter" />
 
     <fragment
+        android:id="@+id/authFragment"
+        android:name="com.reftgres.taihelper.ui.authtorization.AuthFragment"
+        android:label="Авторизация"
+        tools:layout="@layout/fragment_auth" />
+
+    <fragment
         android:id="@+id/verificationAjkFragment"
         android:name="com.reftgres.taihelper.ui.verification.VerificationAjkFragment"
         android:label="@string/ajk_fragment"
@@ -30,7 +36,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.reftgres.taihelper.ui."
+        android:name="com.reftgres."
         android:label="@string/settings"/>
 
 </navigation>

@@ -2,34 +2,30 @@ package com.reftgres.taihelper
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.reftgres.taihelper.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer // Импортируем Observer
+import androidx.fragment.app.commit
+import com.reftgres.taihelper.ui.authtorization.AuthFragment
+import com.reftgres.taihelper.ui.authtorization.AuthViewModel
 
-
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
-    private lateinit var binding: ActivityMainBinding
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Правильный порядок инициализации binding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // Находим NavHostFragment
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        // Получаем NavController
-        navController = navHostFragment.navController
-
-        // Привязываем BottomNavigationView к NavController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        // Наблюдаем за состоянием авторизации через LiveData
+        authViewModel.isUserLoggedIn.observe(this, Observer { isLoggedIn ->
+            if (isLoggedIn) {
+                // Если пользователь авторизован, загружаем основной экран
+                setContentView(R.layout.activity_main)
+            } else {
+                // Если не авторизован, заменяем на `AuthFragment`
+                supportFragmentManager.commit {
+                    replace(android.R.id.content, AuthFragment())
+                }
+            }
+        })
     }
 }
