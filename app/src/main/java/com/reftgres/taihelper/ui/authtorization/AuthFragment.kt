@@ -4,75 +4,68 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.reftgres.taihelper.R
+import com.reftgres.taihelper.databinding.FragmentAuthBinding
 import com.reftgres.taihelper.ui.authtorization.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.google.firebase.auth.FirebaseAuth
-import android.widget.Toast
-import android.widget.Button
-import android.widget.EditText
-import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class AuthFragment : Fragment() {
 
-    private val authViewModel: AuthViewModel by viewModels() // Подключаем ViewModel
-    private lateinit var auth: FirebaseAuth
+    private var _binding: FragmentAuthBinding? = null
+    private val binding get() = _binding!!
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        auth = FirebaseAuth.getInstance()
+    ): View {
+        _binding = FragmentAuthBinding.inflate(inflater, container, false)
 
-        val binding = inflater.inflate(R.layout.fragment_auth, container, false)
-
-        val loginButton: Button = binding.findViewById(R.id.login_button)
-        val registerButton: Button = binding.findViewById(R.id.register_button)
-        val resetPasswordButton: Button = binding.findViewById(R.id.resetPasswordButton)
-
-        // Кнопка для логина
-        loginButton.setOnClickListener {
-            val email = binding.findViewById<EditText>(R.id.emailEditText).text.toString()
-            val password = binding.findViewById<EditText>(R.id.passwordEditText).text.toString()
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailEditText.text.toString().trim()
+            val password = binding.passwordEditText.text.toString().trim()
             loginWithEmailAndPassword(email, password)
         }
 
-        // Кнопка для перехода на экран регистрации
-        registerButton.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_authFragment_to_registerFragment)
         }
 
-        // Кнопка для перехода на экран восстановления пароля
-        resetPasswordButton.setOnClickListener {
+        binding.resetPasswordButton.setOnClickListener {
             findNavController().navigate(R.id.action_authFragment_to_resetPasswordFragment)
         }
 
-        return binding
-    }
-
-    // Логин с использованием Firebase
-    private fun loginWithEmailAndPassword(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(requireContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show()
-            return
+        // Наблюдаем за результатом авторизации
+        authViewModel.authResult.observe(viewLifecycleOwner) { result ->
+            result.onSuccess {
+                // Успешная авторизация
+                Toast.makeText(requireContext(), "Авторизация успешна!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_authFragment_to_converterFragment) // Переход в следующий экран
+            }
+            result.onFailure { exception ->
+                // Ошибка при авторизации
+                Toast.makeText(requireContext(), "Ошибка: ${exception.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    if (user?.isEmailVerified == true) {
-                        // Переход в главный экран
-                        Toast.makeText(requireContext(), "Welcome ${user.email}", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(requireContext(), "Please verify your email.", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
+        return binding.root
+    }
+
+    private fun loginWithEmailAndPassword(email: String, password: String) {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Введите email и пароль", Toast.LENGTH_SHORT).show()
+            return
+        }
+        authViewModel.signIn(email, password)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

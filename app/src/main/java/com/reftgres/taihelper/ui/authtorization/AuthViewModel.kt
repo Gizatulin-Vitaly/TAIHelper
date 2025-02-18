@@ -5,14 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor() : ViewModel() {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val _authResult = MutableLiveData<Boolean>()
-    val authResult: LiveData<Boolean> get() = _authResult
+
+    private val _authResult = MutableLiveData<Result<Boolean>>()
+    val authResult: LiveData<Result<Boolean>> get() = _authResult
+
     private val _isUserLoggedIn = MutableLiveData<Boolean>()
     val isUserLoggedIn: LiveData<Boolean> get() = _isUserLoggedIn
 
@@ -27,12 +31,13 @@ class AuthViewModel : ViewModel() {
                     val user = firebaseAuth.currentUser
                     if (user?.isEmailVerified == true) {
                         _isUserLoggedIn.value = true
+                        _authResult.value = Result.success(true)
                     } else {
-                        _authResult.value = false
+                        _authResult.value = Result.failure(Exception("Подтвердите email перед входом"))
                         firebaseAuth.signOut()
                     }
                 } else {
-                    _authResult.value = false
+                    _authResult.value = Result.failure(task.exception ?: Exception("Ошибка входа"))
                 }
             }
     }
@@ -43,11 +48,13 @@ class AuthViewModel : ViewModel() {
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
                     user?.sendEmailVerification()
+
                     val userData = hashMapOf("name" to name, "accessLevel" to "user")
                     firestore.collection("users").document(user!!.uid).set(userData)
-                    _authResult.value = true
+
+                    _authResult.value = Result.success(true)
                 } else {
-                    _authResult.value = false
+                    _authResult.value = Result.failure(task.exception ?: Exception("Ошибка регистрации"))
                 }
             }
     }

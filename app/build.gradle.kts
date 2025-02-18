@@ -85,7 +85,7 @@ dependencies {
     implementation ("androidx.biometric:biometric:1.1.0")
     implementation("androidx.biometric:biometric:1.4.0-alpha02")
 
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
 
 
