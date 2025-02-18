@@ -1,8 +1,8 @@
 package com.reftgres.taihelper.di
 
+import com.example.taihelper.ui.authorization.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.reftgres.taihelper.data.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,8 +23,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(
-        firebaseAuth: FirebaseAuth,
-        firestore: FirebaseFirestore
-    ): AuthRepository = AuthRepository(firebaseAuth, firestore)
+    fun provideAuthRepository(): AuthRepository {
+        return AuthRepository()
+    }
 }

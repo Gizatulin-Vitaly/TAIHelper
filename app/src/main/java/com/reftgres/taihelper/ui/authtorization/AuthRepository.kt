@@ -1,45 +1,38 @@
-package com.reftgres.taihelper.data
+package com.example.taihelper.ui.authorization
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthRepository @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
-) {
-    suspend fun login(email: String, password: String): FirebaseUser? {
-        return try {
-            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            if (result.user?.isEmailVerified == true) result.user else null
-        } catch (e: Exception) {
-            null
-        }
+class AuthRepository @Inject constructor() {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    interface AuthCallback {
+        fun onSuccess()
+        fun onFailure(errorMessage: String)
     }
 
-    suspend fun register(email: String, password: String, name: String): Boolean {
-        return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            val user = result.user
-            user?.sendEmailVerification()
-
-            val userData = hashMapOf("name" to name, "accessLevel" to "user")
-            user?.let {
-                firestore.collection("users").document(it.uid).set(userData).await()
+    fun login(email: String, password: String, callback: AuthCallback) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback.onSuccess()
+                } else {
+                    callback.onFailure(task.exception?.message ?: "Ошибка авторизации")
+                }
             }
-            true
-        } catch (e: Exception) {
-            false
-        }
     }
 
-    fun logout() {
-        firebaseAuth.signOut()
+    fun register(email: String, password: String, callback: AuthCallback) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback.onSuccess()
+                } else {
+                    callback.onFailure(task.exception?.message ?: "Ошибка регистрации")
+                }
+            }
     }
-
-    fun isUserLoggedIn(): Boolean = firebaseAuth.currentUser != null
 }
