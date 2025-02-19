@@ -1,34 +1,34 @@
-package com.reftgres.taihelper.ui.authorization
+package com.reftgres.taihelper.ui.reset
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ForgotPasswordViewModel : ViewModel() {
+@HiltViewModel
+class ForgotPasswordViewModel @Inject constructor(
+    private val forgotPasswordRepository: ForgotPasswordRepository
+) : ViewModel() {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val _resetState = MutableLiveData<ForgotPasswordState>()
+    val resetState: LiveData<ForgotPasswordState> get() = _resetState
 
-    // Функция для сброса пароля
-    fun sendPasswordResetEmail(email: String, onResult: (Boolean, String) -> Unit) {
+    fun sendPasswordResetEmail(email: String) {
         if (email.isEmpty()) {
-            onResult(false, "Please enter an email address.")
+            _resetState.value = ForgotPasswordState.Error("Введите email")
             return
         }
 
         viewModelScope.launch {
-            try {
-                auth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            onResult(true, "Password reset email sent.")
-                        } else {
-                            onResult(false, "Failed to send password reset email.")
-                        }
-                    }
-            } catch (e: Exception) {
-                onResult(false, "Error: ${e.message}")
-            }
+            _resetState.value = ForgotPasswordState.Loading
+            val result = forgotPasswordRepository.sendPasswordResetEmail(email)
+            _resetState.value = result.fold(
+                onSuccess = { ForgotPasswordState.Success },
+                onFailure = { ForgotPasswordState.Error(it.message ?: "Неизвестная ошибка") }
+            )
         }
     }
 }

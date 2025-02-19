@@ -1,59 +1,67 @@
 package com.reftgres.taihelper.ui.reset
-import com.google.firebase.auth.FirebaseAuth
-import com.reftgres.taihelper.databinding.FragmentResetPasswordBinding
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import com.reftgres.taihelper.ui.registration.RegisterViewModel
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.reftgres.taihelper.R
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.fragment.app.viewModels
-import android.widget.EditText
-import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import androidx.lifecycle.Observer
+import com.reftgres.taihelper.R
+import com.reftgres.taihelper.databinding.FragmentForgotPasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
 
-    private val registerViewModel: RegisterViewModel by viewModels()
-
-    private lateinit var etEmail: EditText
-    private lateinit var btnResetPassword: Button
-    private lateinit var btnBack: Button
+    private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
+    private var _binding: FragmentForgotPasswordBinding? = null
+    private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentForgotPasswordBinding.bind(view)
 
-        etEmail = view.findViewById(R.id.etEmail)
-        btnResetPassword = view.findViewById(R.id.btnResetPassword)
-        btnBack = view.findViewById(R.id.btnBack)
-
-        btnResetPassword.setOnClickListener {
-            val email = etEmail.text.toString().trim()
+        binding.btnResetPassword.setOnClickListener {
+            val email = binding.etEmail.text.toString().trim()
 
             if (email.isEmpty()) {
-                Toast.makeText(requireContext(), "Введите email", Toast.LENGTH_SHORT).show()
+                showToast("Введите email")
                 return@setOnClickListener
             }
 
-            registerViewModel.resetPassword(email)
+            forgotPasswordViewModel.sendPasswordResetEmail(email)
         }
 
-        btnBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_forgotPasswordFragment_to_loginFragment)
         }
 
-        registerViewModel.registrationResult.observe(viewLifecycleOwner, Observer { result ->
-            if (result == "reset_success") {
-                Toast.makeText(requireContext(), "Письмо для сброса пароля отправлено!", Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_forgotPasswordFragment_to_loginFragment)
-            } else if (result.startsWith("Ошибка")) {
-                Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
+        forgotPasswordViewModel.resetState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ForgotPasswordState.Loading -> showLoading(true)
+                is ForgotPasswordState.Success -> {
+                    showLoading(false)
+                    showToast("Письмо для сброса пароля отправлено!")
+                    findNavController().navigate(R.id.action_forgotPasswordFragment_to_loginFragment)
+                }
+                is ForgotPasswordState.Error -> {
+                    showLoading(false)
+                    showToast(state.message)
+                }
             }
-        })
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.btnResetPassword.isEnabled = !isLoading
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
