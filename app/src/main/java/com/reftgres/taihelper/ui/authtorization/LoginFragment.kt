@@ -20,6 +20,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
     private lateinit var etPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
+    private lateinit var btnForgotPassword: Button
 
     private val loginViewModel: LoginViewModel by viewModels()
 
@@ -30,6 +31,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         etPassword = view.findViewById(R.id.etPassword)
         btnLogin = view.findViewById(R.id.btnLogin)
         btnRegister = view.findViewById(R.id.btnRegister)
+        btnForgotPassword = view.findViewById(R.id.btnForgotPassword)
 
         loginViewModel.loginResult.observe(viewLifecycleOwner, Observer { result ->
             if (result == "success") {
@@ -53,15 +55,11 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         }
 
         btnRegister.setOnClickListener {
-            val email = etEmail.text.toString().trim()
-            val password = etPassword.text.toString().trim()
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireActivity(), "Введите email и пароль", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            loginViewModel.registerUser(email, password)
+        btnForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_resetPasswordFragment)
         }
     }
 }

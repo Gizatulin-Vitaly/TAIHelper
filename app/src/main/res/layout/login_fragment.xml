@@ -37,9 +37,10 @@
         android:text="Register"/>
 
     <Button
-        android:id="@+id/btnBiometricLogin"
+        android:id="@+id/btnForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login with Biometric" />
+        android:text="Забыли пароль?"
+        android:textSize="24sp"/>
 
 </LinearLayout>

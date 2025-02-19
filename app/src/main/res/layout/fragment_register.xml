@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -5,37 +6,72 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/nameEditText"
+        android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите имя"
-        android:inputType="textPersonName" />
+        android:hint="Имя"
+        android:textSize="32sp"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/emailEditText"
+        android:id="@+id/etLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите email"
+        android:hint="Фамилия"
+        android:textSize="32sp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etPosition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Должность"
+        android:textSize="32sp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textSize="32sp"
         android:inputType="textEmailAddress" />
 
+
+
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите пароль"
+        android:hint="Пароль"
+        android:textSize="32sp"
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/confirmPasswordEditText"
+        android:id="@+id/etConfirmPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Подтвердите пароль"
+        android:hint="Повторите пароль"
+        android:textSize="32sp"
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Зарегистрироваться" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Назад" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
 
 </LinearLayout>
