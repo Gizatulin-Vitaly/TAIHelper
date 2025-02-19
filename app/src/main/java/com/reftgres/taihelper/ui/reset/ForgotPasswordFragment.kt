@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.reftgres.taihelper.R
+import com.reftgres.taihelper.ui.utils.SnackbarUtils
 import com.reftgres.taihelper.databinding.FragmentForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,12 +26,13 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
             val email = binding.etEmail.text.toString().trim()
 
             if (email.isEmpty()) {
-                showToast("Введите email")
+                SnackbarUtils.showSnackbar(binding.root, "Введите email", isError = true, anchorView = binding.btnResetPassword)
                 return@setOnClickListener
             }
 
             forgotPasswordViewModel.sendPasswordResetEmail(email)
         }
+
 
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_forgotPasswordFragment_to_loginFragment)
