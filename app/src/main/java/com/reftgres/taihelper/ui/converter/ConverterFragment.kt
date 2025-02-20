@@ -34,7 +34,7 @@ class FragmentConverter : Fragment() {
 
         // Подписка на изменение цвета карточек
         viewModel.isVoltagePrimary.observe(viewLifecycleOwner) { isPrimary ->
-            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_blue)
+            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_amethyst)
             val secondaryColor = ContextCompat.getColor(requireContext(), R.color.background_light)
             val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
             val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
@@ -48,7 +48,7 @@ class FragmentConverter : Fragment() {
 
         // Подписка на изменение цвета кнопок
         viewModel.isPrimarySelected.observe(viewLifecycleOwner) { isPrimary ->
-            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_blue)
+            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_amethyst)
             val secondaryColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
             val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
             val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)

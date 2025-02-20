@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.ui.authorization
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.reftgres.taihelper.LoginActivity
+import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.LoginFragmentBinding
 import com.reftgres.taihelper.ui.authorization.LoginViewModel.LoginUiState
@@ -47,7 +49,7 @@ class LoginFragment : Fragment() {
             safeNavigate(R.id.action_loginFragment_to_registerFragment)
         }
 
-        binding.btnForgotPassword.setOnClickListener {
+        binding.tvForgotPassword.setOnClickListener {
             safeNavigate(R.id.action_loginFragment_to_resetPasswordFragment)
         }
     }
@@ -64,9 +66,9 @@ class LoginFragment : Fragment() {
                     is LoginUiState.Loading -> binding.btnLogin.isEnabled = false
                     is LoginUiState.Success -> {
                         binding.btnLogin.isEnabled = true
-                        state.token?.let { BiometricHelper.saveAuthToken(requireContext(), it) }
+                        state.uid.let { BiometricHelper.saveAuthToken(requireContext(), it) }
                         if (isAdded) {
-                            navigateToMain()
+                            navigateToMain(state.name, state.status)
                         }
                     }
                     is LoginUiState.Error -> {
@@ -82,26 +84,31 @@ class LoginFragment : Fragment() {
     private fun checkBiometricAuth() {
         if (!isAdded || !isResumed) return
         if (BiometricHelper.isBiometricAvailable(requireContext())) {
-            val savedToken = BiometricHelper.getAuthToken(requireContext())
-            if (savedToken != null) {
-                showBiometricLogin()
+            val savedUid = BiometricHelper.getAuthToken(requireContext())
+            if (savedUid != null) {
+                showBiometricLogin(savedUid)
             }
         }
     }
 
-    private fun showBiometricLogin() {
+    private fun showBiometricLogin(uid: String) {
         BiometricHelper.showBiometricPrompt(
             requireActivity(),
-            onSuccess = { navigateToMain() },
+            onSuccess = { loginViewModel.loginWithBiometric(uid) },
             onError = { error ->
                 SnackbarUtils.showSnackbar(binding.root, "Ошибка биометрии: $error", isError = true)
             }
         )
     }
 
-    private fun navigateToMain() {
+    private fun navigateToMain(name: String, status: String) {
         if (!isAdded || !isResumed) return
-        (activity as? LoginActivity)?.navigateToMainActivity()
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            putExtra("USER_NAME", name)
+            putExtra("USER_STATUS", status)
+        }
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun safeNavigate(actionId: Int) {

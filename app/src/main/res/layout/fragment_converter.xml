@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient_background"
+            android:background="@drawable/gradient_bg"
             >
 
             <include
@@ -72,7 +72,7 @@
                     app:cornerRadius="12dp"
                     app:rippleColor="?attr/colorPrimaryVariant"
                     app:strokeColor="?attr/colorPrimary"
-                    app:backgroundTint="@color/primary_blue"
+                    app:backgroundTint="@color/primary_dark_amethyst"
                     app:iconTint="@color/surface_white"
                     android:textColor="@color/surface_white" />
 

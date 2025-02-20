@@ -2,20 +2,22 @@ package com.reftgres.taihelper.ui.authorization
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @Singleton
-class LoginRepository @Inject constructor(private val auth: FirebaseAuth) {
+class LoginRepository @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) {
 
-    // Вход в аккаунт
     suspend fun login(email: String, password: String): FirebaseUser {
-        return suspendCancellableCoroutine { continuation ->
+        return suspendCoroutine { continuation ->
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -32,28 +34,35 @@ class LoginRepository @Inject constructor(private val auth: FirebaseAuth) {
         }
     }
 
-    // Регистрация нового пользователя
     suspend fun register(email: String, password: String) {
-        val result = auth.createUserWithEmailAndPassword(email, password).await()
-        result.user?.sendEmailVerification()?.await() // Отправка подтверждения email
+        suspendCoroutine<Unit> { continuation ->
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        continuation.resume(Unit)
+                    } else {
+                        continuation.resumeWithException(task.exception ?: Exception("Ошибка регистрации"))
+                    }
+                }
+        }
     }
 
-    // Выход из аккаунта
     fun logout() {
         auth.signOut()
     }
 
-    // Получение текущего пользователя
-    fun getCurrentUser(): FirebaseUser? {
-        return auth.currentUser
-    }
-
-    // Обновление имени пользователя
-    suspend fun updateUserName(name: String) {
-        val user = auth.currentUser ?: throw Exception("Пользователь не найден")
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(name)
-            .build()
-        user.updateProfile(profileUpdates).await()
+    // 🔹 Получение данных пользователя по UID
+    suspend fun getUserData(uid: String): UserData {
+        return try {
+            val snapshot = db.collection("users").document(uid).get().await()
+            val name = snapshot.getString("name") ?: "Неизвестный"
+            val status = snapshot.getString("status") ?: "Обычный"
+            UserData(name, status)
+        } catch (e: Exception) {
+            throw Exception("Ошибка загрузки данных: ${e.message}")
+        }
     }
 }
+
+// 🔹 Модель данных пользователя
+data class UserData(val name: String, val status: String)

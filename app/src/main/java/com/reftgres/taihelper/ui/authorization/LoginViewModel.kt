@@ -22,7 +22,8 @@ class LoginViewModel @Inject constructor(
             try {
                 val user = loginRepository.login(email, password)
                 if (user.isEmailVerified) {
-                    _uiState.emit(LoginUiState.Success(user.uid))
+                    val userData = loginRepository.getUserData(user.uid)
+                    _uiState.emit(LoginUiState.Success(user.uid, userData.name, userData.status))
                 } else {
                     loginRepository.logout()
                     _uiState.emit(LoginUiState.Error("Подтвердите email перед входом"))
@@ -33,14 +34,14 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun registerUser(email: String, password: String) {
+    fun loginWithBiometric(uid: String) {
         viewModelScope.launch {
             _uiState.emit(LoginUiState.Loading)
             try {
-                loginRepository.register(email, password)
-                _uiState.emit(LoginUiState.Success("Регистрация успешна. Проверьте email!"))
+                val userData = loginRepository.getUserData(uid)
+                _uiState.emit(LoginUiState.Success(uid, userData.name, userData.status))
             } catch (e: Exception) {
-                _uiState.emit(LoginUiState.Error(e.message ?: "Ошибка регистрации"))
+                _uiState.emit(LoginUiState.Error("Ошибка биометрической авторизации: ${e.message}"))
             }
         }
     }
@@ -52,7 +53,7 @@ class LoginViewModel @Inject constructor(
     sealed class LoginUiState {
         object Idle : LoginUiState()
         object Loading : LoginUiState()
-        data class Success(val token: String?) : LoginUiState()
+        data class Success(val uid: String, val name: String, val status: String) : LoginUiState()
         data class Error(val message: String) : LoginUiState()
     }
 }
