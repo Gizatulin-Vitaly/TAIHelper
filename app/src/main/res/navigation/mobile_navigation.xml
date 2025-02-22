@@ -15,7 +15,7 @@
         android:id="@+id/oxygenMeasurementFragment"
         android:name="com.reftgres.taihelper.ui.oxygen.OxygenMeasurementFragment"
         android:label="@string/oxygen_fragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_oxigen"/>
 
     <fragment
         android:id="@+id/verificationAjkFragment"
