@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/measurement_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardBackgroundColor="@color/button_primary"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp"
+        android:layout_margin="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date_last_measurement"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center"
+                android:text="23.02.2025"
+                android:textSize="24sp"
+                android:textStyle="italic"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fourth_ikts_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_last_measurement"
+                app:layout_constraintEnd_toStartOf="@id/second_ikts_tittle"
+                android:layout_marginTop="12dp"
+                android:text="9K-606"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/second_ikts_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/fourth_ikts_tittle"
+                app:layout_constraintTop_toBottomOf="@id/date_last_measurement"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="9K-604"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fourth_sensor_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fourth_ikts_tittle"
+                app:layout_constraintEnd_toStartOf="@id/fourth_sensor"
+                android:text="Щит:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fourth_sensor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/fourth_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/fourth_ikts_tittle"
+                app:layout_constraintEnd_toEndOf="@id/fourth_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fourth_testo_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fourth_sensor_tittle"
+                app:layout_constraintEnd_toStartOf="@id/fourth_sensor"
+                android:text="Testo:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fourth_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/fourth_testo_tittle"
+                app:layout_constraintTop_toBottomOf="@id/fourth_sensor"
+                app:layout_constraintEnd_toEndOf="@id/fourth_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/second_sensor_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/second_ikts_tittle"
+                app:layout_constraintTop_toBottomOf="@id/second_ikts_tittle"
+                app:layout_constraintEnd_toStartOf="@id/second_sensor"
+                android:text="Щит:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/second_sensor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/second_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/second_ikts_tittle"
+                app:layout_constraintEnd_toEndOf="@id/second_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/second_testo_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/second_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/second_sensor_tittle"
+                app:layout_constraintEnd_toStartOf="@id/second_testo"
+                android:text="Testo:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/second_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/second_testo_tittle"
+                app:layout_constraintTop_toBottomOf="@id/second_sensor_tittle"
+                app:layout_constraintEnd_toEndOf="@id/second_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <!-- Добавление элементов для 9K-605 -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/third_ikts_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/second_testo_tittle"
+                app:layout_constraintEnd_toStartOf="@id/first_ikts_tittle"
+                android:layout_marginTop="12dp"
+                android:text="9K-605"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/third_sensor_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/third_ikts_tittle"
+                app:layout_constraintEnd_toStartOf="@id/third_sensor"
+                android:text="Щит:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/third_sensor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/third_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/third_ikts_tittle"
+                app:layout_constraintEnd_toEndOf="@id/third_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/third_testo_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/third_sensor_tittle"
+                app:layout_constraintEnd_toStartOf="@id/third_testo"
+                android:text="Testo:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/third_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/third_testo_tittle"
+                app:layout_constraintTop_toBottomOf="@id/third_sensor"
+                app:layout_constraintEnd_toEndOf="@id/third_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <!-- Добавление элементов для 9K-603 -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_ikts_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/third_ikts_tittle"
+                app:layout_constraintTop_toBottomOf="@id/second_testo_tittle"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp"
+                android:text="9K-603"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_sensor_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/first_ikts_tittle"
+                app:layout_constraintTop_toBottomOf="@id/first_ikts_tittle"
+                app:layout_constraintEnd_toStartOf="@id/first_sensor"
+                android:text="Щит:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_sensor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/first_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/first_ikts_tittle"
+                app:layout_constraintEnd_toEndOf="@id/first_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_testo_tittle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/first_sensor_tittle"
+                app:layout_constraintTop_toBottomOf="@id/first_sensor_tittle"
+                app:layout_constraintEnd_toStartOf="@id/first_testo"
+                android:text="Testo:"
+                android:textSize="20sp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_testo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/first_testo_tittle"
+                app:layout_constraintTop_toBottomOf="@id/first_sensor_tittle"
+                app:layout_constraintEnd_toEndOf="@id/first_ikts_tittle"
+                android:text="3.55"
+                android:textSize="20sp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

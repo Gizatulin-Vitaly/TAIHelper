@@ -1,8 +1,8 @@
 <resources>
     <!-- Основные цвета -->
-    <color name="primary_amethyst">#7F4B8B</color> <!-- Основной аметистовый цвет -->
+    <color name="primary_amethyst">#FF6B01</color> <!-- Основной аметистовый цвет -->
     <color name="primary_dark_amethyst">#5A3A6B</color> <!-- Темный аметист -->
-    <color name="secondary_lavender">#D1A6D9</color> <!-- Лаванда для акцентов -->
+    <color name="secondary_lavender">#353535</color> <!-- Лаванда для акцентов -->
     <color name="accent_light_silver">#B8A9C9</color> <!-- Светлый серебристо-сиреневый -->
 
     <!-- Текст -->

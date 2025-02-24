@@ -15,7 +15,11 @@
         android:id="@+id/oxygenMeasurementFragment"
         android:name="com.reftgres.taihelper.ui.oxygen.OxygenMeasurementFragment"
         android:label="@string/oxygen_fragment"
-        tools:layout="@layout/fragment_oxigen"/>
+        tools:layout="@layout/fragment_oxigen">
+        <action
+            android:id="@+id/action_oxygenMeasurementFragment_to_all_measurements"
+            app:destination="@id/all_measurements" />
+    </fragment>
 
     <fragment
         android:id="@+id/verificationAjkFragment"
@@ -23,6 +27,19 @@
         android:label="@string/ajk_fragment"
         tools:layout="@layout/fragment_notifications" />
 
+    <fragment
+        android:id="@+id/all_measurements"
+        android:name="com.reftgres.taihelper.ui.oxygen.AllMeasurementsFragment"
+        tools:layout="@layout/all_measurements_fragment" >
+        <action
+            android:id="@+id/action_all_measurements_to_new_measurement"
+            app:destination="@id/new_measurement" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/new_measurement"
+        android:name="com.reftgres.taihelper.ui.oxygen.NewMeasurementsFragment"
+        tools:layout="@layout/new_measuremens" />
 <!--    <fragment-->
 <!--        android:id="@+id/referenceFragment"-->
 <!--        android:name="com.reftgres.taihelper.ui.reference.ReferenceFragment"-->
