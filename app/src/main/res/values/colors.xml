@@ -1,39 +1,43 @@
 <resources>
-    <!-- Основные цвета -->
-    <color name="primary_amethyst">#FF6B01</color> <!-- Основной аметистовый цвет -->
-    <color name="primary_dark_amethyst">#5A3A6B</color> <!-- Темный аметист -->
-    <color name="secondary_lavender">#353535</color> <!-- Лаванда для акцентов -->
-    <color name="accent_light_silver">#B8A9C9</color> <!-- Светлый серебристо-сиреневый -->
+    <color name="primary_amethyst">#6A5AE0</color>
+    <color name="primary_amethyst_light">#9087E5</color>
+    <color name="primary_amethyst_dark">#4A3BBB</color>
 
-    <!-- Текст -->
-    <color name="text_primary">#333333</color> <!-- Основной текст -->
-    <color name="text_secondary">#6B6B6B</color> <!-- Второстепенный текст -->
-    <color name="text_tertiary">#999999</color> <!-- Третичный текст для подсказок -->
-    <color name="text_on_dark">#FFFFFF</color> <!-- Белый текст на темных фонах -->
+    <color name="secondary_color">#FF6D6D</color>
+    <color name="secondary_color_light">#FF9E9E</color>
 
-    <!-- Фоны -->
-    <color name="background_light">#F5E6F7</color> <!-- Легкий фиолетовый фон -->
-    <color name="surface_white">#FFFFFF</color> <!-- Белый для поверхностей -->
-    <color name="divider_gray">#D1D1D1</color> <!-- Легкий серый для разделителей -->
+    <color name="text_primary">#333644</color>
+    <color name="text_secondary">#7A7D8F</color>
+
+    <color name="background_light">#F5F7FF</color>
+    <color name="divider_color">#E2E5F1</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="text_tertiary">#AAAAAA</color> <!-- Светло-серый для подсказок -->
+    <color name="text_on_dark">#FFFFFF</color> <!-- Белый текст на тёмных фонах остаётся прежним -->
+
+    <color name="surface_white">#FFFFFF</color> <!-- Поверхностный белый остаётся неизменным -->
+    <color name="divider_gray">#DDDDDD</color> <!-- Чуть более мягкий серый для разделителей -->
 
     <!-- Кнопки и интерактивные элементы -->
-    <color name="button_primary">@color/primary_amethyst</color> <!-- Цвет для кнопок -->
-    <color name="button_primary_pressed">@color/primary_dark_amethyst</color> <!-- Цвет кнопки при нажатии -->
-    <color name="button_secondary">#D3C4E6</color> <!-- Лавандовая для вторичных кнопок -->
-    <color name="button_stroke">@color/primary_amethyst</color> <!-- Граница для кнопок -->
+    <color name="button_primary">@color/primary_amethyst</color> <!-- Аметистово-пурпурный для основных кнопок -->
+    <color name="button_secondary">#F1EEFD</color> <!-- Пастельная лаванда для вторичных кнопок -->
+    <color name="button_stroke">@color/primary_amethyst</color> <!-- Рамка для кнопок остаётся такой же -->
 
     <!-- Поля ввода -->
-    <color name="input_background">@color/surface_white</color> <!-- Белый фон для полей ввода -->
-    <color name="input_text">@color/text_primary</color> <!-- Текст в полях ввода -->
-    <color name="input_border">@color/primary_amethyst</color> <!-- Цвет рамки поля ввода -->
-    <color name="input_hint">@color/text_tertiary</color> <!-- Цвет подсказок в полях ввода -->
+    <color name="input_background">@color/surface_white</color> <!-- Белый фон для полей ввода остаётся -->
+    <color name="input_text">@color/text_primary</color> <!-- Чёрный текст в полях ввода -->
+    <color name="input_border">@color/primary_amethyst</color> <!-- Тонкая рамка аметиста вокруг полей -->
+    <color name="input_hint">@color/text_tertiary</color> <!-- Подсказки остаются светло-серыми -->
 
     <!-- Системные -->
-    <color name="success_green">#43A047</color> <!-- Зеленый для успеха -->
-    <color name="error_red">#E53935</color> <!-- Красный для ошибок -->
-    <color name="warning_orange">#FFA000</color> <!-- Оранжевый для предупреждений -->
+    <color name="success_green">#45AD44</color> <!-- Яркий зелёный для успешных действий -->
+    <color name="error_red">#DE4437</color> <!-- Насыщенный красный для ошибок -->
+    <color name="warning_orange">#FFAC31</color> <!-- Теплый оранжевый для предупреждений -->
 
     <!-- Градиенты -->
-    <color name="gradient_start">#7F4B8B</color> <!-- Начало градиента (аметиствый) -->
-    <color name="gradient_end">#D1A6D9</color> <!-- Конец градиента (лавандовый) -->
+    <color name="gradient_start">#795698</color> <!-- Начальная точка градиента -->
+    <color name="gradient_end">#D1A6D9</color> <!-- Конечная точка градиента остаётся лавандовой -->
 </resources>

@@ -10,5 +10,16 @@
     <string name="electric_output">Токовый выход</string>
     <string name="result_format"> %.2f</string>
     <string name="error_invalid_input">Ошибка: Некорректный ввод</string>
+    <string name="app_logo_description">Логотип приложения</string>
+    <string name="welcome_text">Добро пожаловать</string>
+    <string name="login_subtitle">Войдите в аккаунт для продолжения</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="remember_me">Запомнить меня</string>
+    <string name="login_button">Войти</string>
+    <string name="or_text">или</string>
+    <string name="no_account">Нет аккаунта?</string>
+    <string name="register_button">Регистрация</string>
 
 </resources>

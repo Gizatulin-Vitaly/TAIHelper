@@ -2,6 +2,6 @@
     <gradient
         android:angle="45"
         android:startColor="@color/primary_amethyst"
-        android:endColor="@color/secondary_lavender"
+        android:endColor="@color/primary_amethyst_light"
         android:type="linear"/>
 </shape>

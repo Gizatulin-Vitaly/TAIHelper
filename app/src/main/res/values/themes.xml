@@ -6,12 +6,9 @@
 
         <!-- Primary colors -->
         <item name="colorPrimary">@color/primary_amethyst</item>
-        <item name="colorPrimaryVariant">@color/primary_dark_amethyst</item>
         <item name="colorOnPrimary">@color/text_on_dark</item>
 
         <!-- Secondary colors -->
-        <item name="colorSecondary">@color/secondary_lavender</item>
-        <item name="colorSecondaryVariant">@color/accent_light_silver</item>
         <item name="colorOnSecondary">@color/text_on_dark</item>
 
         <!-- Background -->
@@ -26,7 +23,6 @@
         <item name="android:textColorSecondary">@color/text_secondary</item>
 
         <!-- Статус бар -->
-        <item name="android:statusBarColor">@color/primary_dark_amethyst</item>
         <item name="android:navigationBarColor">@color/primary_amethyst</item>
 
         <!-- Кнопки -->

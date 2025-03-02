@@ -72,7 +72,7 @@
                     app:cornerRadius="12dp"
                     app:rippleColor="?attr/colorPrimaryVariant"
                     app:strokeColor="?attr/colorPrimary"
-                    app:backgroundTint="@color/primary_dark_amethyst"
+                    app:backgroundTint="@color/primary_amethyst_dark"
                     app:iconTint="@color/surface_white"
                     android:textColor="@color/surface_white" />
 
