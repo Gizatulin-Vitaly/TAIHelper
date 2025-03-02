@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.reftgres.taihelper.ui.converter.ConverterViewModel" />
+            type="com.reftgres.taihelper.ui.oxygen.OxygenMeasurementViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

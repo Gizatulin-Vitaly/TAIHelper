@@ -62,7 +62,7 @@ dependencies {
     kapt ("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // Play Services
-    implementation ("com.google.android.gms:play-services-base:18.1.0")
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
 
     // Фрагменты
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
@@ -94,6 +94,9 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+
+
 }
 
 kapt {

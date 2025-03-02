@@ -1,44 +1,127 @@
 package com.reftgres.taihelper.ui.oxygen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.reftgres.taihelper.databinding.FragmentOxigenBinding
+import dagger.hilt.android.AndroidEntryPoint
 import com.reftgres.taihelper.R
 
-
+@AndroidEntryPoint
 class OxygenMeasurementFragment : Fragment() {
 
+    private val viewModel: OxygenMeasurementViewModel by viewModels()
     private var _binding: FragmentOxigenBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        Log.d("OxygenMeasurementFragment", "onCreateView called")
         _binding = FragmentOxigenBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(false)
+        setupObservers()
+        setupListeners()
+    }
+
+    private fun setupObservers() {
+        // Наблюдение за списком блоков
+        viewModel.blocks.observe(viewLifecycleOwner) { blocks ->
+            Log.d("OxygenMeasurementFragment", "Blocks loaded: $blocks")
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                blocks.map { it.name }
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+            binding.blockSpinner.adapter = adapter
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.allOxygenCard.setOnClickListener {
-            findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
+        // Наблюдение за списком датчиков для выбранного блока
+        viewModel.sensors.observe(viewLifecycleOwner) { sensors ->
+            Log.d("OxygenMeasurementFragment", "Sensors loaded: $sensors")
+            val sensorNames = sensors.map { it.position }
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sensorNames)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.sensorSpinner.adapter = adapter
         }
-        val data = listOf("Значение 1", "Значение 2", "Значение 3", "Значение 4", "Значение 5")
-        val adapter = FiveAdapter(data)
-        binding.recyclerView.adapter = adapter
+
+        // Наблюдение за выбранным датчиком
+        viewModel.selectedSensor.observe(viewLifecycleOwner) { sensor ->
+            sensor?.let {
+                // Обновление UI с информацией о датчике
+                binding.positionSensor.text = it.position
+                binding.numberSensor.text = it.serialNumber.ifEmpty { "Не указан" }
+                binding.middleSensor.text = it.midPoint
+                binding.analogOutput.text = it.outputScale
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        // Слушатель выбора блока
+        binding.blockSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("OxygenMeasurementFragment", "Block selected at position: $position")
+                val blockId = viewModel.blocks.value?.get(position)?.id ?: return
+                viewModel.loadSensorsForBlock(blockId)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Не выбран блок
+            }
+        }
+
+        // Слушатель выбора датчика - исправлен
+        binding.sensorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                Log.d("OxygenMeasurementFragment", "Sensor selected at position: $position")
+                val sensors = viewModel.sensors.value ?: return
+                if (position >= 0 && position < sensors.size) {
+                    val sensorPosition = sensors[position].position
+                    viewModel.selectSensorByPosition(sensorPosition)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Не выбран датчик
+            }
+        }
+
+        // Добавляем обработчик для MaterialCard (предполагаем, что она называется sensorCard)
+        // Замените "sensorCard" на реальный id вашей MaterialCard
+        binding.allOxygenCard.setOnClickListener {
+            Log.d("OxygenMeasurementFragment", "MaterialCard clicked")
+            // Ваша логика обработки нажатия на карточку
+            val selectedSensor = viewModel.selectedSensor.value
+            if (selectedSensor != null) {
+                // Например, открытие детальной информации о датчике
+                // или выполнение измерения кислорода
+                handleSensorCardClick(selectedSensor)
+            } else {
+                Log.d("OxygenMeasurementFragment", "No sensor selected")
+            }
+        }
+    }
+
+    private fun handleSensorCardClick(sensor: OxygenMeasurementViewModel.Sensor) {
+        findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
     }
 
     override fun onDestroyView() {
