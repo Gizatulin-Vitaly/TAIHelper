@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewModel"
@@ -10,14 +12,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="40dp"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/gradient_bg"
-            >
+            android:paddingBottom="40dp">
 
             <include
                 android:id="@+id/change_voltage_layout"
@@ -32,32 +33,30 @@
                 android:id="@+id/word_scale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="Что необходимо найти"
+                android:textColor="@color/text_secondary"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_regular"
                 app:layout_constraintTop_toBottomOf="@id/change_voltage_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textSize="28sp"
-                android:text="Что необходимо найти"
-                android:gravity="center"
-                android:textColor="@color/text_secondary"
-                android:textStyle="bold"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/roboto_regular"/>
-
+                tools:text="Что необходимо найти" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/mode_switch"
-                app:checkedButton="@id/btn_current"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/word_scale"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:checkedButton="@id/btn_current"
                 app:singleSelection="true"
                 app:selectionRequired="true"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                app:backgroundTint="?attr/colorSurface">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/word_scale"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_current"
@@ -88,12 +87,8 @@
                     app:iconPadding="8dp"
                     app:cornerRadius="12dp"
                     app:rippleColor="?attr/colorPrimaryVariant"
-                    app:strokeColor="?attr/colorPrimary"
-                    app:backgroundTint="?attr/colorSurface"
-                    app:iconTint="?attr/colorOnSurface"
-                    android:textColor="?attr/colorOnSurface" />
+                    app:strokeColor="?attr/colorPrimary" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
-
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/resultTextView"
@@ -114,8 +109,8 @@
                 app:layout_constraintTop_toBottomOf="@id/mode_switch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/resultButton"/>
-
+                app:layout_constraintBottom_toTopOf="@id/resultButton"
+                tools:text="ТАИ" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/resultButton"
@@ -125,12 +120,14 @@
                 android:layout_marginVertical="16dp"
                 android:text="Рассчитать"
                 android:textSize="24sp"
+                android:backgroundTint="@color/primary_amethyst_dark"
+                android:textColor="@color/surface_white"
+                app:cornerRadius="16dp"
                 app:layout_constraintTop_toBottomOf="@id/resultTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:backgroundTint="@null"
-                android:textColor="?attr/colorOnPrimary"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

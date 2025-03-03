@@ -7,18 +7,28 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.ui.authorization.LoginViewModel
+import com.reftgres.taihelper.ui.settings.AppTheme
+import com.reftgres.taihelper.ui.settings.ThemePreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
+
+    @Inject
+    lateinit var themeRepository: ThemePreferencesRepository
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +52,16 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.toolbarTitle).text = userName
         supportActionBar?.title = ""
         toolbar.alpha = 0.8f
+
+        lifecycleScope.launch {
+            themeRepository.themeFlow.collect { theme ->
+                when (theme) {
+                    AppTheme.LIGHT -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    AppTheme.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    AppTheme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -57,11 +77,18 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_settings -> {
-                Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
+                val navController = findNavController(R.id.nav_host_fragment)
+                navController.navigate(R.id.settingsFragment)
                 true
             }
             R.id.action_about -> {
                 Toast.makeText(this, "О приложении", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_settings -> {
+                val navController = findNavController(R.id.nav_host_fragment)
+                navController.navigate(R.id.settingsFragment)
+                onBackPressedDispatcher.onBackPressed() // Более "мягкий" способ возврата
                 true
             }
             else -> super.onOptionsItemSelected(item)

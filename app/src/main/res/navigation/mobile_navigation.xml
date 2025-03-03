@@ -23,9 +23,9 @@
 
     <fragment
         android:id="@+id/verificationAjkFragment"
-        android:name="com.reftgres.taihelper.ui.verification.VerificationAjkFragment"
+        android:name="com.reftgres.taihelper.ui.ajk.AjkFragment"
         android:label="@string/ajk_fragment"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_ajk" />
 
     <fragment
         android:id="@+id/all_measurements"
@@ -42,6 +42,12 @@
         android:label="Добавить датчик"
         tools:layout="@layout/fragment_add_sensor" />
 
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.reftgres.taihelper.ui.settings.SettingsFragment"
+        android:label="Настройки"
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/new_measurement"

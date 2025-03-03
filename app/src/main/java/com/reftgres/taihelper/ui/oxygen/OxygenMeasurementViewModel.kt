@@ -74,13 +74,11 @@ class OxygenMeasurementViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val sensorsList = withContext(Dispatchers.IO) {
-                    val blockPath = "blocks/block[$blockId]"
+                    val blockPath = "/blocks/$blockId" // Исправленный путь
                     Log.d("OxygenViewModel", "Fetching sensors for block path: $blockPath")
 
-                    val blockRef = firestore.document(blockPath)
-
                     val snapshot = firestore.collection("sensors")
-                        .whereEqualTo("block", blockRef)
+                        .whereEqualTo("block", blockPath) // Используйте точно такой же путь, как при сохранении
                         .get()
                         .await()
 
@@ -93,7 +91,7 @@ class OxygenMeasurementViewModel @Inject constructor(
                             serialNumber = doc.getString("serial_number") ?: "Нет номера",
                             midPoint = doc.getString("mid_point") ?: "-",
                             outputScale = doc.getString("output_scale") ?: "-",
-                            blockId = blockId.toString() // Приводим к строке
+                            blockId = blockId.toString()
                         )
                     }
                 }
@@ -102,6 +100,7 @@ class OxygenMeasurementViewModel @Inject constructor(
                 _sensors.postValue(sensorsList)
             } catch (e: Exception) {
                 Log.e("OxygenViewModel", "Error loading sensors", e)
+                e.printStackTrace()
             }
         }
     }

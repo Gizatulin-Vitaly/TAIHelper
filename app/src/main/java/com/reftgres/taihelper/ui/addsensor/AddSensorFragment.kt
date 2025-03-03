@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.databinding.FragmentAddSensorBinding
 import com.reftgres.taihelper.ui.addsensor.AddSensorViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import com.reftgres.taihelper.R
 
 @AndroidEntryPoint
 class AddSensorFragment : Fragment() {
@@ -44,6 +46,7 @@ class AddSensorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         binding.actvSensorType.setOnClickListener {
             Log.d(TAG, "Клик по actvSensorType")
@@ -327,6 +330,7 @@ class AddSensorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d(TAG, "onDestroyView: Освобождение ресурсов")
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         _binding = null
     }
 
