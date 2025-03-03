@@ -10,11 +10,17 @@
     <!-- Карточка для элементов формы с закругленными углами и тенью -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardForm"
+        android:background="?attr/colorSurface"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="16dp"
+        app:strokeColor="@color/primary_amethyst"
+        app:strokeWidth="2dp"
+        android:alpha="0.85"
+        android:animateLayoutChanges="true"
+        android:transitionName="cardFormTransition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        app:cardCornerRadius="28dp"
-        app:cardElevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +39,11 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/app_logo_description"
                 android:elevation="4dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/ic_my_launcher_round"
                 android:transitionName="logo_transition"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/primary_amethyst" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Заголовок "Добро пожаловать" -->
             <TextView

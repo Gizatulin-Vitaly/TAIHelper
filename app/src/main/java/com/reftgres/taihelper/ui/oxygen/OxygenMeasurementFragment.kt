@@ -1,6 +1,8 @@
 package com.reftgres.taihelper.ui.oxygen
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -66,10 +68,10 @@ class OxygenMeasurementFragment : Fragment() {
         viewModel.selectedSensor.observe(viewLifecycleOwner) { sensor ->
             sensor?.let {
                 // Обновление UI с информацией о датчике
-                binding.positionSensor.text = it.position
-                binding.numberSensor.text = it.serialNumber.ifEmpty { "Не указан" }
-                binding.middleSensor.text = it.midPoint
-                binding.analogOutput.text = it.outputScale
+                binding.tvPositionSensor.text= it.position
+                binding.tvNumberSensor.text = it.serialNumber.ifEmpty { "Не указан" }
+                binding.tvMiddleSensor.text = it.midPoint
+                binding.tvAnalogOutput.text = it.outputScale
             }
         }
     }
@@ -84,11 +86,9 @@ class OxygenMeasurementFragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Не выбран блок
             }
         }
 
-        // Слушатель выбора датчика - исправлен
         binding.sensorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 Log.d("OxygenMeasurementFragment", "Sensor selected at position: $position")
@@ -100,19 +100,13 @@ class OxygenMeasurementFragment : Fragment() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Не выбран датчик
             }
         }
 
-        // Добавляем обработчик для MaterialCard (предполагаем, что она называется sensorCard)
-        // Замените "sensorCard" на реальный id вашей MaterialCard
-        binding.allOxygenCard.setOnClickListener {
+        binding.cardAllOxygen.setOnClickListener {
             Log.d("OxygenMeasurementFragment", "MaterialCard clicked")
-            // Ваша логика обработки нажатия на карточку
             val selectedSensor = viewModel.selectedSensor.value
             if (selectedSensor != null) {
-                // Например, открытие детальной информации о датчике
-                // или выполнение измерения кислорода
                 handleSensorCardClick(selectedSensor)
             } else {
                 Log.d("OxygenMeasurementFragment", "No sensor selected")

@@ -1,5 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewModel"
@@ -9,334 +12,436 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="40dp"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="40dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.oxygen.OxygenMeasurementFragment"
-            android:padding="8dp">
+            android:padding="16dp"
+            tools:context="com.reftgres.taihelper.ui.oxygen.OxygenMeasurementFragment">
 
+            <!-- Блок выбора блока и позиции -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/block_tittle"
+                android:id="@+id/tv_block_title"
+                style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/sensor_tittle"
-                android:text="№ блока"
+                android:layout_marginHorizontal="8dp"
                 android:gravity="center"
-                android:textSize="24sp"
-                android:layout_margin="8dp">
-            </com.google.android.material.textview.MaterialTextView>
+                android:text="№ блока"
+                app:layout_constraintEnd_toStartOf="@id/tv_sensor_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
                 android:id="@+id/block_spinner"
                 android:layout_width="0dp"
-                android:layout_height="36sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/block_tittle"
-                app:layout_constraintEnd_toStartOf="@id/sensor_spinner"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp"
+                android:textAlignment="center"
                 android:gravity="center"
-                android:layout_margin="8dp">
-            </Spinner>
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toStartOf="@id/sensor_spinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_block_title" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/sensor_tittle"
+                android:id="@+id/tv_sensor_title"
+                style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/block_tittle"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Позиция"
+                android:layout_marginHorizontal="8dp"
                 android:gravity="center"
-                android:textSize="24sp"
-                android:layout_margin="8dp">
-            </com.google.android.material.textview.MaterialTextView>
+                android:text="Позиция"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_block_title"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
                 android:id="@+id/sensor_spinner"
                 android:layout_width="0dp"
-                android:layout_height="36sp"
-                app:layout_constraintTop_toBottomOf="@id/sensor_tittle"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_marginStart="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/block_spinner"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp">
-            </Spinner>
+                app:layout_constraintTop_toBottomOf="@id/tv_sensor_title" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/info_sensor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/block_spinner"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/position_sensor_tittle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/position_sensor"
-                    android:textSize="20sp"
-                    android:text="Позиция датчика:"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/position_sensor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/position_sensor_tittle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="szdxfcgv"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:gravity="end"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/number_sensor_tittle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/position_sensor_tittle"
-                    app:layout_constraintEnd_toStartOf="@id/number_sensor"
-                    android:text="Номер:"
-                    android:textSize="20sp"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/number_sensor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/number_sensor_tittle"
-                    app:layout_constraintTop_toBottomOf="@id/position_sensor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="sxfdcgvn"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:gravity="end"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/middle_sensor_tittle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/number_sensor_tittle"
-                    app:layout_constraintEnd_toStartOf="@id/middle_sensor"
-                    android:text="Средняя точка:"
-                    android:textSize="20sp"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/middle_sensor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/middle_sensor_tittle"
-                    app:layout_constraintTop_toBottomOf="@id/number_sensor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="sdfghjkl;'"
-                    android:textSize="20sp"
-                    android:gravity="end"
-                    android:textStyle="bold"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/analog_output_tittle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/middle_sensor_tittle"
-                    app:layout_constraintEnd_toStartOf="@id/analog_output"
-                    android:text="Токовые выходы:"
-                    android:textSize="20sp"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/analog_output"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@id/analog_output_tittle"
-                    app:layout_constraintTop_toBottomOf="@id/middle_sensor_tittle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="vfdctryuijlk"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:gravity="end"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <!-- Информация о датчике -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/all_oxygen_card"
+                android:id="@+id/card_sensor_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:cardElevation="4dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/info_sensor"
-                android:background="@color/background_light">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/block_spinner">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/all_oxygen_constaraint"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp">
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/fourth_on_blok"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/second_on_blok"
-                        android:gravity="center"
-                        android:layout_marginEnd="4dp"
-                        android:text="Четвертый датчик"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/fourth_indicate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/fourth_on_blok"
-                        app:layout_constraintStart_toStartOf="@id/fourth_on_blok"
-                        app:layout_constraintEnd_toEndOf="@id/fourth_on_blok"
-                        android:text="3.54"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/fourth_midle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/fourth_indicate"
-                        app:layout_constraintStart_toEndOf="@id/fourth_indicate"
-                        android:textSize="12dp"
-                        android:text="(9.89)"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/second_on_blok"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/fourth_on_blok"
-                        android:gravity="center"
-                        android:layout_marginStart="4dp"
-                        android:text="Второй датчик"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/second_indicate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/second_on_blok"
-                        app:layout_constraintStart_toStartOf="@id/second_on_blok"
-                        app:layout_constraintEnd_toEndOf="@id/second_on_blok"
-                        app:layout_constraintBottom_toTopOf="@id/date_control"
-                        android:text="3.54"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:gravity="center"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/second_midle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/second_indicate"
-                        app:layout_constraintStart_toEndOf="@id/second_indicate"
-                        android:textSize="12dp"
-                        android:text="(9.89)"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/date_control"
+                        android:id="@+id/tv_info_title"
+                        style="@style/TextAppearance.Material3.TitleMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:gravity="center"
-                        android:paddingBottom="12dp"
-                        app:layout_constraintTop_toBottomOf="@id/fourth_indicate"
-                        android:text="23.02.2025"
-                        android:layout_marginTop="12dp"
-                        android:textSize="16sp"/>
+                        android:text="Информация о датчике"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/third_on_blok"
+                        android:id="@+id/tv_position_sensor_title"
+                        style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/date_control"
+                        android:layout_marginTop="8dp"
+                        android:text="Позиция датчика:"
+                        app:layout_constraintEnd_toStartOf="@id/tv_position_sensor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/first_on_blok"
-                        android:layout_marginEnd="4dp"
+                        app:layout_constraintTop_toBottomOf="@id/tv_info_title" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_position_sensor"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_position_sensor_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_position_sensor_title"
+                        tools:text="Позиция 1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_number_sensor_title"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Номер:"
+                        app:layout_constraintEnd_toStartOf="@id/tv_number_sensor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_position_sensor_title" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_number_sensor"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_number_sensor_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_number_sensor_title"
+                        tools:text="12345" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_middle_sensor_title"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Средняя точка:"
+                        app:layout_constraintEnd_toStartOf="@id/tv_middle_sensor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_number_sensor_title" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_middle_sensor"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_middle_sensor_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_middle_sensor_title"
+                        tools:text="9.45" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_analog_output_title"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Токовые выходы:"
+                        app:layout_constraintEnd_toStartOf="@id/tv_analog_output"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_middle_sensor_title" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_analog_output"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_analog_output_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_analog_output_title"
+                        tools:text="4-20 мА" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Блок показаний всех датчиков -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_all_oxygen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_sensor_info">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp">
+
+                    <!-- Верхний ряд датчиков -->
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_fourth_sensor_title"
+                        style="@style/TextAppearance.Material3.TitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center"
+                        android:text="Четвертый датчик"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/tv_second_sensor_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_fourth_reading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@id/tv_fourth_sensor_title"
+                        app:layout_constraintStart_toStartOf="@id/tv_fourth_sensor_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_fourth_sensor_title">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_fourth_indicate"
+                            style="@style/TextAppearance.Material3.HeadlineSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="3.54" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_fourth_middle"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_fourth_indicate"
+                            app:layout_constraintStart_toEndOf="@id/tv_fourth_indicate"
+                            tools:text="(9.89)" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_second_sensor_title"
+                        style="@style/TextAppearance.Material3.TitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:text="Второй датчик"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_fourth_sensor_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_second_reading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@id/tv_second_sensor_title"
+                        app:layout_constraintStart_toStartOf="@id/tv_second_sensor_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_second_sensor_title">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_second_indicate"
+                            style="@style/TextAppearance.Material3.HeadlineSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="3.54" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_second_middle"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_second_indicate"
+                            app:layout_constraintStart_toEndOf="@id/tv_second_indicate"
+                            tools:text="(9.89)" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Дата измерения -->
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/container_fourth_reading" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_date_control"
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:layout_constraintTop_toBottomOf="@id/divider"
+                        tools:text="23.02.2025" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/tv_date_control" />
+
+                    <!-- Нижний ряд датчиков -->
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_third_sensor_title"
+                        style="@style/TextAppearance.Material3.TitleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:gravity="center"
                         android:text="Третий датчик"
                         android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/third_indicate"
+                        app:layout_constraintEnd_toStartOf="@id/tv_first_sensor_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_third_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/third_on_blok"
-                        app:layout_constraintStart_toStartOf="@id/third_on_blok"
-                        app:layout_constraintEnd_toEndOf="@id/third_on_blok"
-                        android:text="3.54"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
+                        app:layout_constraintEnd_toEndOf="@id/tv_third_sensor_title"
+                        app:layout_constraintStart_toStartOf="@id/tv_third_sensor_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_third_sensor_title">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_third_indicate"
+                            style="@style/TextAppearance.Material3.HeadlineSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="3.54" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_third_middle"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_third_indicate"
+                            app:layout_constraintStart_toEndOf="@id/tv_third_indicate"
+                            tools:text="(9.89)" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/third_midle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/third_indicate"
-                        app:layout_constraintStart_toEndOf="@id/third_indicate"
-                        android:textSize="12dp"
-                        android:text="(9.89)"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/first_on_blok"
+                        android:id="@+id/tv_first_sensor_title"
+                        style="@style/TextAppearance.Material3.TitleSmall"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/date_control"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
                         android:text="Первый датчик"
-                        app:layout_constraintStart_toEndOf="@id/third_on_blok"
-                        android:layout_marginStart="4dp"
-                        android:gravity="center"
                         android:textStyle="bold"
-                        android:textSize="16sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/first_indicate"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_third_sensor_title"
+                        app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_first_reading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/first_on_blok"
-                        app:layout_constraintStart_toStartOf="@id/first_on_blok"
-                        app:layout_constraintEnd_toEndOf="@id/first_on_blok"
-                        android:gravity="center"
-                        android:text="3.54"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/first_midle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/first_indicate"
-                        app:layout_constraintStart_toEndOf="@id/first_indicate"
-                        android:textSize="12dp"
-                        android:text="(9.89)"/>
+                        app:layout_constraintEnd_toEndOf="@id/tv_first_sensor_title"
+                        app:layout_constraintStart_toStartOf="@id/tv_first_sensor_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_first_sensor_title">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_first_indicate"
+                            style="@style/TextAppearance.Material3.HeadlineSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="3.54" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_first_middle"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_first_indicate"
+                            app:layout_constraintStart_toEndOf="@id/tv_first_indicate"
+                            tools:text="(9.89)" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tittle_five_indicate"
+
+            <!-- История измерений -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/all_oxygen_card"
-                android:text="последние 5 измерений"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="24sp"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tittle_five_indicate"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" />
+                app:layout_constraintTop_toBottomOf="@id/card_all_oxygen">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_history_title"
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="Последние 5 измерений"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="5"
+                        tools:listitem="" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
