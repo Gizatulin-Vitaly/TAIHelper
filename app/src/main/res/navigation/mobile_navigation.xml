@@ -37,6 +37,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/addSensorFragment"
+        android:name="com.reftgres.taihelper.ui.sensors.AddSensorFragment"
+        android:label="Добавить датчик"
+        tools:layout="@layout/fragment_add_sensor" />
+
+
+    <fragment
         android:id="@+id/new_measurement"
         android:name="com.reftgres.taihelper.ui.oxygen.NewMeasurementsFragment"
         tools:layout="@layout/new_measuremens" />
