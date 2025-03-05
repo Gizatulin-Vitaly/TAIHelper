@@ -5,14 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FirebaseFirestore
+import com.reftgres.taihelper.service.NetworkConnectivityService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class AjkViewModel @Inject constructor(
-    private val repository: AjkRepository
+    private val repository: AjkRepository,
+    private val networkService: NetworkConnectivityService
 ) : ViewModel() {
 
     // Текущий шаг
@@ -34,6 +36,10 @@ class AjkViewModel @Inject constructor(
 
     private val _testAverage = MutableLiveData<Float>(0f)
     fun observeTestAverage(): LiveData<Float> = _testAverage
+
+    // Состояние сети
+    private val _isOnline = MutableLiveData<Boolean>()
+    val isOnline: LiveData<Boolean> = _isOnline
 
     // Сопротивление и константа
     private val _resistance = MutableLiveData<String>("")
@@ -70,6 +76,43 @@ class AjkViewModel @Inject constructor(
     // Статус сохранения данных
     private val _saveStatus = MutableLiveData<SaveStatus>(SaveStatus.None)
     fun observeSaveStatus(): LiveData<SaveStatus> = _saveStatus
+
+    // История калибровок
+    private val _calibrationHistory = MutableLiveData<List<DataAjk>>(emptyList())
+    val calibrationHistory: LiveData<List<DataAjk>> = _calibrationHistory
+
+    init {
+        // Наблюдаем за состоянием сети
+        viewModelScope.launch {
+            networkService.networkStatus.collect { isConnected ->
+                _isOnline.postValue(isConnected)
+
+                // Если сеть восстановилась, можно обновить историю калибровок
+                if (isConnected) {
+                    loadCalibrationHistory()
+                }
+            }
+        }
+
+        // Загружаем историю калибровок при инициализации
+        loadCalibrationHistory()
+    }
+
+    // Загрузка истории калибровок
+    private fun loadCalibrationHistory() {
+        viewModelScope.launch {
+            repository.getCalibrationHistory().collect { result ->
+                result.fold(
+                    onSuccess = { calibrations ->
+                        _calibrationHistory.postValue(calibrations)
+                    },
+                    onFailure = { error ->
+                        Log.e("AjkViewModel", "Ошибка при загрузке истории калибровок", error)
+                    }
+                )
+            }
+        }
+    }
 
     // Обновление значений лабораторного датчика
     fun updateLabSensorValue(index: Int, value: String) {
@@ -211,7 +254,7 @@ class AjkViewModel @Inject constructor(
         }
     }
 
-    // Сохранение данных в облако
+    // Сохранение данных
     fun saveToCloud() {
         // Установка статуса сохранения
         _saveStatus.value = SaveStatus.Saving
@@ -224,13 +267,22 @@ class AjkViewModel @Inject constructor(
                 _saveStatus.postValue(result.fold(
                     onSuccess = {
                         Log.d("AjkViewModel", "Данные сохранены с ID: $it")
-                        SaveStatus.Success
+
+                        // Если сейчас оффлайн-режим, информируем пользователя
+                        if (!networkService.isNetworkAvailable()) {
+                            SaveStatus.OfflineSaved
+                        } else {
+                            SaveStatus.Success
+                        }
                     },
                     onFailure = {
                         Log.e("AjkViewModel", "Ошибка при сохранении данных", it)
                         SaveStatus.Error(it.message ?: "Неизвестная ошибка")
                     }
                 ))
+
+                // Обновляем историю калибровок после сохранения
+                loadCalibrationHistory()
             }
         }
     }
@@ -240,6 +292,7 @@ class AjkViewModel @Inject constructor(
         val constant = _constant.value ?: 0f
 
         return DataAjk(
+            id = "", // ID будет сгенерировано в репозитории
             labSensorValues = _labSensorValues.value ?: listOf(),
             testSensorValues = _testSensorValues.value ?: listOf(),
             labAverage = _labAverage.value ?: 0f,
@@ -257,6 +310,7 @@ class AjkViewModel @Inject constructor(
             r08SensorValue = _r08SensorValue.value ?: "",
             r40DegResistance = constant / 0.68f,
             r40DegSensorValue = _r40DegSensorValue.value ?: "",
+            timestamp = Date(),
             userId = getUserId()
         )
     }
@@ -272,6 +326,7 @@ class AjkViewModel @Inject constructor(
         object None : SaveStatus()
         object Saving : SaveStatus()
         object Success : SaveStatus()
+        object OfflineSaved : SaveStatus()
         data class Error(val message: String) : SaveStatus()
     }
 }

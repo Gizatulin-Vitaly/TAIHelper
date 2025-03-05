@@ -1,11 +1,10 @@
-package com.reftgres.taihelper.ui.sensors
+package com.reftgres.taihelper.ui.addsensor
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -15,10 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.databinding.FragmentAddSensorBinding
-import com.reftgres.taihelper.ui.addsensor.AddSensorViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.reftgres.taihelper.R
+import com.reftgres.taihelper.ui.sensors.DropdownAdapter
 
 @AndroidEntryPoint
 class AddSensorFragment : Fragment() {

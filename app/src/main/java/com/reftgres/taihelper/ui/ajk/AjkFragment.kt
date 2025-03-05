@@ -329,6 +329,13 @@ class AjkFragment : Fragment() {
                 statusTextView.setBackgroundResource(R.drawable.bg_status_success)
                 backToStartButton.isVisible = true
             }
+            is AjkViewModel.SaveStatus.OfflineSaved -> {
+                // Добавьте этот новый блок для обработки офлайн-сохранения
+                statusTextView.isVisible = true
+                statusTextView.text = "Данные сохранены локально и будут отправлены позже."
+                statusTextView.setBackgroundResource(R.drawable.bg_status_success) // или создайте новый фон
+                backToStartButton.isVisible = true
+            }
             is AjkViewModel.SaveStatus.Error -> {
                 statusTextView.isVisible = true
                 statusTextView.text = "Ошибка: ${status.message}"

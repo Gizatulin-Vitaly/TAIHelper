@@ -21,5 +21,14 @@
     <string name="or_text">или</string>
     <string name="no_account">Нет аккаунта?</string>
     <string name="register_button">Регистрация</string>
+    <string name="offline_mode">Режим офлайн. Данные будут синхронизированы позже.</string>
+    <string name="data_saved_offline">Данные сохранены локально и будут отправлены при подключении к сети.</string>
+    <string name="syncing_data">Синхронизация данных...</string>
+    <string name="sync_complete">Синхронизация завершена</string>
+    <string name="sync_failed">Ошибка синхронизации</string>
+    <string name="retry">Повторить</string>
+    <string name="no_sensors">Нет датчиков</string>
+    <string name="add_sensor">Добавить датчик</string>
+
 
 </resources>

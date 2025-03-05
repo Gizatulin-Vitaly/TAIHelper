@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import com.reftgres.taihelper.ui.oxygen.Sensor
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -33,6 +34,23 @@ class OxygenMeasurementFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+        binding.blockSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val blocks = viewModel.blocks.value
+                Log.d("OxygenMeasurementFragment", "Block selected at position: $position, blocks: ${blocks?.size}")
+                if (blocks != null && position >= 0 && position < blocks.size) {
+                    val blockId = blocks[position].id
+                    Log.d("OxygenMeasurementFragment", "Loading sensors for blockId: $blockId")
+                    viewModel.loadSensorsForBlock(blockId)
+                } else {
+                    Log.e("OxygenMeasurementFragment", "Invalid position or blocks list is null")
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("OxygenMeasurementFragment", "No block selected")
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +58,7 @@ class OxygenMeasurementFragment : Fragment() {
         setupObservers()
         setupListeners()
     }
+
 
     private fun setupObservers() {
         // Наблюдение за списком блоков
@@ -57,11 +76,16 @@ class OxygenMeasurementFragment : Fragment() {
 
         // Наблюдение за списком датчиков для выбранного блока
         viewModel.sensors.observe(viewLifecycleOwner) { sensors ->
-            Log.d("OxygenMeasurementFragment", "Sensors loaded: $sensors")
+            Log.d("OxygenMeasurementFragment", "Sensors observed: ${sensors.size}")
             val sensorNames = sensors.map { it.position }
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sensorNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.sensorSpinner.adapter = adapter
+        }
+
+        val networkStatusBar = view?.findViewById<View>(R.id.networkStatusBar)
+        viewModel.isOnline.observe(viewLifecycleOwner) { isOnline ->
+            networkStatusBar?.visibility = if (isOnline) View.GONE else View.VISIBLE
         }
 
         // Наблюдение за выбранным датчиком
@@ -114,7 +138,7 @@ class OxygenMeasurementFragment : Fragment() {
         }
     }
 
-    private fun handleSensorCardClick(sensor: OxygenMeasurementViewModel.Sensor) {
+    private fun handleSensorCardClick(sensor: Sensor) {
         findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
     }
 
