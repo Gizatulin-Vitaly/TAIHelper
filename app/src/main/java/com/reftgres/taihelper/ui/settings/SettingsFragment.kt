@@ -17,6 +17,8 @@ import com.reftgres.taihelper.R
 class SettingsFragment : Fragment() {
     private val themeViewModel: ThemeViewModel by viewModels()
 
+    private var radioListener: RadioGroup.OnCheckedChangeListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +28,7 @@ class SettingsFragment : Fragment() {
 
         val radioGroupTheme = view.findViewById<RadioGroup>(R.id.radioGroupTheme)
 
-        radioGroupTheme.setOnCheckedChangeListener { _, checkedId ->
+        radioListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
             val theme = when (checkedId) {
                 R.id.radioLight -> AppTheme.LIGHT
                 R.id.radioDark -> AppTheme.DARK
@@ -36,16 +38,25 @@ class SettingsFragment : Fragment() {
             themeViewModel.setTheme(theme)
         }
 
-        // Наблюдение за текущей темой
+        radioGroupTheme.setOnCheckedChangeListener(radioListener)
+
         viewLifecycleOwner.lifecycleScope.launch {
             themeViewModel.currentTheme.collect { theme ->
-                // Установка выбранной радиокнопки
                 val selectedRadioButtonId = when (theme) {
                     AppTheme.LIGHT -> R.id.radioLight
                     AppTheme.DARK -> R.id.radioDark
                     AppTheme.SYSTEM -> R.id.radioSystem
                 }
-                radioGroupTheme.check(selectedRadioButtonId)
+
+                // Проверяем, нужно ли обновлять выбор
+                if (radioGroupTheme.checkedRadioButtonId != selectedRadioButtonId) {
+
+                    radioGroupTheme.setOnCheckedChangeListener(null)
+
+                    radioGroupTheme.check(selectedRadioButtonId)
+
+                    radioGroupTheme.setOnCheckedChangeListener(radioListener)
+                }
             }
         }
 
@@ -54,15 +65,12 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Скрываем нижнее меню
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        // Возвращаем видимость нижнего меню при выходе из фрагмента
+        radioListener = null
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
     }
 }

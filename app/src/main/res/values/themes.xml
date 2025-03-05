@@ -31,6 +31,8 @@
 
         <!-- Поля ввода -->
         <item name="textInputStyle">@style/Widget.InputLayout</item>
+
+        <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
     </style>
 
     <!-- Стиль для кнопок -->
@@ -51,4 +53,17 @@
         <item name="boxCornerRadiusBottomStart">16dp</item>
         <item name="boxCornerRadiusBottomEnd">16dp</item>
     </style>
+
+    <style name="Theme.YourAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- ... Другие атрибуты ... -->
+
+        <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
+        <item name="popupMenuStyle">@style/AppTheme.PopupMenu</item>
+    </style>
+
+    <style name="AppTheme.PopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
+    </style>
+
+
 </resources>

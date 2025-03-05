@@ -5,4 +5,18 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+
+    <style name="CustomOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <!-- Используем собственную иконку -->
+        <item name="android:src">@drawable/ic_menu_custom</item>
+
+        <!-- Тонирование иконки -->
+        <item name="tint">@color/divider_color</item>
+
+        <!-- Опционально: изменение размера -->
+        <item name="android:minWidth">36dp</item>
+        <item name="android:minHeight">36dp</item>
+    </style>
+
 </resources>
+

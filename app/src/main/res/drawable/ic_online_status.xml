@@ -1,0 +1,15 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Состояние онлайн (активировано) -->
+    <item android:state_activated="true">
+        <shape android:shape="oval">
+            <solid android:color="@color/success_green" />
+        </shape>
+    </item>
+
+    <!-- Состояние офлайн (по умолчанию) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/error_red" />
+        </shape>
+    </item>
+</selector>

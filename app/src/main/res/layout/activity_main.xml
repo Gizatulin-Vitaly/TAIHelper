@@ -16,6 +16,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:titleTextColor="@android:color/white">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="8dp">
+
+            <View
+                android:id="@+id/networkIndicator"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/ic_online_status"
+                android:state_activated="false"/>
+
+            <TextView
+                android:id="@+id/networkStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Офлайн"
+                android:textSize="10sp"
+                android:textColor="#F44336"/>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/toolbarTitle"
             android:layout_width="wrap_content"
