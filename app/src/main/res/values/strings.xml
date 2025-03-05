@@ -29,6 +29,17 @@
     <string name="retry">Повторить</string>
     <string name="no_sensors">Нет датчиков</string>
     <string name="add_sensor">Добавить датчик</string>
+    <string name="register_title">Регистрация</string>
+    <string name="register_subtitle">Создайте новую учетную запись</string>
+    <string name="name_hint">Имя</string>
+    <string name="last_name_hint">Фамилия</string>
+    <string name="position_hint">Должность</string>
+    <string name="confirm_password_hint">Повторите пароль</string>
+    <string name="back_button">Назад</string>
+    <string name="reset_password_title">Восстановление пароля</string>
+    <string name="reset_password_subtitle">Введите адрес электронной почты, связанный с вашей учетной записью, и мы отправим вам инструкции по сбросу пароля.</string>
+    <string name="reset_password_icon_description">Иконка сброса пароля</string>
+    <string name="reset_password_button">Сбросить пароль</string>
 
 
 </resources>
