@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Градиентная стрелка с закругленными краями -->
+    <path
+        android:pathData="M5,12c0,-0.53 0.21,-1.04 0.59,-1.41l3.83,-3.83C10.78,5.4 12.5,6.23 12.5,8v2.5H18c0.83,0 1.5,0.67 1.5,1.5s-0.67,1.5 -1.5,1.5h-5.5V16c0,1.77 -1.72,2.6 -3.08,1.24l-3.83,-3.83C5.21,13.04 5,12.53 5,12z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startColor="#9C4DCC"
+                android:endColor="#6E1BCA"
+                android:startX="5"
+                android:startY="6"
+                android:endX="19.5"
+                android:endY="18"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Блик для объема -->
+    <path
+        android:pathData="M12.5,8v2.5H18c0.17,0 0.34,0.03 0.5,0.08c-0.23,-0.28 -0.59,-0.45 -0.98,-0.45h-5.35V7.92C12.27,7.96 12.5,8.03 12.5,8z"
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.4"/>
+</vector>

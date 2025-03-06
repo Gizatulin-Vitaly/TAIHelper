@@ -39,12 +39,40 @@ class FragmentConverter : Fragment() {
             val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
             val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
 
-            binding.changeVoltageLayout.card05.setCardBackgroundColor(if (isPrimary) primaryColor else secondaryColor)
-            binding.changeVoltageLayout.card420.setCardBackgroundColor(if (isPrimary) secondaryColor else primaryColor)
+            binding.card05.setCardBackgroundColor(if (isPrimary) primaryColor else secondaryColor)
+            binding.card420.setCardBackgroundColor(if (isPrimary) secondaryColor else primaryColor)
 
-            binding.changeVoltageLayout.text05.setTextColor(if (isPrimary) primaryTextColor else secondaryTextColor)
-            binding.changeVoltageLayout.text420.setTextColor(if (isPrimary) secondaryTextColor else primaryTextColor)
+            binding.text05.setTextColor(if (isPrimary) primaryTextColor else secondaryTextColor)
+            binding.text420.setTextColor(if (isPrimary) secondaryTextColor else primaryTextColor)
         }
+
+        // Настройка переключения между режимами
+        binding.modeSwitch.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btn_current -> {
+                        // Режим "Токовые"
+                        updateInputField(
+                            hint = "Введите значение токовых",
+                            icon = R.drawable.ic_current_input
+                        )
+                    }
+                    R.id.btn_sensor -> {
+                        // Режим "Датчик"
+                        updateInputField(
+                            hint = "Введите значение измерений",
+                            icon = R.drawable.ic_sensor_input
+                        )
+                    }
+                }
+            }
+        }
+
+        // Установка начального состояния (по умолчанию "Токовые")
+        updateInputField(
+            hint = "Введите значение токовых",
+            icon = R.drawable.ic_current_input
+        )
 
         // Подписка на изменение цвета кнопок
         viewModel.isPrimarySelected.observe(viewLifecycleOwner) { isPrimary ->
@@ -69,10 +97,10 @@ class FragmentConverter : Fragment() {
         }
 
         // Обработчики кликов для карточек
-        binding.changeVoltageLayout.card05.setOnClickListener {
+        binding.card05.setOnClickListener {
             viewModel.selectVoltagePrimary(true)
         }
-        binding.changeVoltageLayout.card420.setOnClickListener {
+        binding.card420.setOnClickListener {
             viewModel.selectVoltagePrimary(false)
         }
 
@@ -90,9 +118,9 @@ class FragmentConverter : Fragment() {
 
         // Обработчик кнопки вычислений
         binding.resultButton.setOnClickListener {
-            val userValue = binding.changeVoltageLayout.userValue.text.toString().toFloatOrNull()
-            val startScaleSens = binding.changeVoltageLayout.startValue.text.toString().toFloatOrNull()
-            val endScaleSens = binding.changeVoltageLayout.finishValue.text.toString().toFloatOrNull()
+            val userValue = binding.userValue.text.toString().toFloatOrNull()
+            val startScaleSens = binding.startValue.text.toString().toFloatOrNull()
+            val endScaleSens = binding.finishValue.text.toString().toFloatOrNull()
 
             // Проверка на null, чтобы избежать падения приложения
             if (userValue == null || startScaleSens == null || endScaleSens == null) {
@@ -103,6 +131,15 @@ class FragmentConverter : Fragment() {
             viewModel.calculateResult(userValue, startScaleSens, endScaleSens)
         }
 
+
+    }
+
+
+    private fun updateInputField(hint: String, icon: Int) {
+        binding.enterUsers.apply {
+            this.hint = hint
+            setStartIconDrawable(icon)
+        }
     }
 
     override fun onDestroyView() {
