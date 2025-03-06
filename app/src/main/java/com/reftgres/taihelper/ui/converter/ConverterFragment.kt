@@ -51,17 +51,15 @@ class FragmentConverter : Fragment() {
             if (isChecked) {
                 when (checkedId) {
                     R.id.btn_current -> {
-                        // Режим "Токовые"
-                        updateInputField(
-                            hint = "Введите значение токовых",
-                            icon = R.drawable.ic_current_input
-                        )
-                    }
-                    R.id.btn_sensor -> {
-                        // Режим "Датчик"
                         updateInputField(
                             hint = "Введите значение измерений",
                             icon = R.drawable.ic_sensor_input
+                        )
+                    }
+                    R.id.btn_sensor -> {
+                        updateInputField(
+                            hint = "Введите значение токовых",
+                            icon = R.drawable.ic_current_input
                         )
                     }
                 }
@@ -70,11 +68,10 @@ class FragmentConverter : Fragment() {
 
         // Установка начального состояния (по умолчанию "Токовые")
         updateInputField(
-            hint = "Введите значение токовых",
-            icon = R.drawable.ic_current_input
+            hint = "Введите значение измерений",
+            icon = R.drawable.ic_sensor_input
         )
 
-        // Подписка на изменение цвета кнопок
         viewModel.isPrimarySelected.observe(viewLifecycleOwner) { isPrimary ->
             val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_amethyst)
             val secondaryColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
@@ -96,7 +93,6 @@ class FragmentConverter : Fragment() {
             }
         }
 
-        // Обработчики кликов для карточек
         binding.card05.setOnClickListener {
             viewModel.selectVoltagePrimary(true)
         }
