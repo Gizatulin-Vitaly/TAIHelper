@@ -1,4 +1,5 @@
-package com.reftgres.taihelper.di
+//управляет Room-базой данных и предоставляет DAO
+package com.reftgres.taihelper.ui.di
 
 import android.content.Context
 import androidx.room.Room

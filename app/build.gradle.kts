@@ -109,6 +109,8 @@ dependencies {
     // Gson
     implementation ("com.google.code.gson:gson:2.8.2")
 
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+
 }
 
 kapt {

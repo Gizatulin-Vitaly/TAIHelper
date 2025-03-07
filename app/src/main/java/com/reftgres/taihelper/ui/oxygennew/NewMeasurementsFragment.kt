@@ -18,10 +18,12 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.NewMeasuremensBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+@AndroidEntryPoint
 class NewMeasurementsFragment : Fragment() {
     private var _binding: NewMeasuremensBinding? = null
     private val binding get() = _binding!!
@@ -67,6 +69,8 @@ class NewMeasurementsFragment : Fragment() {
         viewModel.blockNumber.observe(viewLifecycleOwner) { blockNumber ->
             // Можно обновить UI при изменении номера блока
         }
+
+
     }
 
     private fun updateSensorTitlesInUI(titles: List<String>) {
@@ -124,19 +128,37 @@ class NewMeasurementsFragment : Fragment() {
 
     private fun setupSaveButton() {
         binding.saveButton.setOnClickListener {
-            // Собираем данные из UI и передаем их во ViewModel для каждого датчика
+            // Собираем данные из UI
             collectAndSaveSensorData(0, binding.sensorGroup1.root)
             collectAndSaveSensorData(1, binding.sensorGroup2.root)
             collectAndSaveSensorData(2, binding.sensorGroup3.root)
             collectAndSaveSensorData(3, binding.sensorGroup4.root)
 
-            // Запускаем сохранение и наблюдаем за результатом
-            viewModel.saveMeasurements().observe(viewLifecycleOwner) { success ->
-                if (success) {
-                    Toast.makeText(context, "Данные успешно сохранены", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
-                } else {
-                    Toast.makeText(context, "Ошибка при сохранении данных", Toast.LENGTH_SHORT).show()
+            // Наблюдаем за результатом сохранения
+            viewModel.saveMeasurements().observe(viewLifecycleOwner) { result ->
+                when (result) {
+                    is SaveResult.Loading -> {
+                        // Показываем индикатор загрузки
+                        binding.saveButton.isEnabled = false
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is SaveResult.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.saveButton.isEnabled = true
+                        Toast.makeText(context, "Данные успешно сохранены", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    }
+                    is SaveResult.PartialSuccess -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.saveButton.isEnabled = true
+                        Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
+                        findNavController().navigateUp()
+                    }
+                    is SaveResult.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.saveButton.isEnabled = true
+                        Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

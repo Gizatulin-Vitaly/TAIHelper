@@ -3,8 +3,19 @@ package com.reftgres.taihelper.ui.oxygennew
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.reftgres.taihelper.ui.model.MeasurementRecord
+import com.reftgres.taihelper.ui.model.SensorMeasurement
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
 
-class NewMeasurementsViewModel : ViewModel() {
+@HiltViewModel
+class NewMeasurementsViewModel @Inject constructor(
+    private val measurementsRepository: MeasurementsRepository
+) : ViewModel() {
+
     // Входные данные
     private val _blockNumber = MutableLiveData(1)
     val blockNumber: LiveData<Int> = _blockNumber
@@ -66,14 +77,80 @@ class NewMeasurementsViewModel : ViewModel() {
         }
     }
 
-    // Метод для сохранения данных в Firestore
-    fun saveMeasurements(): LiveData<Boolean> {
-        val result = MutableLiveData<Boolean>()
+    fun saveMeasurements(): LiveData<SaveResult> {
+        val result = MutableLiveData<SaveResult>()
+        result.value = SaveResult.Loading
 
-        // Здесь логика сохранения в Firestore
-        // ...
+        viewModelScope.launch {
+            try {
+                // Собираем данные измерения, как и раньше
+                val currentBlockNumber = blockNumber.value ?: 1
+                val currentDate = measurementDate.value ?: ""
+                val currentSensorsData = sensorsData.value ?: mapOf()
 
-        result.value = true // или false в случае ошибки
+                val sensorsList = currentSensorsData.map { (title, data) ->
+                    SensorMeasurement(
+                        sensorTitle = title,
+                        panelValue = data.panel,
+                        testoValue = data.testo,
+                        correctionValue = data.correction
+                    )
+                }
+
+                val measurementRecord = MeasurementRecord(
+                    id = UUID.randomUUID().toString(),
+                    blockNumber = currentBlockNumber,
+                    date = currentDate,
+                    timestamp = System.currentTimeMillis(),
+                    sensors = sensorsList
+                )
+
+                // Сохраняем измерение
+                val saveMeasurementResult = measurementsRepository.saveMeasurement(measurementRecord)
+
+                if (saveMeasurementResult.isSuccess) {
+                    // Обновляем среднюю точку для каждого датчика
+                    val updateResults = currentSensorsData.map { (title, data) ->
+                        measurementsRepository.updateSensorMidpoint(
+                            currentBlockNumber,
+                            title,
+                            data.correction
+                        )
+                    }
+
+                    // Проверяем, есть ли ошибки в обновлении
+                    val updateErrors = updateResults.filter { it.isFailure }
+
+                    if (updateErrors.isEmpty()) {
+                        // Все обновления прошли успешно
+                        result.value = SaveResult.Success(saveMeasurementResult.getOrThrow())
+                    } else {
+                        // Были ошибки при обновлении датчиков
+                        val errorMessages = updateErrors.mapNotNull { it.exceptionOrNull()?.message }
+                        result.value = SaveResult.PartialSuccess(
+                            saveMeasurementResult.getOrThrow(),
+                            "Измерение сохранено, но возникли ошибки при обновлении датчиков: ${errorMessages.joinToString()}"
+                        )
+                    }
+                } else {
+                    // Ошибка сохранения измерения
+                    result.value = SaveResult.Error(
+                        saveMeasurementResult.exceptionOrNull()?.message ?: "Неизвестная ошибка"
+                    )
+                }
+            } catch (e: Exception) {
+                result.value = SaveResult.Error(e.message ?: "Неизвестная ошибка")
+            }
+        }
+
         return result
     }
+}
+
+// Класс для отслеживания результата сохранения
+sealed class SaveResult {
+    object Loading : SaveResult()
+    data class Success(val id: String) : SaveResult()
+    data class PartialSuccess(val id: String, val message: String) : SaveResult()
+    data class Error(val message: String) : SaveResult()
 }

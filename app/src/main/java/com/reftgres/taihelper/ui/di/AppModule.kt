@@ -1,3 +1,4 @@
+//предоставляет зависимости для Firebase, WorkManager, сетевого сервиса и репозиториев.
 package com.reftgres.taihelper.ui.di
 
 import android.content.Context
@@ -14,6 +15,8 @@ import com.reftgres.taihelper.ui.addsensor.SensorRepository
 import com.reftgres.taihelper.ui.ajk.AjkRepository
 import com.reftgres.taihelper.ui.ajk.AjkRepositoryImpl
 import com.reftgres.taihelper.ui.oxygen.OxygenRepository
+import com.reftgres.taihelper.ui.oxygennew.FirestoreMeasurementsRepository
+import com.reftgres.taihelper.ui.oxygennew.MeasurementsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -93,5 +96,11 @@ object AppModule {
         syncManager: SyncManager
     ): OxygenRepository {
         return OxygenRepository(firestore, sensorDao, syncQueueDao, networkService, syncManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMeasurementsRepository(firestore: FirebaseFirestore): MeasurementsRepository {
+        return FirestoreMeasurementsRepository(firestore)
     }
 }
