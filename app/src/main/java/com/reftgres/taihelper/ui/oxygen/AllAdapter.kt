@@ -1,10 +1,13 @@
 package com.reftgres.taihelper.ui.oxygen
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.AllMeasurementsBinding
 
 // Модель данных для элемента списка
@@ -19,22 +22,49 @@ class AllAdapter : ListAdapter<Measurement, AllAdapter.ViewHolder>(DiffCallback(
 
     class ViewHolder(private val binding: AllMeasurementsBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: Measurement) {
-            binding.dateLastMeasurement.text = item.date
-            binding.firstIktsTittle.text = item.iktsValues.getOrElse(0) { "" }
-            binding.secondIktsTittle.text = item.iktsValues.getOrElse(1) { "" }
-            binding.thirdIktsTittle.text = item.iktsValues.getOrElse(2) { "" }
-            binding.fourthIktsTittle.text = item.iktsValues.getOrElse(3) { "" }
+            // Установка даты
+            binding.measurementCard.findViewById<TextView>(R.id.date_last_measurement).text = item.date
 
-            binding.firstSensor.text = item.sensorValues.getOrElse(0) { "" }
-            binding.secondSensor.text = item.sensorValues.getOrElse(1) { "" }
-            binding.thirdSensor.text = item.sensorValues.getOrElse(2) { "" }
-            binding.fourthSensor.text = item.sensorValues.getOrElse(3) { "" }
+            // Настройка датчика 9K-606 (бывший fourth)
+            setupSensor(
+                binding.measurementCard.findViewById(R.id.sensor_606),
+                item.iktsValues.getOrElse(3) { "" },
+                item.sensorValues.getOrElse(3) { "" },
+                item.testoValues.getOrElse(3) { "" }
+            )
 
-            binding.firstTesto.text = item.testoValues.getOrElse(0) { "" }
-            binding.secondTesto.text = item.testoValues.getOrElse(1) { "" }
-            binding.thirdTesto.text = item.testoValues.getOrElse(2) { "" }
-            binding.fourthTesto.text = item.testoValues.getOrElse(3) { "" }
+            // Настройка датчика 9K-604 (бывший second)
+            setupSensor(
+                binding.measurementCard.findViewById(R.id.sensor_604),
+                item.iktsValues.getOrElse(1) { "" },
+                item.sensorValues.getOrElse(1) { "" },
+                item.testoValues.getOrElse(1) { "" }
+            )
+
+            // Настройка датчика 9K-605 (бывший third)
+            setupSensor(
+                binding.measurementCard.findViewById(R.id.sensor_605),
+                item.iktsValues.getOrElse(2) { "" },
+                item.sensorValues.getOrElse(2) { "" },
+                item.testoValues.getOrElse(2) { "" }
+            )
+
+            // Настройка датчика 9K-603 (бывший first)
+            setupSensor(
+                binding.measurementCard.findViewById(R.id.sensor_603),
+                item.iktsValues.getOrElse(0) { "" },
+                item.sensorValues.getOrElse(0) { "" },
+                item.testoValues.getOrElse(0) { "" }
+            )
+        }
+
+        // Вспомогательный метод для настройки одного датчика
+        private fun setupSensor(sensorView: View, title: String, panelValue: String, testoValue: String) {
+            sensorView.findViewById<TextView>(R.id.sensor_title).text = title
+            sensorView.findViewById<TextView>(R.id.panel_value).text = panelValue
+            sensorView.findViewById<TextView>(R.id.testo_value).text = testoValue
         }
     }
 

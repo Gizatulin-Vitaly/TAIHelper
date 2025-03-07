@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/new_measurement"
-        android:name="com.reftgres.taihelper.ui.oxygen.NewMeasurementsFragment"
+        android:name="com.reftgres.taihelper.ui.oxygennew.NewMeasurementsFragment"
         tools:layout="@layout/new_measuremens" />
 <!--    <fragment-->
 <!--        android:id="@+id/referenceFragment"-->

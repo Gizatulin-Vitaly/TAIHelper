@@ -1,274 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
+    android:background="@drawable/gradient_bg">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
+        <!-- Заголовок страницы -->
+        <TextView
+            android:id="@+id/title_measurement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Проверка кислорода"
+            android:textColor="@color/surface_white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_regular"
+            android:background="@drawable/rounded_title_bg"
+            android:paddingVertical="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Выпадающее меню выбора блока -->
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/measurement_two"
+            android:id="@+id/block_selector_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:strokeColor="@color/primary_amethyst"
+            app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/title_measurement"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardBackgroundColor="@color/button_primary"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="12dp"
-            android:layout_margin="8dp">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="12dp">
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/block_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_block"
+                    app:tint="@color/primary_amethyst_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/block_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Выберите блок:"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toEndOf="@id/block_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/block_dropdown"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/block_dropdown"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    app:boxStrokeColor="@color/primary_amethyst"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:layout_constraintStart_toEndOf="@id/block_text_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/block_selector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:text="1"
+                        android:textSize="16sp"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Дата измерений с календарём -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/date_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:strokeColor="@color/primary_amethyst"
+            app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/block_selector_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/calendar_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/primary_amethyst_dark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/date_last_measurement"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:text="23.02.2025"
-                    android:textSize="24sp"
-                    android:textStyle="italic"
-                    android:layout_marginBottom="8dp"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/fourth_ikts_tittle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="9K-606"
-                    android:gravity="center"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:textColor="@color/text_primary"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toEndOf="@id/calendar_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/change_date_button"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fourth_enter_measurements"
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/change_date_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
+                    android:text="Изменить"
+                    android:textSize="14sp"
+                    app:cornerRadius="12dp"
+                    app:backgroundTint="@color/primary_amethyst"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fourth_enter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания щита"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fourth_enter_testo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fourth_testo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания Testo"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/second_ikts_tittle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="9K-604"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/second_enter_measurements"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/second_enter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания щита"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/second_enter_testo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/second_testo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания Testo"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/third_ikts_tittle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="9K-605"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/third_enter_measurements"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/third_enter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания щита"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/third_enter_testo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/third_testo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания Testo"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/first_ikts_tittle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="9K-603"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/first_enter_measurements"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/first_enter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания щита"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/first_enter_testo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxStrokeColor="@color/text_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/first_testo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:hint="Показания Testo"
-                        android:inputType="numberDecimal"
-                        android:background="@color/background_light"
-                        app:boxStrokeColor="@color/text_secondary"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/save_button"
+        <!-- Основная карточка для измерений -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/measurement_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:strokeColor="@color/primary_amethyst_dark"
+            app:strokeWidth="1dp"
             android:layout_marginTop="16dp"
-            android:text="Сохранить"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_card"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/measurement_two"
-            app:cornerRadius="8dp"
-            app:backgroundTint="@color/button_primary"/>
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <!-- Группа для первого датчика -->
+                <include
+                    android:id="@+id/sensor_group_1"
+                    layout="@layout/sensor_measurement_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <View
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color"
+                    android:layout_marginVertical="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/sensor_group_1"/>
+
+                <!-- Группа для второго датчика -->
+                <include
+                    android:id="@+id/sensor_group_2"
+                    layout="@layout/sensor_measurement_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/divider1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color"
+                    android:layout_marginVertical="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/sensor_group_2"/>
+
+                <!-- Группа для третьего датчика -->
+                <include
+                    android:id="@+id/sensor_group_3"
+                    layout="@layout/sensor_measurement_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/divider2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color"
+                    android:layout_marginVertical="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/sensor_group_3"/>
+
+                <!-- Группа для четвертого датчика -->
+                <include
+                    android:id="@+id/sensor_group_4"
+                    layout="@layout/sensor_measurement_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/divider3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Кнопка сохранения с улучшенным дизайном -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:text="Сохранить"
+            android:textSize="18sp"
+            app:cornerRadius="20dp"
+            app:elevation="8dp"
+            app:rippleColor="@color/primary_amethyst_light"
+            app:backgroundTint="@color/primary_amethyst_dark"
+            android:stateListAnimator="@animator/button_state_list_anim"
+            app:icon="@drawable/ic_save"
+            app:iconGravity="textStart"
+            app:iconSize="24dp"
+            app:iconPadding="8dp"
+            app:layout_constraintTop_toBottomOf="@id/measurement_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
