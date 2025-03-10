@@ -5,7 +5,11 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.reftgres.taihelper.data.local.AppDatabase
 import com.reftgres.taihelper.data.local.dao.CalibrationDao
+import com.reftgres.taihelper.data.local.dao.MeasurementsDao
 import com.reftgres.taihelper.data.local.dao.SensorDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
 import com.reftgres.taihelper.service.NetworkConnectivityService
@@ -74,7 +78,6 @@ object AppModule {
         return AjkRepositoryImpl(firestore, calibrationDao, syncQueueDao, networkService, syncManager)
     }
 
-    // Обратите внимание: здесь изменился тип возвращаемого значения с AddSensorRepository на SensorRepository
     @Provides
     @Singleton
     fun provideSensorRepository(
@@ -100,7 +103,33 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMeasurementsRepository(firestore: FirebaseFirestore): MeasurementsRepository {
-        return FirestoreMeasurementsRepository(firestore)
+    fun provideGson(): Gson {
+        return GsonBuilder().create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMeasurementsRepository(
+        firestore: FirebaseFirestore,
+        measurementsDao: MeasurementsDao,
+        syncQueueDao: SyncQueueDao,
+        networkService: NetworkConnectivityService,
+        syncManager: SyncManager,
+        gson: Gson
+    ): MeasurementsRepository {
+        return FirestoreMeasurementsRepository(
+            firestore,
+            measurementsDao,
+            syncQueueDao,
+            networkService,
+            syncManager,
+            gson
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMeasurementsDao(db: AppDatabase): MeasurementsDao {
+        return db.measurementsDao()
     }
 }

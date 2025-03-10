@@ -2,39 +2,44 @@ package com.reftgres.taihelper.service
 
 import android.content.Context
 import android.util.Log
-import androidx.hilt.work.HiltWorker
+import androidx.room.Room
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
-import com.reftgres.taihelper.data.local.dao.CalibrationDao
-import com.reftgres.taihelper.data.local.dao.SensorDao
-import com.reftgres.taihelper.data.local.dao.SyncQueueDao
+import com.reftgres.taihelper.data.local.AppDatabase
 import com.reftgres.taihelper.data.local.entity.CalibrationEntity
+import com.reftgres.taihelper.data.local.entity.MeasurementsEntity
 import com.reftgres.taihelper.data.local.entity.SensorEntity
 import com.reftgres.taihelper.data.local.entity.SyncQueueEntity
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import com.reftgres.taihelper.ui.model.OxygenMeasurementData
 import kotlinx.coroutines.tasks.await
 
 /**
- * Воркер для выполнения фоновой синхронизации данных с Firestore
+ * Прямая реализация воркера синхронизации, не зависящая от Hilt
  */
-@HiltWorker
-class SyncWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParams: WorkerParameters,
-    private val sensorDao: SensorDao,
-    private val calibrationDao: CalibrationDao,
-    private val syncQueueDao: SyncQueueDao,
-    private val firestore: FirebaseFirestore
+class DirectSyncWorker(
+    context: Context,
+    workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
+    private val appDatabase = Room.databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java,
+        "app_database"
+    ).build()
+
+    private val syncQueueDao = appDatabase.syncQueueDao()
+    private val sensorDao = appDatabase.sensorDao()
+    private val calibrationDao = appDatabase.calibrationDao()
+    private val measurementsDao = appDatabase.measurementsDao()
+    private val firestore = FirebaseFirestore.getInstance()
     private val gson = Gson()
-    private val TAG = "SyncWorker"
+
+    private val TAG = "DirectSyncWorker"
 
     override suspend fun doWork(): Result {
-        Log.d(TAG, "SyncWorker начал выполнение")
+        Log.d(TAG, "DirectSyncWorker начал выполнение")
         try {
             // Получаем элементы из очереди синхронизации
             val syncItems = syncQueueDao.getPendingSyncItems(50) // Обрабатываем до 50 элементов за раз
@@ -64,10 +69,10 @@ class SyncWorker @AssistedInject constructor(
                 }
             }
 
-            Log.d(TAG, "SyncWorker успешно завершил работу")
+            Log.d(TAG, "DirectSyncWorker успешно завершил работу")
             return Result.success()
         } catch (e: Exception) {
-            Log.e(TAG, "Ошибка в SyncWorker: ${e.message}", e)
+            Log.e(TAG, "Ошибка в DirectSyncWorker: ${e.message}", e)
             return Result.retry()
         }
     }
@@ -108,7 +113,7 @@ class SyncWorker @AssistedInject constructor(
                 "measurement" -> {
                     when (item.operation) {
                         "insert", "update" -> {
-                            val measurementData = gson.fromJson(item.jsonData, Map::class.java) as Map<String, Any>
+                            val measurementData = gson.fromJson(item.jsonData, Map::class.java) as Map<*, *>
                             val dataWithTimestamp = measurementData.toMutableMap().apply {
                                 this["timestamp"] = com.google.firebase.Timestamp.now()
                             }
@@ -166,6 +171,61 @@ class SyncWorker @AssistedInject constructor(
                 Log.e(TAG, "Ошибка при синхронизации калибровки ${calibration.id}: ${e.message}", e)
                 // В случае ошибки, добавляем в очередь
                 addToSyncQueue(calibration.id, "calibration", "update", gson.toJson(calibration))
+            }
+        }
+
+        syncUnsyncedMeasurements()
+    }
+
+    private suspend fun syncUnsyncedMeasurements() {
+        val pendingMeasurements = measurementsDao.getPendingMeasurements()
+        Log.d(TAG, "Найдено ${pendingMeasurements.size} ожидающих синхронизации измерений")
+
+        for (measurement in pendingMeasurements) {
+            try {
+                // Обновляем статус на "синхронизация"
+                measurementsDao.updateSyncStatus(measurement.id, MeasurementsEntity.SYNC_STATUS_SYNCING)
+
+                // Парсим JSON
+                val syncData = gson.fromJson(measurement.sensorData, OxygenMeasurementData::class.java)
+
+                // Сохраняем измерение в Firestore
+                firestore.collection("measurements")
+                    .document(measurement.measurementId)
+                    .set(syncData.measurement)
+                    .await()
+
+                // Обновляем датчики
+                for (update in syncData.sensorUpdates) {
+                    try {
+                        val querySnapshot = firestore.collection("sensors")
+                            .whereEqualTo("block", update.blockReference)
+                            .whereEqualTo("position", update.position)
+                            .get()
+                            .await()
+
+                        if (!querySnapshot.isEmpty) {
+                            val sensorDocument = querySnapshot.documents.first()
+                            sensorDocument.reference.update("mid_point", update.midpointValue).await()
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Ошибка при обновлении датчика: ${e.message}")
+                        // Продолжаем с другими датчиками
+                    }
+                }
+
+                // Отмечаем как синхронизированное
+                measurementsDao.updateSyncStatus(measurement.id, MeasurementsEntity.SYNC_STATUS_SYNCED)
+                Log.d(TAG, "Успешно синхронизировано измерение: ${measurement.measurementId}")
+            } catch (e: Exception) {
+                Log.e(TAG, "Ошибка при синхронизации измерения ${measurement.measurementId}: ${e.message}")
+
+                // Увеличиваем счетчик попыток или отмечаем как ошибку
+                if (measurement.syncStatus < 5) { // Счетчик попыток хранится в поле syncStatus
+                    measurementsDao.updateSyncStatus(measurement.id, measurement.syncStatus + 1)
+                } else {
+                    measurementsDao.updateSyncStatus(measurement.id, MeasurementsEntity.SYNC_STATUS_ERROR)
+                }
             }
         }
     }

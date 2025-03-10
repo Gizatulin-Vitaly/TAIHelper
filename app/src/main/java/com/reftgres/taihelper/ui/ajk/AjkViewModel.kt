@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reftgres.taihelper.service.NetworkConnectivityService
+import com.reftgres.taihelper.service.SyncManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AjkViewModel @Inject constructor(
     private val repository: AjkRepository,
-    private val networkService: NetworkConnectivityService
+    private val networkService: NetworkConnectivityService,
+    private val syncManager: SyncManager
 ) : ViewModel() {
 
     // Текущий шаг
@@ -79,16 +81,18 @@ class AjkViewModel @Inject constructor(
 
     // История калибровок
     private val _calibrationHistory = MutableLiveData<List<DataAjk>>(emptyList())
-    val calibrationHistory: LiveData<List<DataAjk>> = _calibrationHistory
 
     init {
         // Наблюдаем за состоянием сети
         viewModelScope.launch {
             networkService.networkStatus.collect { isConnected ->
+                Log.d("AjkViewModel", "Состояние сети изменилось: $isConnected")
                 _isOnline.postValue(isConnected)
 
                 // Если сеть восстановилась, можно обновить историю калибровок
                 if (isConnected) {
+                    Log.d("AjkViewModel", "Сеть восстановлена, запрашиваем синхронизацию")
+                    syncManager.requestSync() // Явно запрашиваем синхронизацию
                     loadCalibrationHistory()
                 }
             }
@@ -216,7 +220,7 @@ class AjkViewModel @Inject constructor(
         }
     }
 
-    // Сброс всех значений
+    // Убедимся, что reset_data полностью сбрасывает статус
     fun resetData() {
         _labSensorValues.value = listOf("", "", "")
         _testSensorValues.value = listOf("", "", "")
@@ -256,33 +260,51 @@ class AjkViewModel @Inject constructor(
 
     // Сохранение данных
     fun saveToCloud() {
-        // Установка статуса сохранения
+        // Если уже идет сохранение, игнорируем запрос
+        if (_saveStatus.value is SaveStatus.Saving) {
+            Log.d("AjkViewModel", "Сохранение уже в процессе, игнорируем запрос")
+            return
+        }
+
+        // Устанавливаем статус "Сохранение"
         _saveStatus.value = SaveStatus.Saving
+
+        Log.d("AjkViewModel", "Начинаем сохранение, статус сети: ${if (_isOnline.value == true) "ONLINE" else "OFFLINE"}")
 
         // Подготовка данных калибровки
         val calibrationData = prepareCalibrationData()
 
         viewModelScope.launch {
-            repository.saveCalibrationData(calibrationData).collect { result ->
-                _saveStatus.postValue(result.fold(
-                    onSuccess = {
-                        Log.d("AjkViewModel", "Данные сохранены с ID: $it")
+            try {
+                repository.saveCalibrationData(calibrationData).collect { result ->
+                    // Определяем финальный статус
+                    val finalStatus = result.fold(
+                        onSuccess = { id ->
+                            Log.d("AjkViewModel", "Успешное сохранение с ID: $id")
 
-                        // Если сейчас оффлайн-режим, информируем пользователя
-                        if (!networkService.isNetworkAvailable()) {
-                            SaveStatus.OfflineSaved
-                        } else {
-                            SaveStatus.Success
+                            if (_isOnline.value != true) {
+                                Log.d("AjkViewModel", "Сохранено в офлайн-режиме")
+                                SaveStatus.OfflineSaved
+                            } else {
+                                Log.d("AjkViewModel", "Сохранено и синхронизировано")
+                                SaveStatus.Success
+                            }
+                        },
+                        onFailure = { error ->
+                            Log.e("AjkViewModel", "Ошибка сохранения: ${error.message}")
+                            SaveStatus.Error(error.message ?: "Неизвестная ошибка")
                         }
-                    },
-                    onFailure = {
-                        Log.e("AjkViewModel", "Ошибка при сохранении данных", it)
-                        SaveStatus.Error(it.message ?: "Неизвестная ошибка")
-                    }
-                ))
+                    )
 
-                // Обновляем историю калибровок после сохранения
-                loadCalibrationHistory()
+                    Log.d("AjkViewModel", "Устанавливаем итоговый статус: $finalStatus")
+                    _saveStatus.postValue(finalStatus)
+
+                    // Обновляем историю калибровок после сохранения
+                    loadCalibrationHistory()
+                }
+            } catch (e: Exception) {
+                Log.e("AjkViewModel", "Исключение при сохранении: ${e.message}")
+                _saveStatus.postValue(SaveStatus.Error(e.message ?: "Неизвестная ошибка"))
             }
         }
     }

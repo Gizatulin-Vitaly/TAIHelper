@@ -13,8 +13,8 @@ android {
         applicationId = "com.reftgres.taihelper"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -103,8 +103,8 @@ dependencies {
 
     // WorkManager
     implementation ("androidx.work:work-runtime-ktx:2.9.0")
-    implementation ("androidx.hilt:hilt-work:1.1.0")
-    kapt ("androidx.hilt:hilt-compiler:1.1.0")
+    implementation ("androidx.hilt:hilt-work:1.2.0")
+    kapt ("androidx.hilt:hilt-compiler:1.2.0")
 
     // Gson
     implementation ("com.google.code.gson:gson:2.8.2")

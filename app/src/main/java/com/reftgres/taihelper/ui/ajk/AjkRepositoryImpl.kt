@@ -41,40 +41,43 @@ class AjkRepositoryImpl @Inject constructor(
      */
     override fun saveCalibrationData(data: DataAjk): Flow<Result<String>> = flow {
         val calibrationId = data.id.ifEmpty { UUID.randomUUID().toString() }
-        Log.d(TAG, "Сохранение калибровки с ID: $calibrationId")
-
-        // Создаем Entity для локального хранения
-        val calibrationEntity = CalibrationEntity(
-            id = calibrationId,
-            labSensorValues = data.labSensorValues,
-            testSensorValues = data.testSensorValues,
-            labAverage = data.labAverage,
-            testAverage = data.testAverage,
-            resistance = data.resistance,
-            constant = data.constant,
-            r02Resistance = data.r02Resistance,
-            r02I = data.r02I,
-            r02SensorValue = data.r02SensorValue,
-            r05Resistance = data.r05Resistance,
-            r05I = data.r05I,
-            r05SensorValue = data.r05SensorValue,
-            r08Resistance = data.r08Resistance,
-            r08I = data.r08I,
-            r08SensorValue = data.r08SensorValue,
-            r40DegResistance = data.r40DegResistance,
-            r40DegSensorValue = data.r40DegSensorValue,
-            timestamp = data.timestamp ?: Date(),
-            userId = data.userId,
-            isSynced = networkService.isNetworkAvailable() // Устанавливаем статус синхронизации
-        )
+        Log.d(TAG, "Сохранение калибровки с ID: $calibrationId, сеть: ${networkService.isNetworkAvailable()}")
 
         try {
+            // Создаем Entity для локального хранения
+            val calibrationEntity = CalibrationEntity(
+                id = calibrationId,
+                labSensorValues = data.labSensorValues,
+                testSensorValues = data.testSensorValues,
+                labAverage = data.labAverage,
+                testAverage = data.testAverage,
+                resistance = data.resistance,
+                constant = data.constant,
+                r02Resistance = data.r02Resistance,
+                r02I = data.r02I,
+                r02SensorValue = data.r02SensorValue,
+                r05Resistance = data.r05Resistance,
+                r05I = data.r05I,
+                r05SensorValue = data.r05SensorValue,
+                r08Resistance = data.r08Resistance,
+                r08I = data.r08I,
+                r08SensorValue = data.r08SensorValue,
+                r40DegResistance = data.r40DegResistance,
+                r40DegSensorValue = data.r40DegSensorValue,
+                timestamp = data.timestamp ?: Date(),
+                userId = data.userId,
+                isSynced = false  // Всегда начинаем с "не синхронизировано"
+            )
+
             // Сохраняем в локальную базу данных
+            Log.d(TAG, "Сохраняем в локальную базу данных")
             calibrationDao.insertCalibration(calibrationEntity)
             Log.d(TAG, "Калибровка сохранена в локальной базе данных")
 
-            // Если сеть доступна, пытаемся синхронизировать с Firestore
-            if (networkService.isNetworkAvailable()) {
+            // Проверяем доступность сети
+            val isNetworkAvailable = networkService.isNetworkAvailable()
+
+            if (isNetworkAvailable) {
                 try {
                     Log.d(TAG, "Синхронизация с Firestore...")
                     val dataMap = hashMapOf(
@@ -118,38 +121,41 @@ class AjkRepositoryImpl @Inject constructor(
                 } catch (e: Exception) {
                     // Если произошла ошибка при синхронизации с Firestore,
                     // добавляем элемент в очередь синхронизации
-                    Log.e(TAG, "Ошибка синхронизации с Firestore", e)
-                    val syncItem = SyncQueueEntity(
-                        entityId = calibrationId,
-                        entityType = "calibration",
-                        operation = "insert",
-                        jsonData = gson.toJson(calibrationEntity)
-                    )
-                    syncQueueDao.insertSyncItem(syncItem)
-                    Log.d(TAG, "Калибровка добавлена в очередь синхронизации")
+                    Log.e(TAG, "Ошибка синхронизации с Firestore: ${e.message}", e)
+                    addToSyncQueue(calibrationId, calibrationEntity)
                 }
             } else {
                 // Если сеть недоступна, добавляем элемент в очередь синхронизации
                 Log.d(TAG, "Нет сети, добавление в очередь синхронизации")
-                val syncItem = SyncQueueEntity(
-                    entityId = calibrationId,
-                    entityType = "calibration",
-                    operation = "insert",
-                    jsonData = gson.toJson(calibrationEntity)
-                )
-                syncQueueDao.insertSyncItem(syncItem)
-                Log.d(TAG, "Калибровка добавлена в очередь синхронизации")
+                addToSyncQueue(calibrationId, calibrationEntity)
             }
 
+            // В любом случае возвращаем успешный результат с ID
+            Log.d(TAG, "Возвращаем успешный результат сохранения: $calibrationId")
             emit(Result.success(calibrationId))
-
         } catch (e: Exception) {
-            Log.e(TAG, "Ошибка при сохранении калибровки", e)
+            Log.e(TAG, "Ошибка при сохранении калибровки: ${e.message}", e)
             emit(Result.failure(e))
         }
     }.catch { e ->
-        Log.e(TAG, "Непредвиденная ошибка в Flow", e)
+        Log.e(TAG, "Непредвиденная ошибка в Flow: ${e.message}", e)
         emit(Result.failure(e))
+    }
+
+    // Вспомогательный метод для добавления элемента в очередь синхронизации
+    private suspend fun addToSyncQueue(calibrationId: String, calibrationEntity: CalibrationEntity) {
+        try {
+            val syncItem = SyncQueueEntity(
+                entityId = calibrationId,
+                entityType = "calibration",
+                operation = "insert",
+                jsonData = gson.toJson(calibrationEntity)
+            )
+            syncQueueDao.insertSyncItem(syncItem)
+            Log.d(TAG, "Калибровка добавлена в очередь синхронизации: $calibrationId")
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при добавлении в очередь синхронизации: ${e.message}", e)
+        }
     }
 
     /**

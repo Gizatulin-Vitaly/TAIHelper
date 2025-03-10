@@ -4,6 +4,7 @@ package com.reftgres.taihelper.ui.di
 import android.content.Context
 import androidx.room.Room
 import com.reftgres.taihelper.data.local.AppDatabase
+import com.reftgres.taihelper.data.local.MIGRATION_1_2
 import com.reftgres.taihelper.data.local.dao.CalibrationDao
 import com.reftgres.taihelper.data.local.dao.SensorDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
@@ -24,9 +25,9 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "taihelper_database"
+            "app_database"
         )
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2) // Добавляем миграцию здесь
             .build()
     }
 

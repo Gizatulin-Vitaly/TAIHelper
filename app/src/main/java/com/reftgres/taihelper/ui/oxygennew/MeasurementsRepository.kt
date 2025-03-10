@@ -9,4 +9,11 @@ interface MeasurementsRepository {
     suspend fun getMeasurements(): Result<List<MeasurementRecord>>
     suspend fun getMeasurementById(id: String): Result<MeasurementRecord?>
     suspend fun updateSensorMidpoint(blockNumber: Int, sensorTitle: String, midpointValue: String): Result<Boolean>
+    suspend fun saveMeasurementOffline(measurement: MeasurementRecord, sensorUpdates: List<SensorUpdate>): Result<String>
+
+    data class SensorUpdate(
+        val blockReference: String,
+        val position: String,
+        val midpointValue: String
+    )
 }

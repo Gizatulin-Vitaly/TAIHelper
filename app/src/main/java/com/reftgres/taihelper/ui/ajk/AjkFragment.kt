@@ -3,6 +3,7 @@ package com.reftgres.taihelper.ui.ajk
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -77,6 +79,8 @@ class AjkFragment : Fragment() {
     private lateinit var prevButton: Button
     private lateinit var nextButton: Button
 
+    private lateinit var statusCard: CardView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -94,6 +98,11 @@ class AjkFragment : Fragment() {
         setupListeners()
         observeViewModel()
         updateUIFields()
+
+        //наблюдение за сетью для отладки
+        viewModel.isOnline.observe(viewLifecycleOwner) { isOnline ->
+            Log.d("AjkFragment", "Статус сети: ${if (isOnline) "online" else "offline"}")
+        }
     }
 
     private fun initializeViews(view: View) {
@@ -150,6 +159,10 @@ class AjkFragment : Fragment() {
         // Кнопки навигации
         prevButton = view.findViewById(R.id.prev_button)
         nextButton = view.findViewById(R.id.next_button)
+
+        statusCard = view.findViewById(R.id.status_card)
+        statusTextView = view.findViewById(R.id.status_text_view)
+        backToStartButton = view.findViewById(R.id.back_to_start_button)
     }
 
     private fun setupTextWatchers() {
@@ -209,6 +222,7 @@ class AjkFragment : Fragment() {
                     Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
                 }
             } else {
+                // Если мы на последнем шаге и кнопка нажата, сохраняем данные
                 viewModel.saveToCloud()
             }
         }
@@ -218,6 +232,8 @@ class AjkFragment : Fragment() {
             viewModel.resetData()
             viewModel.setCurrentStep(1)
             updateUIFields()
+            // Убедимся, что кнопка активна после сброса
+            nextButton.isEnabled = true
         }
     }
 
@@ -249,8 +265,14 @@ class AjkFragment : Fragment() {
         viewModel.observeSaveStatus().observe(viewLifecycleOwner, Observer { status ->
             updateSaveStatus(status)
 
-            // Показываем кнопку "Перейти в начало" только после успешного сохранения
-            backToStartButton.isVisible = status is AjkViewModel.SaveStatus.Success
+            // Делаем кнопку "Сохранить" неактивной, когда идет сохранение или уже сохранено
+            if (viewModel.currentStep == 4) {
+                val disableButton = status is AjkViewModel.SaveStatus.Saving ||
+                        status is AjkViewModel.SaveStatus.Success ||
+                        status is AjkViewModel.SaveStatus.OfflineSaved
+
+                nextButton.isEnabled = !disableButton
+            }
         })
     }
 
@@ -285,10 +307,10 @@ class AjkFragment : Fragment() {
         val constant = viewModel.observeConstant().value ?: 0f
 
         if (constant > 0) {
-            r02TextView.text = "R = K/0.2 = ${String.format("%.3f", constant / 0.2)}"
-            r05TextView.text = "R = K/0.5 = ${String.format("%.3f", constant / 0.5)}"
-            r08TextView.text = "R = K/0.8 = ${String.format("%.3f", constant / 0.8)}"
-            r40TextView.text = "R = K/0.68 = ${String.format("%.3f", constant / 0.68)}"
+            r02TextView.text = "R 0.2 = ${String.format("%.3f", constant / 0.2)}"
+            r05TextView.text = "R 0.5 = ${String.format("%.3f", constant / 0.5)}"
+            r08TextView.text = "R 0.8 = ${String.format("%.3f", constant / 0.8)}"
+            r40TextView.text = "R 0.68 = ${String.format("%.3f", constant / 0.68)}"
 
             // Обновляем итоговые результаты
             val resultText = """
@@ -303,44 +325,66 @@ class AjkFragment : Fragment() {
 
             resultTextView.text = resultText
         } else {
-            r02TextView.text = "R = K/0.2 = -"
-            r05TextView.text = "R = K/0.5 = -"
-            r08TextView.text = "R = K/0.8 = -"
-            r40TextView.text = "R = K/0.68 = -"
+            r02TextView.text = "R 0.2 = -"
+            r05TextView.text = "R 0.5 = -"
+            r08TextView.text = "R 0.8 = -"
+            r40TextView.text = "R 0.68 = -"
             resultTextView.text = ""
         }
     }
 
     private fun updateSaveStatus(status: AjkViewModel.SaveStatus) {
+        Log.d("AjkFragment", "Обновление статуса сохранения: $status")
+
         when (status) {
             is AjkViewModel.SaveStatus.None -> {
-                statusTextView.isVisible = false
-                backToStartButton.isVisible = false
+                statusCard.visibility = View.GONE  // Скрываем карточку
+                statusTextView.visibility = View.GONE
+                backToStartButton.visibility = View.GONE
+
+                // Убедимся, что кнопка всегда активна при статусе None
+                if (viewModel.currentStep == 4) {
+                    nextButton.isEnabled = true
+                }
             }
             is AjkViewModel.SaveStatus.Saving -> {
-                statusTextView.isVisible = true
                 statusTextView.text = "Сохранение данных..."
                 statusTextView.setBackgroundResource(R.drawable.bg_status_saving)
-                backToStartButton.isVisible = false
+
+                // Показываем карточку и текст
+                statusCard.visibility = View.VISIBLE
+                statusTextView.visibility = View.VISIBLE
+                backToStartButton.visibility = View.GONE
+
+                if (viewModel.currentStep == 4) {
+                    nextButton.isEnabled = false
+                }
             }
-            is AjkViewModel.SaveStatus.Success -> {
-                statusTextView.isVisible = true
-                statusTextView.text = "Данные успешно сохранены!"
+            is AjkViewModel.SaveStatus.Success, is AjkViewModel.SaveStatus.OfflineSaved -> {
+                if (status is AjkViewModel.SaveStatus.Success) {
+                    statusTextView.text = "Данные успешно сохранены!"
+                } else {
+                    statusTextView.text = "Данные сохранены локально и будут отправлены позже."
+                }
                 statusTextView.setBackgroundResource(R.drawable.bg_status_success)
-                backToStartButton.isVisible = true
-            }
-            is AjkViewModel.SaveStatus.OfflineSaved -> {
-                // Добавьте этот новый блок для обработки офлайн-сохранения
-                statusTextView.isVisible = true
-                statusTextView.text = "Данные сохранены локально и будут отправлены позже."
-                statusTextView.setBackgroundResource(R.drawable.bg_status_success) // или создайте новый фон
-                backToStartButton.isVisible = true
+
+                // Показываем карточку и текст
+                statusCard.visibility = View.VISIBLE
+                statusTextView.visibility = View.VISIBLE
+                backToStartButton.visibility = View.VISIBLE
+
+                nextButton.isEnabled = true
             }
             is AjkViewModel.SaveStatus.Error -> {
-                statusTextView.isVisible = true
                 statusTextView.text = "Ошибка: ${status.message}"
                 statusTextView.setBackgroundResource(R.drawable.bg_status_error)
-                backToStartButton.isVisible = false
+
+                // Показываем карточку и текст
+                statusCard.visibility = View.VISIBLE
+                statusTextView.visibility = View.VISIBLE
+                backToStartButton.visibility = View.GONE
+
+                nextButton.isEnabled = true
             }
         }
     }
@@ -367,5 +411,6 @@ class AjkFragment : Fragment() {
         r08SensorEditText.setText(viewModel.r08SensorValue)
 
         r40SensorEditText.setText(viewModel.r40DegSensorValue)
+        nextButton.isEnabled = viewModel.observeSaveStatus().value !is AjkViewModel.SaveStatus.Saving
     }
 }

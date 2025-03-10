@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.ui.authorization
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,31 +18,22 @@ class LoginRepository @Inject constructor(
 ) {
 
     suspend fun login(email: String, password: String): FirebaseUser {
+        Log.d("LoginDebug", "Попытка входа: $email")
         return suspendCoroutine { continuation ->
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Log.d("LoginDebug", "Вход успешен")
                         val user = auth.currentUser
                         if (user != null) {
                             continuation.resume(user)
                         } else {
+                            Log.e("LoginDebug", "Ошибка: пользователь не найден после успешного входа")
                             continuation.resumeWithException(Exception("Ошибка: пользователь не найден"))
                         }
                     } else {
+                        Log.e("LoginDebug", "Ошибка входа: ${task.exception?.message}")
                         continuation.resumeWithException(task.exception ?: Exception("Ошибка входа"))
-                    }
-                }
-        }
-    }
-
-    suspend fun register(email: String, password: String) {
-        suspendCoroutine<Unit> { continuation ->
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        continuation.resume(Unit)
-                    } else {
-                        continuation.resumeWithException(task.exception ?: Exception("Ошибка регистрации"))
                     }
                 }
         }

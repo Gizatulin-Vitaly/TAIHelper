@@ -134,29 +134,39 @@ class NewMeasurementsFragment : Fragment() {
             collectAndSaveSensorData(2, binding.sensorGroup3.root)
             collectAndSaveSensorData(3, binding.sensorGroup4.root)
 
-            // Наблюдаем за результатом сохранения
-            viewModel.saveMeasurements().observe(viewLifecycleOwner) { result ->
+            // Используем метод с поддержкой офлайн-режима
+            viewModel.saveMeasurementsWithOfflineSupport().observe(viewLifecycleOwner) { result ->
                 when (result) {
                     is SaveResult.Loading -> {
-                        // Показываем индикатор загрузки
                         binding.saveButton.isEnabled = false
+                        binding.saveButton.text = "Сохранение..."
                         binding.progressBar.visibility = View.VISIBLE
                     }
                     is SaveResult.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
+                        binding.saveButton.text = "Сохранить"
                         Toast.makeText(context, "Данные успешно сохранены", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    }
+                    is SaveResult.OfflineSuccess -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.saveButton.isEnabled = true
+                        binding.saveButton.text = "Сохранить"
+                        Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
                         findNavController().navigateUp()
                     }
                     is SaveResult.PartialSuccess -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
+                        binding.saveButton.text = "Сохранить"
                         Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
-                        findNavController().navigateUp()
+                        // Можно оставить пользователя на странице для возможности повторной попытки
                     }
                     is SaveResult.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
+                        binding.saveButton.text = "Сохранить"
                         Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_LONG).show()
                     }
                 }

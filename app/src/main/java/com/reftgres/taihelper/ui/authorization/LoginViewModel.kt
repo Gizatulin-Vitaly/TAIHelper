@@ -46,10 +46,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun logout() {
-        loginRepository.logout()
-    }
-
     sealed class LoginUiState {
         object Idle : LoginUiState()
         object Loading : LoginUiState()

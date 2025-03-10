@@ -1021,11 +1021,17 @@
                         android:id="@+id/status_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:padding="12dp"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:drawablePadding="8dp" />
+                        android:background="@android:color/holo_blue_light"
+                        android:visibility="gone"
+                        tools:text="Статус операции"
+                        tools:visibility="visible" />
                 </androidx.cardview.widget.CardView>
 
                 <!-- Кнопка "Перейти в начало" -->

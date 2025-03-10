@@ -77,17 +77,18 @@ class NewMeasurementsViewModel @Inject constructor(
         }
     }
 
-    fun saveMeasurements(): LiveData<SaveResult> {
+
+    fun saveMeasurementsWithOfflineSupport(): LiveData<SaveResult> {
         val result = MutableLiveData<SaveResult>()
         result.value = SaveResult.Loading
 
         viewModelScope.launch {
             try {
-                // Собираем данные измерения, как и раньше
                 val currentBlockNumber = blockNumber.value ?: 1
                 val currentDate = measurementDate.value ?: ""
                 val currentSensorsData = sensorsData.value ?: mapOf()
 
+                // Формируем объект измерения
                 val sensorsList = currentSensorsData.map { (title, data) ->
                     SensorMeasurement(
                         sensorTitle = title,
@@ -105,37 +106,37 @@ class NewMeasurementsViewModel @Inject constructor(
                     sensors = sensorsList
                 )
 
-                // Сохраняем измерение
-                val saveMeasurementResult = measurementsRepository.saveMeasurement(measurementRecord)
+                // Формируем список обновлений для датчиков
+                val blockReference = "/blocks/${currentBlockNumber - 1}"
 
-                if (saveMeasurementResult.isSuccess) {
-                    // Обновляем среднюю точку для каждого датчика
-                    val updateResults = currentSensorsData.map { (title, data) ->
-                        measurementsRepository.updateSensorMidpoint(
-                            currentBlockNumber,
-                            title,
-                            data.correction
-                        )
-                    }
+                // Создаем список обновлений датчиков используя тип из репозитория
+                val sensorUpdates = currentSensorsData.map { (title, data) ->
+                    MeasurementsRepository.SensorUpdate(
+                        blockReference = blockReference,
+                        position = title,
+                        midpointValue = data.correction
+                    )
+                }
 
-                    // Проверяем, есть ли ошибки в обновлении
-                    val updateErrors = updateResults.filter { it.isFailure }
+                // Вызываем метод с поддержкой офлайн-режима
+                val saveResult = measurementsRepository.saveMeasurementOffline(
+                    measurementRecord,
+                    sensorUpdates
+                )
 
-                    if (updateErrors.isEmpty()) {
-                        // Все обновления прошли успешно
-                        result.value = SaveResult.Success(saveMeasurementResult.getOrThrow())
+                if (saveResult.isSuccess) {
+                    val id = saveResult.getOrThrow()
+                    if (id.startsWith("offline_")) {
+                        // Данные сохранены офлайн
+                        result.value = SaveResult.OfflineSuccess(id, "Данные сохранены офлайн и будут синхронизированы при подключении к сети")
                     } else {
-                        // Были ошибки при обновлении датчиков
-                        val errorMessages = updateErrors.mapNotNull { it.exceptionOrNull()?.message }
-                        result.value = SaveResult.PartialSuccess(
-                            saveMeasurementResult.getOrThrow(),
-                            "Измерение сохранено, но возникли ошибки при обновлении датчиков: ${errorMessages.joinToString()}"
-                        )
+                        // Данные сохранены онлайн
+                        result.value = SaveResult.Success(id)
                     }
                 } else {
-                    // Ошибка сохранения измерения
+                    // Ошибка сохранения
                     result.value = SaveResult.Error(
-                        saveMeasurementResult.exceptionOrNull()?.message ?: "Неизвестная ошибка"
+                        saveResult.exceptionOrNull()?.message ?: "Неизвестная ошибка"
                     )
                 }
             } catch (e: Exception) {
@@ -147,10 +148,11 @@ class NewMeasurementsViewModel @Inject constructor(
     }
 }
 
-// Класс для отслеживания результата сохранения
+// Класс для результатов сохранения
 sealed class SaveResult {
     object Loading : SaveResult()
     data class Success(val id: String) : SaveResult()
+    data class OfflineSuccess(val id: String, val message: String) : SaveResult()
     data class PartialSuccess(val id: String, val message: String) : SaveResult()
     data class Error(val message: String) : SaveResult()
 }

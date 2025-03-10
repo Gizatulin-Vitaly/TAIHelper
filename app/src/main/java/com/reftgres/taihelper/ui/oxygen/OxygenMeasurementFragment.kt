@@ -1,15 +1,13 @@
 package com.reftgres.taihelper.ui.oxygen
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import com.reftgres.taihelper.ui.oxygen.Sensor
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,7 +31,6 @@ class OxygenMeasurementFragment : Fragment() {
         _binding = FragmentOxigenBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
         binding.blockSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val blocks = viewModel.blocks.value
@@ -51,6 +48,7 @@ class OxygenMeasurementFragment : Fragment() {
                 Log.d("OxygenMeasurementFragment", "No block selected")
             }
         }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,17 +127,18 @@ class OxygenMeasurementFragment : Fragment() {
 
         binding.cardAllOxygen.setOnClickListener {
             Log.d("OxygenMeasurementFragment", "MaterialCard clicked")
-            val selectedSensor = viewModel.selectedSensor.value
-            if (selectedSensor != null) {
-                handleSensorCardClick(selectedSensor)
-            } else {
-                Log.d("OxygenMeasurementFragment", "No sensor selected")
-            }
+            handleSensorCardClick()
         }
     }
 
-    private fun handleSensorCardClick(sensor: Sensor) {
-        findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
+    private fun handleSensorCardClick() {
+        try {
+            Log.d("OxygenMeasurementFragment", "Navigating to all measurements")
+            findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
+        } catch (e: Exception) {
+            Log.e("OxygenMeasurementFragment", "Error navigating to measurements", e)
+            Toast.makeText(requireContext(), "Ошибка при переходе: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {
