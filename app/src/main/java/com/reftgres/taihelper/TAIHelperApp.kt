@@ -34,9 +34,18 @@ class TAIHelperApp : Application(), Configuration.Provider {
     }
 
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
+        get() {
+            return if (::workerFactory.isInitialized) {
+                // Используем Hilt factory, если она инициализирована
+                Configuration.Builder()
+                    .setWorkerFactory(workerFactory)
+                    .build()
+            } else {
+                // Запасной вариант, если workerFactory еще не инициализирован
+                Log.w(TAG, "WorkerFactory не инициализирован, используем стандартную конфигурацию")
+                Configuration.Builder().build()
+            }
+        }
 
     private fun setupSync() {
         Log.d(TAG, "Настройка синхронизации")
