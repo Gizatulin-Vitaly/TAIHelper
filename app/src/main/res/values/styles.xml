@@ -10,8 +10,8 @@
         <!-- Используем собственную иконку -->
         <item name="android:src">@drawable/ic_menu_custom</item>
 
-        <!-- Тонирование иконки -->
-        <item name="tint">@color/divider_color</item>
+        <!-- Тонирование иконки - исправлено название цвета -->
+        <item name="tint">@color/divider</item>
 
         <!-- Опционально: изменение размера -->
         <item name="android:minWidth">36dp</item>

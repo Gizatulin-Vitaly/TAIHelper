@@ -15,8 +15,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.service.NetworkConnectivityService
@@ -26,6 +29,9 @@ import com.reftgres.taihelper.ui.settings.ThemePreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import android.graphics.drawable.Drawable
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -41,6 +47,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var networkIndicator: View
     private lateinit var networkStatusText: TextView
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +66,63 @@ class MainActivity : AppCompatActivity() {
         // Настройка навигации
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
+
+        // Создаем AppBarConfiguration и определяем верхний уровень навигации
+        // Здесь указываем id фрагментов, которые считаются корневыми (на них не показываем кнопку назад)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.converterFragment,
+                R.id.oxygenMeasurementFragment,
+                R.id.verificationAjkFragment,
+                R.id.referenceFragment
+            )
+        )
+
+        // Настраиваем ActionBar с NavController и AppBarConfiguration
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+
+        // ВАЖНО - настраиваем белую стрелку назад независимо от темы
+        setupWhiteBackArrow()
+
+        // Слушатель для повторной установки белой стрелки при изменении темы
+        lifecycleScope.launch {
+            themeRepository.themeFlow.collect { theme ->
+                // Обновляем стрелку каждый раз при изменении темы
+                setupWhiteBackArrow()
+            }
+        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
+
+        // Наблюдение за изменениями пунктов назначения навигации
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Вызываем установку белой стрелки при каждой навигации
+            setupWhiteBackArrow()
+
+            // Скрываем/показываем bottomNavigationView в зависимости от текущего экрана
+            when (destination.id) {
+                R.id.addSensorFragment, R.id.settingsFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                    // На экране настроек НЕ показываем заголовок
+                    supportActionBar?.let { actionBar ->
+                        actionBar.title = when (destination.id) {
+                            R.id.addSensorFragment -> "Добавление датчика"
+                            // Убираем заголовок "Настройки"
+                            R.id.settingsFragment -> ""
+                            else -> ""
+                        }
+                    }
+                    // Повторно устанавливаем белую стрелку
+                    setupWhiteBackArrow()
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                    supportActionBar?.title = ""
+                }
+            }
+        }
 
         // Получение информации о пользователе из intent
         val userName = intent.getStringExtra("USER_NAME") ?: "Неизвестный"
@@ -84,6 +145,8 @@ class MainActivity : AppCompatActivity() {
                     AppTheme.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     AppTheme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 }
+                // Еще раз устанавливаем белую стрелку после изменения темы
+                setupWhiteBackArrow()
             }
         }
 
@@ -99,17 +162,80 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Специальный метод для установки белой стрелки назад
+    private fun setupWhiteBackArrow() {
+        try {
+            // Получаем стандартную стрелку назад
+            val upArrow = ContextCompat.getDrawable(this, androidx.appcompat.R.drawable.abc_ic_ab_back_material)?.mutate()
+
+            // Программно меняем цвет на белый (0xFFFFFFFF включает и значение альфа-канала)
+            upArrow?.colorFilter = PorterDuffColorFilter(0xFFFFFFFF.toInt(), PorterDuff.Mode.SRC_ATOP)
+
+            // Устанавливаем модифицированную стрелку
+            supportActionBar?.setHomeAsUpIndicator(upArrow)
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при настройке белой стрелки: ${e.message}")
+        }
+    }
+
+    // Обработка нажатия кнопки "Назад" в ActionBar
+    override fun onSupportNavigateUp(): Boolean {
+        // Сначала пробуем безопасно навигироваться назад
+        try {
+            return navController.navigateUp() || super.onSupportNavigateUp()
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при навигации назад: ${e.message}")
+            // При ошибке возвращаемся на экран верхнего уровня (например, converterFragment)
+            if (navController.currentDestination?.id != R.id.converterFragment) {
+                navController.navigate(R.id.converterFragment)
+            }
+            return true
+        }
+    }
+
+    // Обрабатываем физическую кнопку назад с учетом возможных ошибок
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        try {
+            // Проверяем есть ли куда возвращаться в стеке навигации
+            if (!navController.popBackStack()) {
+                if (isTaskRoot) {
+                    // Показываем диалог подтверждения выхода из приложения
+                    showExitConfirmationDialog()
+                } else {
+                    super.onBackPressed()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при нажатии кнопки назад: ${e.message}")
+            // При ошибке возвращаемся на экран верхнего уровня
+            try {
+                navController.navigate(R.id.converterFragment)
+            } catch (e2: Exception) {
+                // В случае повторной ошибки просто финишируем активность
+                Log.e(TAG, "Критическая ошибка навигации: ${e2.message}")
+                finish()
+            }
+        }
+    }
+
+    private fun showExitConfirmationDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Выход из приложения")
+            .setMessage("Вы действительно хотите выйти из приложения?")
+            .setPositiveButton("Да") { _, _ -> finish() }
+            .setNegativeButton("Нет", null)
+            .show()
+    }
+
     private fun updateNetworkIndicator(isConnected: Boolean) {
         Log.d(TAG, "updateNetworkIndicator: $isConnected")
-
         // Используем runOnUiThread для безопасного обновления UI
         runOnUiThread {
             // Обновляем индикатор
             networkIndicator.isActivated = isConnected
-
             // Обновляем текст
             networkStatusText.text = if (isConnected) "Онлайн" else "Офлайн"
-
             // Обновляем цвет текста
             networkStatusText.setTextColor(
                 ContextCompat.getColor(
@@ -117,7 +243,6 @@ class MainActivity : AppCompatActivity() {
                     if (isConnected) R.color.success_green else R.color.error_red
                 )
             )
-
             Log.d(TAG, "UI обновлен: сеть ${if (isConnected) "доступна" else "недоступна"}")
         }
     }
@@ -128,16 +253,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Сначала пробуем обработать с помощью NavController
+        try {
+            val handled = NavigationUI.onNavDestinationSelected(item, navController)
+            if (handled) return true
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при выборе пункта меню: ${e.message}")
+        }
+
         return when (item.itemId) {
             R.id.action_add_sensor -> {
-                val navController = findNavController(R.id.nav_host_fragment)
-                navController.navigate(R.id.addSensorFragment)
-                true
+                try {
+                    navController.navigate(R.id.addSensorFragment)
+                    true
+                } catch (e: Exception) {
+                    Log.e(TAG, "Ошибка при навигации к addSensorFragment: ${e.message}")
+                    false
+                }
             }
             R.id.action_settings -> {
-                val navController = findNavController(R.id.nav_host_fragment)
-                navController.navigate(R.id.settingsFragment)
-                true
+                try {
+                    navController.navigate(R.id.settingsFragment)
+                    true
+                } catch (e: Exception) {
+                    Log.e(TAG, "Ошибка при навигации к settingsFragment: ${e.message}")
+                    false
+                }
             }
             R.id.action_about -> {
                 Toast.makeText(this, "О приложении", Toast.LENGTH_SHORT).show()
@@ -147,8 +288,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // При возобновлении активности заново устанавливаем белую стрелку
+    override fun onResume() {
+        super.onResume()
+        setupWhiteBackArrow()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        // Ничего не делаем здесь, сервис управляет своими ресурсами
     }
 }

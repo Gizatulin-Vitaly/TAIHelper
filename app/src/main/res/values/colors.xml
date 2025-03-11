@@ -15,29 +15,32 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <color name="text_tertiary">#AAAAAA</color> <!-- Светло-серый для подсказок -->
-    <color name="text_on_dark">#FFFFFF</color> <!-- Белый текст на тёмных фонах остаётся прежним -->
+    <color name="text_tertiary">#AAAAAA</color>
+    <color name="text_on_dark">#FFFFFF</color>
 
-    <color name="surface_white">#FFFFFF</color> <!-- Поверхностный белый остаётся неизменным -->
-    <color name="divider_gray">#DDDDDD</color> <!-- Чуть более мягкий серый для разделителей -->
+    <color name="surface_white">#FFFFFF</color>
+    <color name="divider_gray">#DDDDDD</color>
 
     <!-- Кнопки и интерактивные элементы -->
-    <color name="button_primary">@color/primary_amethyst</color> <!-- Аметистово-пурпурный для основных кнопок -->
-    <color name="button_secondary">#F1EEFD</color> <!-- Пастельная лаванда для вторичных кнопок -->
-    <color name="button_stroke">@color/primary_amethyst</color> <!-- Рамка для кнопок остаётся такой же -->
+    <color name="button_primary">@color/primary_amethyst</color>
+    <color name="button_secondary">#F1EEFD</color>
+    <color name="button_stroke">@color/primary_amethyst</color>
 
     <!-- Поля ввода -->
-    <color name="input_background">@color/surface_white</color> <!-- Белый фон для полей ввода остаётся -->
-    <color name="input_text">@color/text_primary</color> <!-- Чёрный текст в полях ввода -->
-    <color name="input_border">@color/primary_amethyst</color> <!-- Тонкая рамка аметиста вокруг полей -->
-    <color name="input_hint">@color/text_tertiary</color> <!-- Подсказки остаются светло-серыми -->
+    <color name="input_background">@color/surface_white</color>
+    <color name="input_text">@color/text_primary</color>
+    <color name="input_border">@color/primary_amethyst</color>
+    <color name="input_hint">@color/text_tertiary</color>
 
     <!-- Системные -->
-    <color name="success_green">#45AD44</color> <!-- Яркий зелёный для успешных действий -->
-    <color name="error_red">#DE4437</color> <!-- Насыщенный красный для ошибок -->
-    <color name="warning_orange">#FFAC31</color> <!-- Теплый оранжевый для предупреждений -->
+    <color name="success_green">#45AD44</color>
+    <color name="error_red">#DE4437</color>
+    <color name="warning_orange">#FFAC31</color>
 
     <!-- Градиенты -->
-    <color name="gradient_start">#795698</color> <!-- Начальная точка градиента -->
-    <color name="gradient_end">#D1A6D9</color> <!-- Конечная точка градиента остаётся лавандовой -->
+    <color name="gradient_start">#795698</color>
+    <color name="gradient_end">#D1A6D9</color>
+
+    <color name="divider">#BDBDBD</color>
+
 </resources>

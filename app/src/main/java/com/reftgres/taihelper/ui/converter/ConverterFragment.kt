@@ -53,7 +53,7 @@ class FragmentConverter : Fragment() {
                     R.id.btn_current -> {
                         updateInputField(
                             hint = "Введите значение измерений",
-                            icon = R.drawable.ic_sensor_input
+                            icon = R.drawable.ic_sensors
                         )
                     }
                     R.id.btn_sensor -> {
@@ -69,7 +69,7 @@ class FragmentConverter : Fragment() {
         // Установка начального состояния (по умолчанию "Токовые")
         updateInputField(
             hint = "Введите значение измерений",
-            icon = R.drawable.ic_sensor_input
+            icon = R.drawable.ic_sensors
         )
 
         viewModel.isPrimarySelected.observe(viewLifecycleOwner) { isPrimary ->
