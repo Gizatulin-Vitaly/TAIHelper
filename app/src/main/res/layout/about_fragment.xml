@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Верхняя панель с кнопкой назад -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="О приложении"
+            app:titleTextColor="@color/white" />
+
+        <!-- Карточка с информацией о приложении -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:alpha="0.85"
+            android:background="?attr/colorSurface"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
+            app:strokeColor="@color/primary_amethyst"
+            app:strokeWidth="2dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="24dp">
+
+                <!-- Логотип приложения -->
+                <ImageView
+                    android:id="@+id/ivAppLogo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="Логотип приложения"
+                    android:src="@mipmap/ic_my_launcher_round"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Заголовок приложения -->
+                <TextView
+                    android:id="@+id/tvAppName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Мое Приложение"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivAppLogo" />
+
+                <!-- Версия приложения -->
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/version"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvAppName" />
+
+                <!-- Раздел "О приложении" -->
+                <TextView
+                    android:id="@+id/tvAboutAppTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/about_app_tittle"
+                    android:textColor="@color/primary_amethyst"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvAppVersion" />
+
+                <!-- Описание приложения -->
+                <TextView
+                    android:id="@+id/tvAppDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/discription_app"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvAboutAppTitle" />
+
+                <!-- Разделитель -->
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/divider_color"
+                    app:layout_constraintTop_toBottomOf="@id/tvAppDescription" />
+
+                <!-- Раздел "Об авторе" -->
+                <TextView
+                    android:id="@+id/tvAboutAuthorTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Об авторе"
+                    android:textColor="@color/primary_amethyst"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <!-- Информация об авторе -->
+                <TextView
+                    android:id="@+id/tvAuthorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/Developer"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvAboutAuthorTitle" />
+
+                <!-- Профессия/должность автора -->
+                <TextView
+                    android:id="@+id/tvAuthorTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/developer_tittle"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthorName" />
+
+                <!-- Email автора -->
+                <TextView
+                    android:id="@+id/tvAuthorEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthorTitle" />
+
+                <!-- Описание автора -->
+                <TextView
+                    android:id="@+id/tvAuthorDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/about_developer"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvAuthorEmail" />
+
+<!--                &lt;!&ndash; Социальные сети автора &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/socialLinksContainer"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tvAuthorDescription">-->
+
+<!--                    &lt;!&ndash; GitHub &ndash;&gt;-->
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/btnGithub"-->
+<!--                        android:layout_width="48dp"-->
+<!--                        android:layout_height="48dp"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--                        android:contentDescription="Ссылка на GitHub"-->
+<!--                        android:src="@drawable/ic_github" />-->
+
+<!--                    &lt;!&ndash; LinkedIn &ndash;&gt;-->
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/btnLinkedin"-->
+<!--                        android:layout_width="48dp"-->
+<!--                        android:layout_height="48dp"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--                        android:contentDescription="Ссылка на LinkedIn"-->
+<!--                        android:src="@drawable/ic_linkedin" />-->
+
+<!--                    &lt;!&ndash; Telegram &ndash;&gt;-->
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/btnTelegram"-->
+<!--                        android:layout_width="48dp"-->
+<!--                        android:layout_height="48dp"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--                        android:contentDescription="Ссылка на Telegram"-->
+<!--                        android:src="@drawable/ic_telegram" />-->
+<!--                </LinearLayout>-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

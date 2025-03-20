@@ -281,10 +281,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             R.id.action_about -> {
-                Toast.makeText(this, "О приложении", Toast.LENGTH_SHORT).show()
-                true
+                try {
+                    navController.navigate(R.id.about)
+                    true
+                } catch (e: Exception) {
+                    Log.e(TAG, "Ошибка при навигации к aboutFragment: ${e.message}")
+                    Toast.makeText(this, "Не удалось открыть экран О приложении", Toast.LENGTH_SHORT).show()
+                    false
+                }
             }
             else -> super.onOptionsItemSelected(item)
+
         }
     }
 

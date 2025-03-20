@@ -54,4 +54,9 @@
         android:name="com.reftgres.taihelper.ui.oxygennew.NewMeasurementsFragment"
         tools:layout="@layout/new_measuremens" />
 
+    <fragment
+        android:id="@+id/about"
+        android:name="com.reftgres.taihelper.ui.about.AboutFragment"
+        tools:layout="@layout/about_fragment" />
+
 </navigation>
