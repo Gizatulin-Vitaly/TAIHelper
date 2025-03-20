@@ -45,6 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.litert.support.api)
+    implementation(libs.firebase.storage.ktx)
 
 
     // ViewModel и LiveData
@@ -110,6 +112,10 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.8.2")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
 
 }
 

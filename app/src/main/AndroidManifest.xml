@@ -30,6 +30,12 @@
                 tools:node="remove" />
         </provider>
 
+        <!-- Добавляем новую Activity для просмотра PDF -->
+        <activity
+            android:name=".ui.reference.PdfViewerActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

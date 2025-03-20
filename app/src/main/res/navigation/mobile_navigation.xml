@@ -37,6 +37,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/referenceFragment"
+        android:name="com.reftgres.taihelper.ui.reference.PdfDocumentsFragment"
+        android:label="@string/reference_fragment"
+        tools:layout="@layout/references_fragment" />
+
+    <fragment
         android:id="@+id/addSensorFragment"
         android:name="com.reftgres.taihelper.ui.addsensor.AddSensorFragment"
         android:label="Добавить датчик"

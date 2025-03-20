@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.reftgres.taihelper.data.local.AppDatabase
@@ -12,6 +13,7 @@ import com.reftgres.taihelper.data.local.dao.CalibrationDao
 import com.reftgres.taihelper.data.local.dao.MeasurementsDao
 import com.reftgres.taihelper.data.local.dao.SensorDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
+import com.reftgres.taihelper.data.repository.PdfDocumentRepository
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import com.reftgres.taihelper.service.SyncManager
 import com.reftgres.taihelper.ui.addsensor.AddSensorRepository
@@ -131,5 +133,27 @@ object AppModule {
     @Singleton
     fun provideMeasurementsDao(db: AppDatabase): MeasurementsDao {
         return db.measurementsDao()
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object PdfDocumentModule {
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage {
+        return FirebaseStorage.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun providePdfDocumentRepository(
+        firestore: FirebaseFirestore,
+        storage: FirebaseStorage,
+        networkService: NetworkConnectivityService,
+        @ApplicationContext context: Context
+    ): PdfDocumentRepository {
+        return PdfDocumentRepository(firestore, storage, networkService, context)
     }
 }
