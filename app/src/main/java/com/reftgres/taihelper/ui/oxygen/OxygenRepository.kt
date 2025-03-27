@@ -538,4 +538,75 @@ class OxygenRepository @Inject constructor(
             emit(emptyList())
         }
     }.flowOn(Dispatchers.IO)
+
+    /**
+     * Загружает последние 10 измерений
+     */
+    fun loadLastTenMeasurements(): Flow<List<LatestMeasurement>> = flow {
+        Log.d(TAG, "⭐ Загрузка последних 10 измерений")
+
+        if (networkService.isNetworkAvailable()) {
+            try {
+                // Из-за проблемы с индексами, получаем все документы и сортируем на клиенте
+                val allDocs = firestore.collection("measurements").get().await()
+                Log.d(TAG, "⭐ Всего получено ${allDocs.documents.size} документов")
+
+                // Сортируем по timestamp и берем первые 10
+                val latestDocs = allDocs.documents
+                    .sortedByDescending { it.getLong("timestamp") ?: 0L }
+                    .take(10)
+
+                Log.d(TAG, "⭐ Отобрано ${latestDocs.size} последних документов")
+
+                val measurements = latestDocs.mapNotNull { doc ->
+                    try {
+                        val id = doc.id
+                        val date = doc.getString("date") ?: ""
+                        val blockNumber = doc.getLong("blockNumber")?.toInt() ?: 0
+                        val timestamp = doc.getLong("timestamp") ?: 0L
+
+                        // Получаем массив датчиков
+                        val sensorsArray = doc.get("sensors") as? List<*> ?: emptyList<Any>()
+
+                        // Преобразуем датчики
+                        val sensorMeasurements = sensorsArray.mapNotNull { sensorObj ->
+                            try {
+                                val sensorMap = sensorObj as? Map<*, *> ?: return@mapNotNull null
+
+                                SensorMeasurement(
+                                    sensorTitle = sensorMap["sensorTitle"] as? String ?: "",
+                                    panelValue = sensorMap["panelValue"] as? String ?: "",
+                                    testoValue = sensorMap["testoValue"] as? String ?: "",
+                                    correctionValue = sensorMap["correctionValue"] as? String ?: ""
+                                )
+                            } catch (e: Exception) {
+                                Log.e(TAG, "⭐ Ошибка при преобразовании датчика: ${e.message}", e)
+                                null
+                            }
+                        }
+
+                        LatestMeasurement(
+                            id = id,
+                            date = date,
+                            blockNumber = blockNumber,
+                            sensors = sensorMeasurements,
+                            timestamp = timestamp
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "⭐ Ошибка при преобразовании документа: ${e.message}", e)
+                        null
+                    }
+                }
+
+                Log.d(TAG, "⭐ Преобразовано ${measurements.size} измерений")
+                emit(measurements)
+            } catch (e: Exception) {
+                Log.e(TAG, "⭐ Ошибка при загрузке измерений: ${e.message}", e)
+                emit(emptyList())
+            }
+        } else {
+            Log.d(TAG, "⭐ Нет сети, возвращаем пустой список")
+            emit(emptyList())
+        }
+    }.flowOn(Dispatchers.IO)
 }

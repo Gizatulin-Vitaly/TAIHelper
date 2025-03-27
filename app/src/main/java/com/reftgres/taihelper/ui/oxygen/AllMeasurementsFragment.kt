@@ -1,102 +1,83 @@
 package com.reftgres.taihelper.ui.oxygen
 
 import android.os.Bundle
-import android.view.*
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.MaterialToolbar
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.AllMeasurementsFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AllMeasurementsFragment : Fragment() {
+
+    private val TAG = "AllMeasurementsFragment"
+    private val viewModel: OxygenMeasurementViewModel by viewModels()
     private var _binding: AllMeasurementsFragmentBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: AllAdapter
-
+    private lateinit var allMeasurementsAdapter: AllMeasurementsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d(TAG, "onCreateView вызван")
         _binding = AllMeasurementsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated вызван")
 
-        setupToolbar()
         setupRecyclerView()
-        handleBackPress()
+        setupObservers()
+        setupListeners()
 
-        binding.newMeasurensBtn.setOnClickListener{
-            findNavController().navigate(R.id.action_all_measurements_to_new_measurement)
-        }
-    }
-
-    private fun setupToolbar() {
-        val activity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-        }
-
-        requireActivity().findViewById<MaterialToolbar>(R.id.toolbar).setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        // Загружаем последние 10 измерений
+        viewModel.loadLastTenMeasurements()
     }
 
     private fun setupRecyclerView() {
-        val data = listOf(
-            Measurement("26.11.1989", listOf("9K-603", "9К-604", "9К-605", "9К-606"),
-                listOf("3.57", "3.57", "3.57", "3.57"),
-                listOf("3.57", "3.57", "3.57", "3.57")),
-            Measurement("27.11.1989", listOf("9K-607", "9К-608", "9К-609", "9К-610"),
-                listOf("4.11", "4.12", "4.13", "4.14"),
-                listOf("4.11", "4.12", "4.13", "4.14")),
-            Measurement("26.11.1989", listOf("9K-603", "9К-604", "9К-605", "9К-606"),
-                listOf("3.57", "3.57", "3.57", "3.57"),
-                listOf("3.57", "3.57", "3.57", "3.57")),
-            Measurement("27.11.1989", listOf("9K-607", "9К-608", "9К-609", "9К-610"),
-                listOf("4.11", "4.12", "4.13", "4.14"),
-                listOf("4.11", "4.12", "4.13", "4.14")),
-            Measurement("26.11.1989", listOf("9K-603", "9К-604", "9К-605", "9К-606"),
-                listOf("3.57", "3.57", "3.57", "3.57"),
-                listOf("3.57", "3.57", "3.57", "3.57")),
-            Measurement("27.11.1989", listOf("9K-607", "9К-608", "9К-609", "9К-610"),
-                listOf("4.11", "4.12", "4.13", "4.14"),
-                listOf("4.11", "4.12", "4.13", "4.14")),
-            Measurement("26.11.1989", listOf("9K-603", "9К-604", "9К-605", "9К-606"),
-                listOf("3.57", "3.57", "3.57", "3.57"),
-                listOf("3.57", "3.57", "3.57", "3.57")),
-            Measurement("27.11.1989", listOf("9K-607", "9К-608", "9К-609", "9К-610"),
-                listOf("4.11", "4.12", "4.13", "4.14"),
-                listOf("4.11", "4.12", "4.13", "4.14"))
-        )
-
-        adapter = AllAdapter()
+        Log.d(TAG, "Настройка RecyclerView")
+        allMeasurementsAdapter = AllMeasurementsAdapter()
         binding.recyclerViewSecond.apply {
+            adapter = allMeasurementsAdapter
             layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
-            isNestedScrollingEnabled = false
-            adapter = this@AllMeasurementsFragment.adapter
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
-
-        adapter.submitList(data)
     }
 
-    private fun handleBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp()
+    private fun setupObservers() {
+        Log.d(TAG, "Настройка наблюдателей")
+
+        // Наблюдение за списком всех измерений
+        viewModel.allMeasurements.observe(viewLifecycleOwner) { measurements ->
+            Log.d(TAG, "Получены все измерения: ${measurements.size}")
+            allMeasurementsAdapter.submitList(measurements)
+        }
+    }
+
+    private fun setupListeners() {
+        Log.d(TAG, "Настройка обработчиков событий")
+
+        // Обработчик для кнопки создания нового измерения
+        binding.newMeasurensBtn.setOnClickListener {
+            Log.d(TAG, "Клик по кнопке новых измерений")
+            try {
+                findNavController().navigate(R.id.action_all_measurements_to_new_measurement)
+            } catch (e: Exception) {
+                Log.e(TAG, "Ошибка при навигации: ${e.message}")
             }
-        })
+        }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

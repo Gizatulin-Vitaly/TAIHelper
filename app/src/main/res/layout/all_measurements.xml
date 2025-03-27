@@ -69,9 +69,9 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/date_container">
 
-                <!-- Датчик 1 (9K-606) -->
+                <!-- Датчик 1 -->
                 <include
-                    android:id="@+id/sensor_606"
+                    android:id="@+id/sensor_603"
                     layout="@layout/sensor_result_item"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -81,14 +81,14 @@
                     app:layout_constraintEnd_toStartOf="@id/sensor_604"
                     app:layout_constraintHorizontal_weight="1" />
 
-                <!-- Датчик 2 (9K-604) -->
+                <!-- Датчик 2 -->
                 <include
                     android:id="@+id/sensor_604"
                     layout="@layout/sensor_result_item"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toEndOf="@id/sensor_606"
+                    app:layout_constraintStart_toEndOf="@id/sensor_603"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1" />
@@ -102,7 +102,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/sensors_row_1">
 
-                <!-- Датчик 3 (9K-605) -->
+                <!-- Датчик 3 -->
                 <include
                     android:id="@+id/sensor_605"
                     layout="@layout/sensor_result_item"
@@ -111,12 +111,12 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/sensor_603"
+                    app:layout_constraintEnd_toStartOf="@id/sensor_606"
                     app:layout_constraintHorizontal_weight="1" />
 
-                <!-- Датчик 4 (9K-603) -->
+                <!-- Датчик 4 -->
                 <include
-                    android:id="@+id/sensor_603"
+                    android:id="@+id/sensor_606"
                     layout="@layout/sensor_result_item"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

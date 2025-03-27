@@ -50,6 +50,10 @@ class OxygenMeasurementViewModel @Inject constructor(
     private val _sensorMeasurementHistory = MutableLiveData<List<LatestMeasurement>>()
     val sensorMeasurementHistory: LiveData<List<LatestMeasurement>> = _sensorMeasurementHistory
 
+    // LiveData для списка всех последних измерений
+    private val _allMeasurements = MutableLiveData<List<LatestMeasurement>>()
+    val allMeasurements: LiveData<List<LatestMeasurement>> = _allMeasurements
+
     // Метод для загрузки истории измерений для конкретного датчика
     // В OxygenMeasurementViewModel.kt
     fun loadSensorMeasurementHistory(sensorPosition: String) {
@@ -79,6 +83,26 @@ class OxygenMeasurementViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e(TAG, "⭐ Ошибка при загрузке истории измерений датчика", e)
                 _sensorMeasurementHistory.postValue(emptyList())
+            }
+        }
+    }
+
+    // Метод для загрузки последних 10 измерений
+    fun loadLastTenMeasurements() {
+        viewModelScope.launch {
+            try {
+                Log.d(TAG, "⭐ Загрузка последних 10 измерений")
+                _isLoading.value = true
+
+                repository.loadLastTenMeasurements().collect { measurements ->
+                    Log.d(TAG, "⭐ Получено ${measurements.size} измерений")
+                    _allMeasurements.postValue(measurements)
+                    _isLoading.value = false
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "⭐ Ошибка при загрузке измерений: ${e.message}", e)
+                _allMeasurements.postValue(emptyList())
+                _isLoading.value = false
             }
         }
     }
