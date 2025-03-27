@@ -2,7 +2,6 @@ package com.reftgres.taihelper.ui.oxygen
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.gson.Gson
 import com.reftgres.taihelper.data.local.dao.SensorDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
@@ -10,7 +9,6 @@ import com.reftgres.taihelper.data.local.entity.SensorEntity
 import com.reftgres.taihelper.data.local.entity.SyncQueueEntity
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import com.reftgres.taihelper.service.SyncManager
-import com.reftgres.taihelper.ui.model.SensorMeasurement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -37,27 +35,23 @@ class OxygenRepository @Inject constructor(
      */
     suspend fun loadBlocks(): List<Block> {
         return if (networkService.isNetworkAvailable()) {
+            // Загружаем данные из Firestore
             try {
                 val snapshot = firestore.collection("blocks").get().await()
-                val blocksList = snapshot.documents.flatMapIndexed { index, doc ->
-                    val blockData = doc.get("block") as? List<String> ?: emptyList()
-                    blockData.mapIndexed { dataIndex, name ->
-                        Block(id = index * blockData.size + dataIndex + 1, name = "Блок ${name}")
-                    }
-                }
+                val blocksList = snapshot.documents.flatMap { doc ->
+                    doc.get("block") as? List<String> ?: emptyList()
+                }.mapIndexed { index, name -> Block(id = index, name = "Блок: ${name}") }
 
-                if (blocksList.isEmpty()) {
-                    (1..10).map { Block(id = it, name = "Блок $it") }
-                } else {
-                    blocksList
-                }
+                blocksList
             } catch (e: Exception) {
                 Log.e(TAG, "Ошибка при загрузке блоков из Firestore", e)
-                (1..10).map { Block(id = it, name = "Блок $it") }
+                // В случае ошибки возвращаем пустой список
+                emptyList()
             }
         } else {
-            Log.d(TAG, "Нет сети, используем тестовые данные")
-            (1..10).map { Block(id = it, name = "Блок $it") }
+            Log.d(TAG, "Нет сети, используем локальные данные")
+            // Возвращаем пустой список, если нет кэшированных данных
+            emptyList()
         }
     }
 
@@ -67,9 +61,12 @@ class OxygenRepository @Inject constructor(
     fun loadSensorsForBlock(blockId: Int): Flow<List<Sensor>> = flow {
         Log.d(TAG, "loadSensorsForBlock: Загружаем датчики для блока $blockId")
 
+        // Простой подход: сначала всегда пытаемся загрузить из Firestore
         if (networkService.isNetworkAvailable()) {
             try {
-                val blockPath = "$blockId"
+                val blockPath = "/blocks/$blockId"
+                Log.d(TAG, "loadSensorsForBlock: Прямой запрос к Firestore по пути: $blockPath")
+
                 val snapshot = firestore.collection("sensors")
                     .whereEqualTo("block", blockPath)
                     .get()
@@ -87,6 +84,7 @@ class OxygenRepository @Inject constructor(
                         blockId = blockId.toString()
                     )
 
+                    // Сохраняем в локальную базу данных для будущего использования
                     try {
                         val sensorEntity = SensorEntity(
                             id = sensor.id,
@@ -118,6 +116,7 @@ class OxygenRepository @Inject constructor(
             } catch (e: Exception) {
                 Log.e(TAG, "loadSensorsForBlock: Ошибка при загрузке из Firestore: ${e.message}", e)
 
+                // Если не удалось загрузить из Firestore, пробуем загрузить из локальной БД
                 try {
                     val localSensors = withContext(Dispatchers.IO) {
                         sensorDao.getSensorsByBlock(blockId.toString())
@@ -146,6 +145,7 @@ class OxygenRepository @Inject constructor(
                 }
             }
         } else {
+            // Если нет сети, пробуем загрузить из локальной БД
             try {
                 val localSensors = withContext(Dispatchers.IO) {
                     sensorDao.getSensorsByBlock(blockId.toString())
@@ -250,6 +250,12 @@ class OxygenRepository @Inject constructor(
         return null
     }
 
+    /**
+     * Сохраняет новое измерение для датчика
+     * @param sensorId идентификатор датчика
+     * @param measurementData данные измерения
+     * @return результат операции
+     */
     suspend fun saveMeasurement(sensorId: String, measurementData: Map<String, Any>): Result<String> {
         Log.d(TAG, "Сохранение измерения для датчика $sensorId")
 
@@ -312,230 +318,4 @@ class OxygenRepository @Inject constructor(
             Result.failure(e)
         }
     }
-
-    // В OxygenRepository.kt
-    fun loadSensorMeasurementHistory(blockId: Int, sensorPosition: String): Flow<List<LatestMeasurement>> = flow {
-        Log.d(TAG, "⭐ Загрузка истории для блока $blockId и датчика $sensorPosition")
-
-        if (networkService.isNetworkAvailable()) {
-            try {
-                // Получаем все документы из коллекции без фильтров и сортировки
-                val allDocs = firestore.collection("measurements").get().await()
-
-                // Фильтруем по blockNumber и сортируем по timestamp на клиенте
-                val filteredAndSorted = allDocs.documents
-                    .filter { it.getLong("blockNumber")?.toInt() == blockId }
-                    .sortedByDescending { it.getLong("timestamp") ?: 0L }
-                    .take(10)
-
-                // Преобразуем документы в объекты измерений
-                val measurements = filteredAndSorted.mapNotNull { doc ->
-                    try {
-                        val date = doc.getString("date") ?: ""
-                        val blockNumber = doc.getLong("blockNumber")?.toInt() ?: 0
-                        val timestamp = doc.getLong("timestamp") ?: 0L
-
-                        // Получаем массив датчиков
-                        val allSensors = doc.get("sensors") as? List<*> ?: emptyList<Any>()
-
-                        // Ищем нужный датчик
-                        val filteredSensors = allSensors.mapNotNull { sensorObj ->
-                            val sensorMap = sensorObj as? Map<*, *> ?: return@mapNotNull null
-                            val title = sensorMap["sensorTitle"] as? String
-
-                            if (title == sensorPosition) {
-                                SensorMeasurement(
-                                    sensorTitle = title,
-                                    panelValue = sensorMap["panelValue"] as? String ?: "",
-                                    testoValue = sensorMap["testoValue"] as? String ?: "",
-                                    correctionValue = sensorMap["correctionValue"] as? String ?: ""
-                                )
-                            } else null
-                        }
-
-                        if (filteredSensors.isNotEmpty()) {
-                            LatestMeasurement(
-                                id = doc.id,
-                                date = date,
-                                blockNumber = blockNumber,
-                                sensors = filteredSensors,
-                                timestamp = timestamp
-                            )
-                        } else null
-                    } catch (e: Exception) {
-                        Log.e(TAG, "⭐ Ошибка обработки документа: ${e.message}", e)
-                        null
-                    }
-                }
-
-                Log.d(TAG, "⭐ После фильтрации найдено ${measurements.size} измерений для датчика $sensorPosition")
-                emit(measurements)
-            } catch (e: Exception) {
-                Log.e(TAG, "⭐ Ошибка загрузки измерений: ${e.message}", e)
-                emit(emptyList())
-            }
-        } else {
-            Log.d(TAG, "⭐ Нет сети, возвращаем пустой список")
-            emit(emptyList())
-        }
-    }.flowOn(Dispatchers.IO)
-
-    /**
-     * Загружает последние измерения для блока
-     */
-    fun loadLatestMeasurements(blockId: Int): Flow<List<LatestMeasurement>> = flow {
-        Log.d(TAG, "⭐ loadLatestMeasurements: Запрос для блока $blockId")
-
-        if (networkService.isNetworkAvailable()) {
-            try {
-                // Так как в Firestore требуется индекс для составного запроса,
-                // сначала просто загрузим последние документы без фильтрации по blockNumber
-                val query = firestore.collection("measurements")
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                    .limit(50)
-
-                Log.d(TAG, "⭐ Отправляем запрос в Firestore без фильтра по blockNumber")
-                Log.d(TAG, "⭐ Запрос: $query")
-
-                val snapshot = query.get().await()
-                Log.d(TAG, "⭐ Получено ${snapshot.documents.size} документов всего")
-
-                // Фильтруем документы по blockNumber на стороне клиента
-                val filteredDocs = snapshot.documents.filter { doc ->
-                    val docBlockNumber = doc.getLong("blockNumber")?.toInt()
-                    Log.d(TAG, "⭐ Документ: ${doc.id}, blockNumber: $docBlockNumber")
-                    docBlockNumber == blockId
-                }
-
-                Log.d(TAG, "⭐ После фильтрации осталось ${filteredDocs.size} документов для блока $blockId")
-
-                // Оставляем только последние 5 документов
-                val latestDocs = filteredDocs.take(5)
-
-                val measurements = latestDocs.mapNotNull { doc ->
-                    try {
-                        // ID документа
-                        val id = doc.id
-
-                        // Получаем поля
-                        val date = doc.getString("date") ?: ""
-                        Log.d(TAG, "⭐ Дата: $date")
-
-                        val blockNumber = doc.getLong("blockNumber")?.toInt() ?: 0
-                        Log.d(TAG, "⭐ Номер блока: $blockNumber")
-
-                        val timestamp = doc.getLong("timestamp") ?: 0L
-
-                        // Получаем массив датчиков
-                        val sensorsArray = doc.get("sensors") as? List<*>
-                        Log.d(TAG, "⭐ Датчики: ${sensorsArray?.size ?: "null"}")
-
-                        // Преобразуем датчики
-                        val sensorMeasurements = sensorsArray?.mapNotNull { sensorObj ->
-                            try {
-                                val sensorMap = sensorObj as? Map<*, *>
-                                if (sensorMap == null) {
-                                    Log.e(TAG, "⭐ Ошибка: датчик не является Map")
-                                    return@mapNotNull null
-                                }
-
-                                val sensorTitle = sensorMap["sensorTitle"] as? String ?: ""
-                                val panelValue = sensorMap["panelValue"] as? String ?: ""
-                                val testoValue = sensorMap["testoValue"] as? String ?: ""
-                                val correctionValue = sensorMap["correctionValue"] as? String ?: ""
-
-                                Log.d(TAG, "⭐ Датчик: $sensorTitle, testo: $testoValue, correction: $correctionValue")
-
-                                SensorMeasurement(
-                                    sensorTitle = sensorTitle,
-                                    panelValue = panelValue,
-                                    testoValue = testoValue,
-                                    correctionValue = correctionValue
-                                )
-                            } catch (e: Exception) {
-                                Log.e(TAG, "⭐ Ошибка при преобразовании датчика: ${e.message}", e)
-                                null
-                            }
-                        } ?: emptyList()
-
-                        LatestMeasurement(
-                            id = id,
-                            date = date,
-                            blockNumber = blockNumber,
-                            sensors = sensorMeasurements,
-                            timestamp = timestamp
-                        )
-                    } catch (e: Exception) {
-                        Log.e(TAG, "⭐ Ошибка при преобразовании документа: ${e.message}", e)
-                        null
-                    }
-                }
-
-                Log.d(TAG, "⭐ Преобразовано ${measurements.size} измерений")
-                emit(measurements)
-
-            } catch (e: Exception) {
-                Log.e(TAG, "⭐ Ошибка при загрузке измерений: ${e.message}", e)
-
-                // Попробуем альтернативный подход, если первый не сработал
-                try {
-                    Log.d(TAG, "⭐ Пробуем альтернативный подход для получения измерений")
-                    // Получаем все документы коллекции без фильтрации и сортировки
-                    val allDocs = firestore.collection("measurements").get().await()
-
-                    // Фильтруем и сортируем на стороне клиента
-                    val filteredAndSorted = allDocs.documents
-                        .filter { it.getLong("blockNumber")?.toInt() == blockId }
-                        .sortedByDescending { it.getLong("timestamp") ?: 0L }
-                        .take(5)
-
-                    Log.d(TAG, "⭐ Альтернативным способом найдено ${filteredAndSorted.size} документов")
-
-                    val measurements = filteredAndSorted.mapNotNull { doc ->
-                        try {
-                            val id = doc.id
-                            val date = doc.getString("date") ?: ""
-                            val blockNumber = doc.getLong("blockNumber")?.toInt() ?: 0
-                            val timestamp = doc.getLong("timestamp") ?: 0L
-
-                            // Обработка массива датчиков
-                            val sensorsArray = doc.get("sensors") as? List<*>
-                            val sensorMeasurements = sensorsArray?.mapNotNull { sensorObj ->
-                                try {
-                                    val sensorMap = sensorObj as? Map<*, *> ?: return@mapNotNull null
-                                    SensorMeasurement(
-                                        sensorTitle = sensorMap["sensorTitle"] as? String ?: "",
-                                        panelValue = sensorMap["panelValue"] as? String ?: "",
-                                        testoValue = sensorMap["testoValue"] as? String ?: "",
-                                        correctionValue = sensorMap["correctionValue"] as? String ?: ""
-                                    )
-                                } catch (e: Exception) {
-                                    null
-                                }
-                            } ?: emptyList()
-
-                            LatestMeasurement(
-                                id = id,
-                                date = date,
-                                blockNumber = blockNumber,
-                                sensors = sensorMeasurements,
-                                timestamp = timestamp
-                            )
-                        } catch (e: Exception) {
-                            null
-                        }
-                    }
-
-                    emit(measurements)
-
-                } catch (e2: Exception) {
-                    Log.e(TAG, "⭐ Ошибка при альтернативном получении измерений: ${e2.message}", e2)
-                    emit(emptyList())
-                }
-            }
-        } else {
-            Log.d(TAG, "⭐ Сеть недоступна")
-            emit(emptyList())
-        }
-    }.flowOn(Dispatchers.IO)
 }

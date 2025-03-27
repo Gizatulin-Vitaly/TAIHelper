@@ -439,9 +439,11 @@
                         android:layout_height="wrap_content"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="5"
-                        tools:listitem="" />
+                        tools:listitem="@layout/last_measurements" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
