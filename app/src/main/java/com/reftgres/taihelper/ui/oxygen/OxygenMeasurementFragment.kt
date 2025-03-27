@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.reftgres.taihelper.databinding.FragmentOxigenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.reftgres.taihelper.R
@@ -18,50 +21,50 @@ import com.reftgres.taihelper.R
 @AndroidEntryPoint
 class OxygenMeasurementFragment : Fragment() {
 
+    private val TAG = "OxygenFragment"
     private val viewModel: OxygenMeasurementViewModel by viewModels()
     private var _binding: FragmentOxigenBinding? = null
     private val binding get() = _binding!!
+    private lateinit var latestMeasurementsAdapter: LatestMeasurementsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("OxygenMeasurementFragment", "onCreateView called")
+        Log.d(TAG, "onCreateView вызван")
         _binding = FragmentOxigenBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.blockSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val blocks = viewModel.blocks.value
-                Log.d("OxygenMeasurementFragment", "Block selected at position: $position, blocks: ${blocks?.size}")
-                if (blocks != null && position >= 0 && position < blocks.size) {
-                    val blockId = blocks[position].id
-                    Log.d("OxygenMeasurementFragment", "Loading sensors for blockId: $blockId")
-                    viewModel.loadSensorsForBlock(blockId)
-                } else {
-                    Log.e("OxygenMeasurementFragment", "Invalid position or blocks list is null")
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Log.d("OxygenMeasurementFragment", "No block selected")
-            }
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated вызван")
+
+        setupRecyclerView()
         setupObservers()
         setupListeners()
     }
 
+    private fun setupRecyclerView() {
+        Log.d(TAG, "Настройка RecyclerView")
+        latestMeasurementsAdapter = LatestMeasurementsAdapter()
+        binding.recyclerView.apply {
+            adapter = latestMeasurementsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        }
+    }
 
     private fun setupObservers() {
+        Log.d(TAG, "Настройка наблюдателей")
+
         // Наблюдение за списком блоков
         viewModel.blocks.observe(viewLifecycleOwner) { blocks ->
-            Log.d("OxygenMeasurementFragment", "Blocks loaded: $blocks")
+            Log.d(TAG, "Получены блоки: ${blocks.size}")
+
             val adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -70,75 +73,199 @@ class OxygenMeasurementFragment : Fragment() {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
             binding.blockSpinner.adapter = adapter
+
+            // Если список не пустой, выбираем первый элемент
+            if (blocks.isNotEmpty()) {
+                binding.blockSpinner.setSelection(0)
+            }
         }
 
         // Наблюдение за списком датчиков для выбранного блока
         viewModel.sensors.observe(viewLifecycleOwner) { sensors ->
-            Log.d("OxygenMeasurementFragment", "Sensors observed: ${sensors.size}")
+            Log.d(TAG, "Получены датчики: ${sensors.size}")
+
             val sensorNames = sensors.map { it.position }
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sensorNames)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.sensorSpinner.adapter = adapter
-        }
 
-        val networkStatusBar = view?.findViewById<View>(R.id.networkStatusBar)
-        viewModel.isOnline.observe(viewLifecycleOwner) { isOnline ->
-            networkStatusBar?.visibility = if (isOnline) View.GONE else View.VISIBLE
+            // Если список не пустой, выбираем первый элемент
+            if (sensors.isNotEmpty()) {
+                binding.sensorSpinner.setSelection(0)
+            }
         }
 
         // Наблюдение за выбранным датчиком
         viewModel.selectedSensor.observe(viewLifecycleOwner) { sensor ->
+            Log.d(TAG, "Выбран датчик: ${sensor?.position}")
+
             sensor?.let {
-                // Обновление UI с информацией о датчике
-                binding.tvPositionSensor.text= it.position
+                binding.tvPositionSensor.text = it.position
                 binding.tvNumberSensor.text = it.serialNumber.ifEmpty { "Не указан" }
                 binding.tvMiddleSensor.text = it.midPoint
                 binding.tvAnalogOutput.text = it.outputScale
+
+                // При выборе датчика загружаем его историю
+                viewModel.loadSensorMeasurementHistory(it.position)
             }
+        }
+
+        // Наблюдение за историей измерений конкретного датчика (для card_history)
+        viewModel.sensorMeasurementHistory.observe(viewLifecycleOwner) { measurements ->
+            // Всегда показываем карточку истории
+            binding.cardHistory.visibility = View.VISIBLE
+
+            if (measurements.isEmpty()) {
+                // Отображаем сообщение об отсутствии данных
+                binding.tvHistoryTitle.text = "История измерений отсутствует"
+                latestMeasurementsAdapter.submitList(emptyList())
+            } else {
+                binding.tvHistoryTitle.text = "Последние 5 измерений"
+                latestMeasurementsAdapter.submitList(measurements)
+            }
+        }
+
+        // Наблюдение за последними измерениями блока (для card_all_oxygen)
+        viewModel.latestMeasurements.observe(viewLifecycleOwner) { measurements ->
+            Log.d(TAG, "Получены общие измерения: ${measurements.size}")
+
+            if (measurements.isNotEmpty()) {
+                // Обновляем только карточку с показаниями, а не адаптер
+                updateMeasurementsUI(measurements)
+            } else {
+                clearSensorDisplays()
+                binding.tvDateControl.text = "Нет данных"
+            }
+        }
+
+        // Наблюдение за статусом сети
+        val networkStatusBar = view?.findViewById<View>(R.id.networkStatusBar)
+        viewModel.isOnline.observe(viewLifecycleOwner) { isOnline ->
+            Log.d(TAG, "Статус сети: ${if (isOnline) "онлайн" else "офлайн"}")
+            networkStatusBar?.visibility = if (isOnline) View.GONE else View.VISIBLE
         }
     }
 
     private fun setupListeners() {
+        Log.d(TAG, "Настройка обработчиков событий")
+
         // Слушатель выбора блока
         binding.blockSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.d("OxygenMeasurementFragment", "Block selected at position: $position")
-                val blockId = viewModel.blocks.value?.get(position)?.id ?: return
-                viewModel.loadSensorsForBlock(blockId)
-            }
+                val blocks = viewModel.blocks.value
+                if (blocks != null && position >= 0 && position < blocks.size) {
+                    val blockId = blocks[position].id
+                    Log.d(TAG, "Выбран блок: $blockId")
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
-
-        binding.sensorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                Log.d("OxygenMeasurementFragment", "Sensor selected at position: $position")
-                val sensors = viewModel.sensors.value ?: return
-                if (position >= 0 && position < sensors.size) {
-                    val sensorPosition = sensors[position].position
-                    viewModel.selectSensorByPosition(sensorPosition)
+                    // Загружаем датчики и измерения для выбранного блока
+                    viewModel.loadSensorsForBlock(blockId)
+                    viewModel.loadLatestMeasurements(blockId)
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d(TAG, "Ничего не выбрано в списке блоков")
             }
         }
 
+        // Слушатель выбора датчика
+        binding.sensorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val sensors = viewModel.sensors.value
+                if (sensors != null && position >= 0 && position < sensors.size) {
+                    val sensorPosition = sensors[position].position
+                    Log.d(TAG, "Выбрана позиция датчика: $sensorPosition")
+                    viewModel.selectSensorByPosition(sensorPosition)
+
+                    // Загружаем историю для выбранного датчика
+                    viewModel.loadSensorMeasurementHistory(sensorPosition)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d(TAG, "Ничего не выбрано в списке датчиков")
+            }
+        }
+
+        // Карточка с измерениями (переход к истории)
         binding.cardAllOxygen.setOnClickListener {
-            Log.d("OxygenMeasurementFragment", "MaterialCard clicked")
-            handleSensorCardClick()
+            Log.d(TAG, "Клик по карточке измерений")
+            try {
+                findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
+            } catch (e: Exception) {
+                Log.e(TAG, "Ошибка при навигации: ${e.message}")
+                Toast.makeText(requireContext(), "Ошибка при переходе к истории измерений", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun handleSensorCardClick() {
-        try {
-            Log.d("OxygenMeasurementFragment", "Navigating to all measurements")
-            findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
-        } catch (e: Exception) {
-            Log.e("OxygenMeasurementFragment", "Error navigating to measurements", e)
-            Toast.makeText(requireContext(), "Ошибка при переходе: ${e.message}", Toast.LENGTH_SHORT).show()
+    /**
+     * Обновление UI с последними измерениями
+     */
+    private fun updateMeasurementsUI(measurements: List<LatestMeasurement>) {
+        if (measurements.isEmpty()) {
+            Log.d(TAG, "Нет измерений для отображения")
+            binding.tvDateControl.text = "Нет данных"
+            clearSensorDisplays()
+            return
         }
+
+        // Получаем последнее измерение
+        val latestMeasurement = measurements.first()
+        Log.d(TAG, "Последнее измерение: ${latestMeasurement.date}, датчиков: ${latestMeasurement.sensors.size}")
+
+        // Устанавливаем дату
+        binding.tvDateControl.text = latestMeasurement.date
+
+        // Обновляем данные датчиков
+        updateSensorDisplay(latestMeasurement, "К-601", binding.tvFirstSensorTitle, binding.tvFirstIndicate, binding.tvFirstMiddle)
+        updateSensorDisplay(latestMeasurement, "К-602", binding.tvSecondSensorTitle, binding.tvSecondIndicate, binding.tvSecondMiddle)
+        updateSensorDisplay(latestMeasurement, "К-603", binding.tvThirdSensorTitle, binding.tvThirdIndicate, binding.tvThirdMiddle)
+        updateSensorDisplay(latestMeasurement, "К-604", binding.tvFourthSensorTitle, binding.tvFourthIndicate, binding.tvFourthMiddle)
+    }
+
+    /**
+     * Обновление отображения конкретного датчика
+     */
+    private fun updateSensorDisplay(
+        measurement: LatestMeasurement,
+        sensorTitle: String,
+        titleView: TextView,
+        indicateView: TextView,
+        middleView: TextView
+    ) {
+        // Установка названия
+        titleView.text = sensorTitle
+
+        // Поиск данных датчика
+        val sensor = measurement.sensors.find { it.sensorTitle == sensorTitle }
+
+        if (sensor != null) {
+            Log.d(TAG, "Найден датчик $sensorTitle: testo=${sensor.testoValue}, correction=${sensor.correctionValue}")
+            indicateView.text = sensor.testoValue
+            middleView.text = "(${sensor.correctionValue})"
+        } else {
+            Log.d(TAG, "Датчик $sensorTitle не найден")
+            indicateView.text = "--"
+            middleView.text = "(--)"
+        }
+    }
+
+    /**
+     * Очистка отображения датчиков
+     */
+    private fun clearSensorDisplays() {
+        binding.tvFirstIndicate.text = "--"
+        binding.tvFirstMiddle.text = "(--)"
+
+        binding.tvSecondIndicate.text = "--"
+        binding.tvSecondMiddle.text = "(--)"
+
+        binding.tvThirdIndicate.text = "--"
+        binding.tvThirdMiddle.text = "(--)"
+
+        binding.tvFourthIndicate.text = "--"
+        binding.tvFourthMiddle.text = "(--)"
     }
 
     override fun onDestroyView() {
