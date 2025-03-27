@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.ui.oxygen
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -38,6 +39,93 @@ class OxygenMeasurementViewModel @Inject constructor(
     // LiveData для сообщений об ошибках
     private val _errorMessage = MutableLiveData<String>()
 
+    // LiveData для последних измерений
+    private val _latestMeasurements = MutableLiveData<List<LatestMeasurement>>()
+    val latestMeasurements: LiveData<List<LatestMeasurement>> = _latestMeasurements
+
+    // Текущий выбранный блок
+    private var currentBlockId: Int = 0
+
+    // Добавить новый LiveData для истории измерений конкретного датчика
+    private val _sensorMeasurementHistory = MutableLiveData<List<LatestMeasurement>>()
+    val sensorMeasurementHistory: LiveData<List<LatestMeasurement>> = _sensorMeasurementHistory
+
+    // Метод для загрузки истории измерений для конкретного датчика
+    // В OxygenMeasurementViewModel.kt
+    fun loadSensorMeasurementHistory(sensorPosition: String) {
+        viewModelScope.launch {
+            try {
+                Log.d(TAG, "⭐ Загрузка истории для датчика $sensorPosition в блоке $currentBlockId")
+
+                // Очищаем предыдущие результаты, чтобы показать загрузку
+                _sensorMeasurementHistory.postValue(emptyList())
+
+                repository.loadSensorMeasurementHistory(
+                    blockId = currentBlockId,
+                    sensorPosition = sensorPosition
+                ).collect { measurements ->
+                    Log.d(TAG, "⭐ Получено ${measurements.size} измерений для датчика $sensorPosition")
+
+                    if (measurements.isEmpty()) {
+                        Log.d(TAG, "⭐ Измерения не найдены для датчика $sensorPosition")
+                    } else {
+                        measurements.forEach { measurement ->
+                            Log.d(TAG, "⭐ Измерение: ${measurement.date}, датчиков: ${measurement.sensors.size}")
+                        }
+                    }
+
+                    _sensorMeasurementHistory.postValue(measurements)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "⭐ Ошибка при загрузке истории измерений датчика", e)
+                _sensorMeasurementHistory.postValue(emptyList())
+            }
+        }
+    }
+
+    // Информация о текущих позициях датчиков для каждого блока
+    private val sensorPositionsMap = mapOf(
+        1 to listOf("К-601", "К-602", "К-603", "К-604"),
+        2 to listOf("К-601", "К-602", "К-603", "К-604"),
+        3 to listOf("К-601", "К-602", "К-603", "К-604"),
+        4 to listOf("К-601", "К-602", "К-603", "К-604"),
+        5 to listOf("К-601", "К-602", "К-603", "К-604"),
+        6 to listOf("К-601", "К-602", "К-603", "К-604"),
+        7 to listOf("К-603", "К-604", "К-605", "К-606"),
+        8 to listOf("К-603", "К-604", "К-605", "К-606"),
+        9 to listOf("К-603", "К-604", "К-605", "К-606"),
+        10 to listOf("К-603", "К-604", "К-605", "К-606")
+    )
+
+    /**
+     * Загружает последние измерения для блока
+     */
+    fun loadLatestMeasurements(blockId: Int) {
+        Log.d(TAG, "⭐ loadLatestMeasurements для блока $blockId")
+        currentBlockId = blockId
+
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                repository.loadLatestMeasurements(blockId).collect { measurements ->
+                    Log.d(TAG, "⭐ Получено ${measurements.size} измерений для блока $blockId")
+
+                    _latestMeasurements.postValue(measurements)
+                    _isLoading.value = false
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "⭐ Ошибка при загрузке измерений: ${e.message}", e)
+                _latestMeasurements.postValue(emptyList())
+                _isLoading.value = false
+            }
+        }
+    }
+
+    // Метод для получения позиций датчиков для выбранного блока
+    fun getSensorPositions(blockId: Int): List<String> {
+        return sensorPositionsMap[blockId] ?: listOf("К-601", "К-602", "К-603", "К-604")
+    }
+
     // Загрузка списка блоков при инициализации
     init {
         Log.d("OxygenViewModel", "ViewModel created, loading blocks...")
@@ -61,6 +149,8 @@ class OxygenMeasurementViewModel @Inject constructor(
         }
 
         loadBlocks()
+
+        loadLatestMeasurements(currentBlockId)
     }
 
     // Загрузка блоков
@@ -109,5 +199,9 @@ class OxygenMeasurementViewModel @Inject constructor(
         } ?: run {
             _errorMessage.value = "Датчик с позицией $position не найден"
         }
+    }
+
+    fun getCurrentBlockId(): Int {
+        return currentBlockId
     }
 }
