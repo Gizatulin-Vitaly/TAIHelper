@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.NewMeasuremensBinding
@@ -42,6 +43,7 @@ class NewMeasurementsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         setupToolbar()
         setupInitialDate()
@@ -188,8 +190,16 @@ class NewMeasurementsFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        requireActivity().findViewById<MaterialToolbar>(R.id.toolbar).setNavigationOnClickListener {
-            findNavController().navigateUp()
+        requireActivity().findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
+            setNavigationOnClickListener {
+                // Проверяем, что фрагмент все еще прикреплен
+                if (isAdded) {
+                    findNavController().navigateUp()
+                } else {
+                    // Альтернативный способ вернуться назад
+                    activity.onBackPressedDispatcher.onBackPressed()
+                }
+            }
         }
     }
 
@@ -203,6 +213,7 @@ class NewMeasurementsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         _binding = null
     }
 }

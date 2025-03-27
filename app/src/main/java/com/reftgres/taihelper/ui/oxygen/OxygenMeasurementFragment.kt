@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.databinding.FragmentOxigenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.reftgres.taihelper.R
@@ -41,8 +42,6 @@ class OxygenMeasurementFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated вызван")
-
         setupRecyclerView()
         setupObservers()
         setupListeners()

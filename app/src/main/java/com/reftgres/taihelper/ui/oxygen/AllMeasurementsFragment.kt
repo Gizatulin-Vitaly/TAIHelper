@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.AllMeasurementsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +36,8 @@ class AllMeasurementsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated вызван")
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
+
 
         setupRecyclerView()
         setupObservers()
@@ -81,6 +83,7 @@ class AllMeasurementsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         _binding = null
     }
 }
