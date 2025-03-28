@@ -32,6 +32,11 @@ import javax.inject.Inject
 import android.graphics.drawable.Drawable
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import com.reftgres.taihelper.di.dataStore
+import com.reftgres.taihelper.ui.settings.LanguagePreferencesRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -51,6 +56,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val languageRepository = LanguagePreferencesRepository(dataStore)
+        runBlocking {
+            val language = languageRepository.languageFlow.first()
+            setAppLocale(language)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -160,6 +170,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setAppLocale(language: String) {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     // Специальный метод для установки белой стрелки назад

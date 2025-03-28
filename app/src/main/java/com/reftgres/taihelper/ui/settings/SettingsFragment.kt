@@ -16,18 +16,22 @@ import com.reftgres.taihelper.R
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
     private val themeViewModel: ThemeViewModel by viewModels()
+    private val languageViewModel: LanguageViewModel by viewModels()
 
     private var radioListener: RadioGroup.OnCheckedChangeListener? = null
+    private var languageListener: RadioGroup.OnCheckedChangeListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
         val radioGroupTheme = view.findViewById<RadioGroup>(R.id.radioGroupTheme)
+        val radioGroupLanguage = view.findViewById<RadioGroup>(R.id.radioGroupLanguage)
 
+        // Обработка изменения темы
         radioListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
             val theme = when (checkedId) {
                 R.id.radioLight -> AppTheme.LIGHT
@@ -37,9 +41,22 @@ class SettingsFragment : Fragment() {
             }
             themeViewModel.setTheme(theme)
         }
-
         radioGroupTheme.setOnCheckedChangeListener(radioListener)
 
+        // Обработка изменения языка
+        languageListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
+            val language = when (checkedId) {
+                R.id.radioRussian -> "ru"
+                R.id.radioEnglish -> "en"
+                R.id.radioAlbanian -> "sq"
+                else -> "ru"
+            }
+            languageViewModel.setLanguage(language)
+            requireActivity().recreate() // Перезапуск активности для применения языка
+        }
+        radioGroupLanguage.setOnCheckedChangeListener(languageListener)
+
+        // Устанавливаем текущие значения
         viewLifecycleOwner.lifecycleScope.launch {
             themeViewModel.currentTheme.collect { theme ->
                 val selectedRadioButtonId = when (theme) {
@@ -47,30 +64,30 @@ class SettingsFragment : Fragment() {
                     AppTheme.DARK -> R.id.radioDark
                     AppTheme.SYSTEM -> R.id.radioSystem
                 }
-
-                // Проверяем, нужно ли обновлять выбор
                 if (radioGroupTheme.checkedRadioButtonId != selectedRadioButtonId) {
-
                     radioGroupTheme.setOnCheckedChangeListener(null)
-
                     radioGroupTheme.check(selectedRadioButtonId)
-
                     radioGroupTheme.setOnCheckedChangeListener(radioListener)
                 }
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            languageViewModel.currentLanguage.collect { language ->
+                val selectedLanguageId = when (language) {
+                    "ru" -> R.id.radioRussian
+                    "en" -> R.id.radioEnglish
+                    "sq" -> R.id.radioAlbanian
+                    else -> R.id.radioRussian
+                }
+                if (radioGroupLanguage.checkedRadioButtonId != selectedLanguageId) {
+                    radioGroupLanguage.setOnCheckedChangeListener(null)
+                    radioGroupLanguage.check(selectedLanguageId)
+                    radioGroupLanguage.setOnCheckedChangeListener(languageListener)
+                }
+            }
+        }
+
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        radioListener = null
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
     }
 }
