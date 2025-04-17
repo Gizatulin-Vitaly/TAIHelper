@@ -2,6 +2,9 @@ package com.reftgres.taihelper
 
 import android.app.Application
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
+import androidx.datastore.core.DataStore
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.firebase.FirebaseApp
@@ -9,28 +12,39 @@ import com.reftgres.taihelper.service.NetworkConnectivityService
 import com.reftgres.taihelper.service.SyncManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
+import androidx.datastore.preferences.core.Preferences
+import com.reftgres.taihelper.ui.settings.LanguagePreferencesRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+
 
 @HiltAndroidApp
 class TAIHelperApp : Application(), Configuration.Provider {
+    @Inject
+    lateinit var dataStore: DataStore<Preferences>
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
     private val TAG = "TAIHelperApp"
-
     @Inject
     lateinit var syncManager: SyncManager
-
     @Inject
     lateinit var networkService: NetworkConnectivityService
 
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
 
-        // Инициализация Firebase должна быть первой
-        FirebaseApp.initializeApp(this)
-
-        // Остальная настройка
-        setupSync()
+        CoroutineScope(Dispatchers.Default).launch {
+            val prefs = dataStore.data.first()
+            val langTag = prefs[LanguagePreferencesRepository.LANGUAGE_KEY] ?: "ru"
+            val locales = LocaleListCompat.forLanguageTags(langTag)
+            withContext(Dispatchers.Main) {
+                AppCompatDelegate.setApplicationLocales(locales)
+            }
+        }
     }
 
     override val workManagerConfiguration: Configuration

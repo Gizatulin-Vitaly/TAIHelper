@@ -22,7 +22,7 @@
             android:id="@+id/step_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Шаг 1/4"
+            android:text="@string/step_1_4"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
@@ -34,7 +34,7 @@
             android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Калибровка датчиков"
+            android:text="@string/colibration"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -48,7 +48,7 @@
             android:id="@+id/percent_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0%"
+            android:text="@string/_0_percent"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
@@ -111,7 +111,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ввод значений датчиков"
+                        android:text="@string/enter_measurements_sensor"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_amethyst"
@@ -135,7 +135,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Лабораторный датчик"
+                            android:text="@string/enter_labs"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
@@ -159,7 +159,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 1"
+                                    android:text="@string/input_1"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -185,7 +185,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 2"
+                                    android:text="@string/input_2"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -211,7 +211,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 3"
+                                    android:text="@string/input_3"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -238,7 +238,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Среднее значение"
+                                android:text="@string/middle_scale_ajk"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -247,7 +247,7 @@
                                 android:id="@+id/lab_average_text_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="0.0000"
+                                android:text="@string/zero_0_0000"
                                 android:textSize="16sp"
                                 android:textColor="@color/primary_amethyst"
                                 android:textStyle="bold"
@@ -275,7 +275,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Поверяемый датчик"
+                            android:text="@string/check_sensor"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
@@ -299,7 +299,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 1"
+                                    android:text="@string/input_1"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -325,7 +325,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 2"
+                                    android:text="@string/input_2"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -351,7 +351,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Значение 3"
+                                    android:text="@string/input_3"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -378,7 +378,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Среднее значение"
+                                android:text="@string/middle_scale_ajk"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -387,7 +387,7 @@
                                 android:id="@+id/test_average_text_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="0.0000"
+                                android:text="@string/zero_0_0000"
                                 android:textSize="16sp"
                                 android:textColor="@color/primary_amethyst"
                                 android:textStyle="bold"
@@ -428,7 +428,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Сопротивление и константа"
+                        android:text="@string/resistance_and_const"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_amethyst"
@@ -458,7 +458,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Значение сопротивления"
+                                android:text="@string/resistance"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -486,7 +486,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Рассчитанная константа"
+                                android:text="@string/math_const"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -532,7 +532,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Константа = Сопротивление × Среднее значение (лаб.)"
+                            android:text="@string/math_number"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
@@ -543,7 +543,7 @@
                             android:id="@+id/lab_avg_info_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Среднее (лаб.): 0.0000"
+                            android:text="@string/middle_0_0000"
                             android:textSize="14sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginTop="8dp"
@@ -580,7 +580,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Таблица значений"
+                        android:text="@string/table_number"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_amethyst"
@@ -605,7 +605,7 @@
                             android:id="@+id/r02_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R = K/0.2 = -"
+                            android:text="@string/r_k_0_2"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/primary_amethyst"
@@ -629,7 +629,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="I (ток)"
+                                    android:text="@string/i_electro"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
@@ -657,7 +657,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Показания"
+                                    android:text="@string/display"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
@@ -697,7 +697,7 @@
                             android:id="@+id/r05_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R = K/0.5 = -"
+                            android:text="@string/r_k_0_5"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/primary_amethyst"
@@ -721,7 +721,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="I (ток)"
+                                    android:text="@string/i_electro"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
@@ -749,7 +749,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Показания"
+                                    android:text="@string/display"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
@@ -788,7 +788,7 @@
                             android:id="@+id/r08_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R = K/0.8 = -"
+                            android:text="@string/r_k_0_8"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/primary_amethyst"
@@ -812,7 +812,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="I (ток)"
+                                    android:text="@string/i_electro"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
@@ -840,7 +840,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Показания"
+                                    android:text="@string/display"
                                     android:textSize="14sp"
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
@@ -891,7 +891,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Сопротивление при t=40°C"
+                        android:text="@string/resistance_t_40_c"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_amethyst"
@@ -916,7 +916,7 @@
                             android:id="@+id/r40_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R = K/0.68 = -"
+                            android:text="@string/r_k_0_68"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/primary_amethyst"
@@ -933,7 +933,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Показания датчика"
+                                android:text="@string/display_sensor"
                                 android:textSize="14sp"
                                 android:textColor="@color/text_secondary"
                                 android:drawableStart="@drawable/ic_gauge"
@@ -974,7 +974,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Итоговые результаты"
+                        android:text="@string/total_result"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_amethyst"
@@ -1039,7 +1039,7 @@
                     android:id="@+id/back_to_start_button"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:text="Начать новую калибровку"
+                    android:text="@string/start_new_colibration"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
@@ -1073,7 +1073,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Сбросить"
+            android:text="@string/reset"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="20dp"
@@ -1093,7 +1093,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Далее"
+            android:text="@string/next"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="20dp"

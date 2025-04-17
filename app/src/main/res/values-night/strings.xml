@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="electric_output">Токовый выход</string>
+    <string name="logo">Logo</string>
+    <string name="tai_helper">TAI-Helper</string>
 </resources>

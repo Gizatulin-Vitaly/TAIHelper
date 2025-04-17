@@ -24,7 +24,7 @@
         android:background="#FFC107"
         android:gravity="center"
         android:padding="4dp"
-        android:text="Оффлайн режим"
+        android:text="@string/offline_mode"
         android:textColor="#B71C1C"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/toolbarPdf"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="70dp"
-            android:text="Загрузка файла: 0%"
+            android:text="@string/downloaded_file_0"
             android:textSize="14sp"
             android:visibility="gone" />
 
@@ -66,7 +66,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Не удалось загрузить PDF файл"
+            android:text="@string/wrong_download_pdf"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="16sp"
             android:visibility="gone" />
@@ -88,7 +88,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Предыдущая страница"
+            android:contentDescription="@string/back_page"
             android:src="@android:drawable/ic_media_previous" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Страница 1 из 10"
+            android:text="@string/page_between_1_10"
             android:textSize="14sp" />
 
         <ImageButton
@@ -105,7 +105,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Следующая страница"
+            android:contentDescription="@string/next_page"
             android:src="@android:drawable/ic_media_next" />
 
     </LinearLayout>

@@ -34,13 +34,16 @@
         <activity
             android:name=".ui.reference.PdfViewerActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

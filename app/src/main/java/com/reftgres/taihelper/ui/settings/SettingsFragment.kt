@@ -12,6 +12,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.reftgres.taihelper.R
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -45,14 +47,19 @@ class SettingsFragment : Fragment() {
 
         // Обработка изменения языка
         languageListener = RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            val language = when (checkedId) {
-                R.id.radioRussian -> "ru"
-                R.id.radioEnglish -> "en"
+            val languageTag = when (checkedId) {
+                R.id.radioRussian  -> "ru"
+                R.id.radioEnglish  -> "en"
                 R.id.radioAlbanian -> "sq"
-                else -> "ru"
+                else               -> "ru"
             }
-            languageViewModel.setLanguage(language)
-            requireActivity().recreate() // Перезапуск активности для применения языка
+            val currentLang = languageViewModel.currentLanguage.value
+            if (currentLang != languageTag) {
+                languageViewModel.setLanguage(languageTag)
+                val locales = LocaleListCompat.forLanguageTags(languageTag)
+                AppCompatDelegate.setApplicationLocales(locales)
+                requireActivity().recreate() // перезагружаем Activity для применения локали
+            }
         }
         radioGroupLanguage.setOnCheckedChangeListener(languageListener)
 

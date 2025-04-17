@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/data_measurement"
-        android:text="Дата:"
+        android:text="@string/Date"
         android:gravity="center"
         android:textSize="18sp"
         android:layout_marginEnd="4dp"
@@ -25,7 +25,7 @@
         app:layout_constraintStart_toEndOf="@id/data_measurement_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="23.02.2025"
+        android:text="@string/date_23_02_2025"
         android:layout_marginStart="4dp"
         android:textSize="18sp"
         android:textStyle="bold"/>
@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/data_measurement_title"
         app:layout_constraintEnd_toStartOf="@id/measurement_board"
-        android:text="Значение на щите:"
+        android:text="@string/panel"
         android:textSize="16sp" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_marginTop="4dp"
-        android:text="3.57"
+        android:text="@string/_3_57"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/image_dinamic"
         app:layout_constraintStart_toEndOf="@id/measurement_board_tittle"
@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/measurement_board_tittle"
         app:layout_constraintEnd_toStartOf="@id/measurement_testo"
-        android:text="Измеренное:"
+        android:text="@string/measur"
         android:textSize="16sp" />
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/measurement_testo"
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toEndOf="@id/measurement_testo_tittle"
         app:layout_constraintTop_toBottomOf="@id/measurement_board"
         app:layout_constraintEnd_toStartOf="@id/image_dinamic"
-        android:text="3.57"
+        android:text="@string/_3_57"
         android:textSize="16sp" />
     <ImageView
         android:id="@+id/image_dinamic"

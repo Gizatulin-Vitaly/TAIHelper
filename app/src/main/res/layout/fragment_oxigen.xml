@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="center"
-                android:text="№ блока"
+                android:text="@string/number_block"
                 app:layout_constraintEnd_toStartOf="@id/tv_sensor_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="center"
-                android:text="Позиция"
+                android:text="@string/add_position"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_block_title"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
                         style="@style/TextAppearance.Material3.TitleMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Информация о датчике"
+                        android:text="@string/info_about_sensors"
                         android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,7 +104,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Позиция датчика:"
+                        android:text="@string/position_sensor_simple"
                         app:layout_constraintEnd_toStartOf="@id/tv_position_sensor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_info_title" />
@@ -127,7 +127,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Номер:"
+                        android:text="@string/number"
                         app:layout_constraintEnd_toStartOf="@id/tv_number_sensor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_position_sensor_title" />
@@ -150,7 +150,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Средняя точка:"
+                        android:text="@string/middle_scale_simple"
                         app:layout_constraintEnd_toStartOf="@id/tv_middle_sensor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_number_sensor_title" />
@@ -173,7 +173,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Токовые выходы:"
+                        android:text="@string/electric_output_simple"
                         app:layout_constraintEnd_toStartOf="@id/tv_analog_output"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_middle_sensor_title" />
@@ -217,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:gravity="center"
-                        android:text="Четвертый датчик"
+                        android:text="@string/fourth_sensor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_second_sensor_title"
                         app:layout_constraintStart_toStartOf="parent"
@@ -259,7 +259,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:gravity="center"
-                        android:text="Второй датчик"
+                        android:text="@string/second_sensor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_fourth_sensor_title"
@@ -326,7 +326,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:gravity="center"
-                        android:text="Третий датчик"
+                        android:text="@string/third_sensor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_first_sensor_title"
                         app:layout_constraintStart_toStartOf="parent"
@@ -368,7 +368,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:gravity="center"
-                        android:text="Первый датчик"
+                        android:text="@string/first_sensor"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_third_sensor_title"
@@ -430,7 +430,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
-                        android:text="Последние 5 измерений"
+                        android:text="@string/latest_5_meashuremets"
                         android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView

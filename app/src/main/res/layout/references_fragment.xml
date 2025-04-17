@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Категории:"
+                android:text="@string/category"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                 android:minWidth="0dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text="Сбросить"
+                android:text="@string/reset"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -78,7 +78,7 @@
         android:background="#FFC107"
         android:gravity="center"
         android:padding="4dp"
-        android:text="Оффлайн режим"
+        android:text="@string/offline"
         android:textColor="#B71C1C"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/categoriesContainer"
@@ -117,7 +117,7 @@
         android:id="@+id/textViewEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Нет доступных документов"
+        android:text="@string/not_found_doc"
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
