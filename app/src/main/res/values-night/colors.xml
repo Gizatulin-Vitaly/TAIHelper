@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 🎨 Основные -->
+    <color name="primary">#FF6E9E</color>
+    <color name="primary_light">#FF94B6</color>
+    <color name="primary_dark">#D94D81</color>
+
+    <color name="secondary">#FFC1C1</color>
+    <color name="secondary_light">#FFD9D9</color>
+
+    <!-- 🧱 Фон и поверхности -->
+    <color name="background">#121212</color>
+    <color name="surface">#1B1B1B</color>
+    <color name="overlay_background">#88000000</color>
+
+    <!-- ➖ Разделители -->
+    <color name="divider">#2D2D2D</color>
+
+    <!-- 📝 Текст -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#CCCCCC</color>
+    <color name="text_hint">#888888</color>
+    <color name="text_on_primary">#000000</color>
+
+    <!-- 🔘 Кнопки -->
+    <color name="button_primary">@color/primary</color>
+    <color name="button_secondary">#302030</color>
+    <color name="button_stroke">@color/primary_light</color>
+
+    <!-- 🖋 Поля ввода -->
+    <color name="input_background">@color/surface</color>
+    <color name="input_text">@color/text_primary</color>
+    <color name="input_border">@color/primary_light</color>
+    <color name="input_hint">@color/text_hint</color>
+
+    <!-- ⚠️ Состояния -->
+    <color name="success">#78D69D</color>
+    <color name="error">#FF6B6B</color>
+    <color name="warning">#FFC95C</color>
+
+    <!-- 🌈 Градиенты -->
+    <color name="gradient_start">#912F4D</color>
+    <color name="gradient_end">#FF9BB3</color>
+
+    <!-- ⚙️ -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="disabled_gray">#444444</color>
+
+</resources>

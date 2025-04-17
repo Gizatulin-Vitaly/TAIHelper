@@ -37,12 +37,24 @@ class TAIHelperApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
+        // 🗣 Загрузка локали
         CoroutineScope(Dispatchers.Default).launch {
             val prefs = dataStore.data.first()
             val langTag = prefs[LanguagePreferencesRepository.LANGUAGE_KEY] ?: "ru"
             val locales = LocaleListCompat.forLanguageTags(langTag)
             withContext(Dispatchers.Main) {
                 AppCompatDelegate.setApplicationLocales(locales)
+            }
+            // 🎨 Загрузка темы
+            val themeName = prefs[com.reftgres.taihelper.ui.settings.ThemePreferencesRepository.THEME_KEY]
+                ?: com.reftgres.taihelper.ui.settings.AppTheme.SYSTEM.name
+            val mode = when (com.reftgres.taihelper.ui.settings.AppTheme.valueOf(themeName)) {
+                com.reftgres.taihelper.ui.settings.AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                com.reftgres.taihelper.ui.settings.AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                com.reftgres.taihelper.ui.settings.AppTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+            withContext(Dispatchers.Main) {
+                AppCompatDelegate.setDefaultNightMode(mode)
             }
         }
     }

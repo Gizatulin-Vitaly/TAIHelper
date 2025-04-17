@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.ui.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,12 @@ class ThemeViewModel @Inject constructor(
     fun setTheme(theme: AppTheme) {
         viewModelScope.launch {
             themeRepository.setTheme(theme)
+
+            when (theme) {
+                AppTheme.LIGHT -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                AppTheme.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                AppTheme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
         }
     }
 }
