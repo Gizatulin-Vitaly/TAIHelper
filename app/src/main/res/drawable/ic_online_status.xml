@@ -2,14 +2,14 @@
     <!-- Состояние онлайн (активировано) -->
     <item android:state_activated="true">
         <shape android:shape="oval">
-            <solid android:color="@color/success_green" />
+            <solid android:color="@color/success" />
         </shape>
     </item>
 
     <!-- Состояние офлайн (по умолчанию) -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/error_red" />
+            <solid android:color="@color/error" />
         </shape>
     </item>
 </selector>

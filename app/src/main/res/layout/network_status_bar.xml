@@ -3,7 +3,7 @@
     android:id="@+id/networkStatusBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFA000"
+    android:background="@color/warning"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="4dp"

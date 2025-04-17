@@ -10,13 +10,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/text_primary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/data_measurement"
         android:text="@string/Date"
         android:gravity="center"
         android:textSize="18sp"
         android:layout_marginEnd="4dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/data_measurement"
@@ -25,10 +28,13 @@
         app:layout_constraintStart_toEndOf="@id/data_measurement_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/text_primary"
         android:text="@string/date_23_02_2025"
         android:layout_marginStart="4dp"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/measurement_board_tittle"
@@ -38,8 +44,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/data_measurement_title"
         app:layout_constraintEnd_toStartOf="@id/measurement_board"
+        android:textColor="@color/text_primary"
         android:text="@string/panel"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/measurement_board"
@@ -47,11 +56,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_marginTop="4dp"
+        android:textColor="@color/text_primary"
         android:text="@string/_3_57"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/image_dinamic"
         app:layout_constraintStart_toEndOf="@id/measurement_board_tittle"
-        app:layout_constraintTop_toBottomOf="@id/data_measurement_title" />
+        app:layout_constraintTop_toBottomOf="@id/data_measurement_title"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/measurement_testo_tittle"
@@ -61,8 +73,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/measurement_board_tittle"
         app:layout_constraintEnd_toStartOf="@id/measurement_testo"
+        android:textColor="@color/text_primary"
         android:text="@string/measur"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/measurement_testo"
         android:layout_width="0dp"
@@ -71,8 +86,11 @@
         app:layout_constraintStart_toEndOf="@id/measurement_testo_tittle"
         app:layout_constraintTop_toBottomOf="@id/measurement_board"
         app:layout_constraintEnd_toStartOf="@id/image_dinamic"
+        android:textColor="@color/text_primary"
         android:text="@string/_3_57"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"/>
     <ImageView
         android:id="@+id/image_dinamic"
         android:layout_width="wrap_content"

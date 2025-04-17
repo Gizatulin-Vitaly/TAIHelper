@@ -5,7 +5,7 @@
     android:layout_height="36dp"
     android:layout_marginEnd="8dp"
     android:checkable="true"
-    app:cardBackgroundColor="@color/primary_amethyst"
+    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="18dp"
     app:cardElevation="1dp"
     app:strokeColor="@color/button_stroke"
@@ -20,7 +20,7 @@
         android:paddingTop="6dp"
         android:paddingEnd="16dp"
         android:paddingBottom="6dp"
-        android:textColor="@color/text_on_dark"
+        android:textColor="@color/text_primary"
         android:textSize="14sp" />
 
 </com.google.android.material.card.MaterialCardView>

@@ -14,6 +14,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="24dp"
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/primary"
+            android:textColor="@color/text_on_primary"
+            app:iconTint="@color/text_on_primary"
+            app:rippleColor="@color/primary_light"
             android:text="@string/new_measurens"/>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
-        app:strokeColor="@color/primary_amethyst"
+        app:strokeColor="@color/primary"
         app:strokeWidth="1dp"
         android:layout_margin="8dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="@color/primary_amethyst_dark"
+                app:cardBackgroundColor="@color/primary"
                 app:cardElevation="4dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,14 +48,16 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_calendar"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/surface_white" />
+                        app:tint="@color/surface" />
 
                     <TextView
                         android:id="@+id/date_last_measurement"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="23.02.2025"
-                        android:textColor="@color/surface_white"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
+                        android:textColor="@color/surface"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>

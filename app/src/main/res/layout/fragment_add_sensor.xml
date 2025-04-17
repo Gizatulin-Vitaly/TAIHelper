@@ -24,10 +24,6 @@
     <!-- Карточка для элементов формы с закругленными углами и тенью -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardForm"
-        app:cardCornerRadius="32dp"
-        app:cardElevation="16dp"
-        app:strokeColor="@color/primary_amethyst"
-        app:strokeWidth="1dp"
         android:alpha="0.95"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,7 +33,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvPageTitle">
+        app:layout_constraintTop_toBottomOf="@id/tvPageTitle"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeWidth="0.8dp">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -48,16 +49,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="24dp">
-
-                <!-- Иконка датчика -->
-                <ImageView
-                    android:id="@+id/ivSensorIcon"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:contentDescription="@string/icon_sensor" />
 
                 <!-- Поле "Тип датчика" с иконкой -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -71,12 +62,14 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivSensorIcon"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
                         android:id="@+id/actvSensorType"
@@ -99,13 +92,15 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilSensorType"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPosition"
@@ -129,12 +124,14 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilPosition"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
                         android:id="@+id/actvOutputScale"
@@ -157,13 +154,15 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilOutputScale"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etMidPoint"
@@ -187,13 +186,15 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilMidPoint"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etModification"
@@ -217,12 +218,14 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilModification"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
                         android:id="@+id/actvBlock"
@@ -245,12 +248,14 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilBlock"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
                         android:id="@+id/actvMeasurementStart"
@@ -273,12 +278,14 @@
                     app:boxCornerRadiusBottomStart="16dp"
                     app:boxCornerRadiusTopEnd="16dp"
                     app:boxCornerRadiusTopStart="16dp"
-                    app:boxStrokeColor="@color/primary_amethyst"
                     app:boxStrokeWidth="1dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilMeasurementStart"
-                    app:startIconTint="@color/primary_amethyst">
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
                         android:id="@+id/actvMeasurementEnd"
@@ -298,7 +305,9 @@
                     android:text="@string/must_field"
                     android:textStyle="italic"
                     android:textColor="@color/text_secondary"
+                    android:fontFamily="@font/roboto_regular"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:letterSpacing="0.01"
                     app:layout_constraintTop_toBottomOf="@id/tilMeasurementEnd" />
 
                 <!-- Кнопка "Сохранить" со стилем, соответствующим другим экранам -->
@@ -307,13 +316,16 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:elevation="6dp"
+                    android:elevation="4dp"
                     android:stateListAnimator="@null"
                     android:text="@string/save"
                     android:textAllCaps="false"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/primary_amethyst"
+                    app:backgroundTint="@color/primary"
+                    android:textColor="@color/text_on_primary"
+                    app:iconTint="@color/text_on_primary"
+                    app:rippleColor="@color/primary_light"
                     app:cornerRadius="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -335,6 +347,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:indeterminateTint="@color/primary_amethyst"
+        android:indeterminateTint="@color/primary"
         android:elevation="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

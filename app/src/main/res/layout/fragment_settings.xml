@@ -11,10 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/settings_app"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="24dp"
+        android:letterSpacing="0.01"
+        android:fontFamily="@font/roboto_regular"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -22,10 +24,11 @@
     <!-- Карточка для настроек темы -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardThemeSettings"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
-        app:strokeColor="@color/primary_amethyst"
-        app:strokeWidth="1dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeWidth="0.8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -51,13 +54,15 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_theme"
-                    app:tint="@color/primary_amethyst" />
+                    app:tint="@color/primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/themes"
                     android:textSize="18sp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:letterSpacing="0.01"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
                     android:layout_marginStart="12dp" />
@@ -66,18 +71,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider_color"
+                android:background="@color/divider"
                 android:layout_marginTop="12dp" />
 
-            <!-- ВАЖНО: стандартная RadioGroup БЕЗ вложенных контейнеров -->
             <RadioGroup
                 android:id="@+id/radioGroupTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
-
-                <!-- Вариант 1: Светлая тема -->
-                <!-- ВАЖНО: чистая RadioButton с drawableStart для иконки -->
                 <RadioButton
                     android:id="@+id/radioLight"
                     android:layout_width="match_parent"
@@ -85,14 +86,15 @@
                     android:text="@string/light_themes"
                     android:textSize="16sp"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:buttonTint="@color/primary"
+                    android:letterSpacing="0.01"
                     android:drawableStart="@drawable/ic_light_mode"
-                    android:drawableTint="@color/primary_amethyst"
+                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/roboto_regular"
                     android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
 
                 <!-- Вариант 2: Темная тема -->
@@ -103,14 +105,15 @@
                     android:text="@string/dark_themes"
                     android:textSize="16sp"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_dark_mode"
-                    android:drawableTint="@color/primary_amethyst"
+                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
+                    android:letterSpacing="0.01"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/roboto_regular"
                     android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
 
                 <!-- Вариант 3: Системная тема -->
@@ -121,14 +124,15 @@
                     android:text="@string/system_themes"
                     android:textSize="16sp"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_system_mode"
-                    android:drawableTint="@color/primary_amethyst"
+                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
+                    android:letterSpacing="0.01"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
+                    android:fontFamily="@font/roboto_regular"
                     android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
             </RadioGroup>
 
@@ -136,8 +140,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/chose_your_themes"
                 android:textSize="14sp"
+                android:letterSpacing="0.01"
                 android:textColor="@color/text_secondary"
                 android:layout_marginTop="16dp"
                 android:alpha="0.8" />
@@ -147,10 +153,11 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLanguageSettings"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
-        app:strokeColor="@color/primary_amethyst"
-        app:strokeWidth="1dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeWidth="0.8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -176,12 +183,13 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_language"
-                    app:tint="@color/primary_amethyst" />
+                    app:tint="@color/primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/language"
+                    android:letterSpacing="0.01"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
@@ -191,7 +199,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider_color"
+                android:background="@color/divider"
                 android:layout_marginTop="12dp" />
 
             <!-- RadioGroup без вложенных контейнеров -->
@@ -207,9 +215,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/russian"
+                    android:letterSpacing="0.01"
                     android:textSize="16sp"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:fontFamily="@font/roboto_regular"
+                    android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_flag_russia"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
@@ -225,8 +235,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/english"
                     android:textSize="16sp"
+                    android:letterSpacing="0.01"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:fontFamily="@font/roboto_regular"
+                    android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_flag_uk"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
@@ -243,9 +255,10 @@
                     android:text="@string/alban"
                     android:textSize="16sp"
                     android:button="@null"
-                    android:buttonTint="@color/primary_amethyst"
+                    android:letterSpacing="0.01"
+                    android:fontFamily="@font/roboto_regular"
+                    android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_flag_albania"
-
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
@@ -260,8 +273,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/chose_your_language"
                 android:textSize="14sp"
+                android:letterSpacing="0.01"
                 android:textColor="@color/text_secondary"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_regular"
                 android:alpha="0.8" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -9,7 +9,7 @@ object SnackbarUtils {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).apply {
             anchorView?.let { this.anchorView = it }
             setBackgroundTint(
-                view.context.getColor(if (isError) R.color.error_red else R.color.success_green)
+                view.context.getColor(if (isError) R.color.error else R.color.success)
             )
             show()
         }

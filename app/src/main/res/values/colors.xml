@@ -1,46 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_amethyst">#6A5AE0</color>
-    <color name="primary_amethyst_light">#9087E5</color>
-    <color name="primary_amethyst_dark">#4A3BBB</color>
 
-    <color name="secondary_color">#FF6D6D</color>
-    <color name="secondary_color_light">#FF9E9E</color>
+    <!-- 🎨 Основные -->
+    <color name="primary">#BFB9FF</color>
+    <color name="primary_light">#E5E3FF</color>
+    <color name="primary_dark">#A49CFF</color>
 
-    <color name="text_primary">#333644</color>
-    <color name="text_secondary">#7A7D8F</color>
+    <color name="secondary">#FFC1C1</color>
+    <color name="secondary_light">#FFE6E6</color>
 
-    <color name="background_light">#F5F7FF</color>
-    <color name="divider_color">#E2E5F1</color>
+    <!-- 🧱 Фон и поверхности -->
+    <color name="background">#FAFAFE</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="overlay_background">#33000000</color>
 
+    <!-- ➖ Разделители -->
+    <color name="divider">#EAEAF0</color>
+
+    <!-- 📝 Текст -->
+    <color name="text_primary">#3A3D4C</color>
+    <color name="text_secondary">#A3A6B6</color>
+    <color name="text_hint">#C5C8D6</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- 🔘 Кнопки -->
+    <color name="button_primary">@color/primary</color>
+    <color name="button_secondary">#F4F2FF</color>
+    <color name="button_stroke">@color/primary_dark</color>
+
+    <!-- 🖋 Поля ввода -->
+    <color name="input_background">@color/surface</color>
+    <color name="input_text">@color/text_primary</color>
+    <color name="input_border">@color/primary_dark</color>
+    <color name="input_hint">@color/text_hint</color>
+
+    <!-- ⚠️ Состояния -->
+    <color name="success">#78D69D</color>
+    <color name="error">#F28B82</color>
+    <color name="warning">#FFD666</color>
+
+    <!-- 🌈 Градиенты -->
+    <color name="gradient_start">#C7C0FF</color>
+    <color name="gradient_end">#F2EDFF</color>
+
+    <!-- ⚙️ -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-
-    <color name="text_tertiary">#AAAAAA</color>
-    <color name="text_on_dark">#FFFFFF</color>
-
-    <color name="surface_white">#FFFFFF</color>
-    <color name="divider_gray">#DDDDDD</color>
-
-    <!-- Кнопки и интерактивные элементы -->
-    <color name="button_primary">@color/primary_amethyst</color>
-    <color name="button_secondary">#F1EEFD</color>
-    <color name="button_stroke">@color/primary_amethyst</color>
-
-    <!-- Поля ввода -->
-    <color name="input_background">@color/surface_white</color>
-    <color name="input_text">@color/text_primary</color>
-    <color name="input_border">@color/primary_amethyst</color>
-    <color name="input_hint">@color/text_tertiary</color>
-
-    <!-- Системные -->
-    <color name="success_green">#45AD44</color>
-    <color name="error_red">#DE4437</color>
-    <color name="warning_orange">#FFAC31</color>
-
-    <!-- Градиенты -->
-    <color name="gradient_start">#795698</color>
-    <color name="gradient_end">#D1A6D9</color>
-
-    <color name="divider">#BDBDBD</color>
+    <color name="disabled_gray">#E1E1E1</color>
 
 </resources>
+

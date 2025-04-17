@@ -10,12 +10,14 @@
         android:id="@+id/sensor_title_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@color/primary_amethyst_light"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/primary"
+        app:strokeWidth="0.8dp">
 
         <TextView
             android:id="@+id/sensor_title"
@@ -24,9 +26,11 @@
             android:text="@string/_9k_603"
             android:gravity="center"
             android:textSize="18sp"
-            android:textColor="@color/surface_white"
+            android:textColor="@color/text_primary"
             android:textStyle="bold"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:letterSpacing="0.01"/>
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Поля ввода измерений в строку -->
@@ -49,13 +53,15 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:hintTextColor="@color/primary_amethyst"
-            app:boxStrokeColor="@color/primary_amethyst"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:boxBackgroundColor="@color/input_background"
+            app:hintTextColor="@color/text_hint"
+            app:boxStrokeColor="@color/primary"
+            app:endIconTint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/panel_value"
@@ -74,13 +80,15 @@
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:hintTextColor="@color/primary_amethyst"
-            app:boxStrokeColor="@color/primary_amethyst"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:boxBackgroundColor="@color/input_background"
+            app:hintTextColor="@color/text_hint"
+            app:boxStrokeColor="@color/primary"
+            app:endIconTint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/testo_value"
@@ -99,17 +107,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:hintTextColor="@color/primary_amethyst_dark"
-        app:boxStrokeColor="@color/primary_amethyst_dark"
+
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
         app:endIconMode="clear_text"
-        app:startIconTint="@color/primary_amethyst_dark"
+        app:startIconTint="@color/primary_dark"
         app:layout_constraintTop_toBottomOf="@id/first_row_inputs"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxBackgroundColor="@color/input_background"
+        app:hintTextColor="@color/text_hint"
+        app:boxStrokeColor="@color/primary"
+        app:endIconTint="@color/primary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/midpoint_correction_value"

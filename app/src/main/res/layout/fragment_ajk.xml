@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_amethyst"
+    android:background="@drawable/gradient_bg"
     tools:context=".ui.ajk.AjkFragment">
 
     <!-- Заголовок с индикатором прогресса -->
@@ -13,7 +13,7 @@
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_header_gradient"
+        android:background="@drawable/gradient_bg"
         android:elevation="4dp"
         android:padding="12dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,10 +22,10 @@
             android:id="@+id/step_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/step_1_4"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -37,12 +37,12 @@
             android:text="@string/colibration"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:fontFamily="sans-serif-medium"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:fontFamily="@font/roboto_regular"/>
 
         <TextView
             android:id="@+id/percent_text_view"
@@ -51,7 +51,7 @@
             android:text="@string/_0_percent"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/roboto_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -63,7 +63,7 @@
         android:layout_height="4dp"
         android:max="100"
         android:progress="0"
-        app:indicatorColor="@color/primary_amethyst_dark"
+        app:indicatorColor="@color/primary_dark"
         app:trackColor="#E0E0E0"
         app:trackThickness="4dp"
         app:layout_constraintTop_toBottomOf="@id/header_container" />
@@ -106,15 +106,16 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_sensors"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_amethyst" />
+                        app:tint="@color/primary_dark" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/enter_measurements_sensor"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
+                        android:letterSpacing="0.01"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_amethyst"
+                        android:textColor="@color/primary_dark"
                         android:fontFamily="sans-serif-medium" />
                 </LinearLayout>
 
@@ -123,8 +124,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -136,11 +140,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/enter_labs"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
                             android:paddingBottom="8dp"
-                            android:drawableStart="@drawable/ic_lab"
+                            android:letterSpacing="0.01"
+                            android:fontFamily="@font/roboto_regular"
                             android:drawablePadding="8dp" />
 
                         <LinearLayout
@@ -161,6 +166,8 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_1"
                                     android:textSize="12sp"
+                                    android:letterSpacing="0.01"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textColor="@color/text_secondary" />
 
                                 <EditText
@@ -170,9 +177,14 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    android:background="@drawable/bg_edit_text"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -186,7 +198,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_2"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textSize="12sp"
+                                    android:letterSpacing="0.01"
                                     android:textColor="@color/text_secondary" />
 
                                 <EditText
@@ -196,9 +210,15 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    android:background="@drawable/bg_edit_text"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"
+                                    />
                             </LinearLayout>
 
                             <LinearLayout
@@ -212,7 +232,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_3"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textSize="12sp"
+                                    android:letterSpacing="0.01"
                                     android:textColor="@color/text_secondary" />
 
                                 <EditText
@@ -222,9 +244,14 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    android:background="@drawable/bg_edit_text"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"/>
                             </LinearLayout>
                         </LinearLayout>
 
@@ -232,14 +259,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:background="@drawable/bg_average_value"
                             android:padding="8dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/middle_scale_ajk"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textSize="12sp"
+                                android:letterSpacing="0.01"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
 
@@ -247,9 +275,11 @@
                                 android:id="@+id/lab_average_text_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_regular"
                                 android:text="@string/zero_0_0000"
                                 android:textSize="16sp"
-                                android:textColor="@color/primary_amethyst"
+                                android:letterSpacing="0.01"
+                                android:textColor="@color/primary_dark"
                                 android:textStyle="bold"
                                 android:gravity="center"
                                 android:padding="8dp"
@@ -263,8 +293,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -276,11 +309,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/check_sensor"
-                            android:textSize="14sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textSize="16sp"
+                            android:letterSpacing="0.01"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
                             android:paddingBottom="8dp"
-                            android:drawableStart="@drawable/ic_sensor_test"
                             android:drawablePadding="8dp" />
 
                         <LinearLayout
@@ -300,6 +334,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_1"
+                                    android:letterSpacing="0.01"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -310,6 +346,11 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -326,6 +367,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_2"
+                                    android:letterSpacing="0.01"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -336,6 +379,11 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -352,6 +400,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/input_3"
+                                    android:letterSpacing="0.01"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:textSize="12sp"
                                     android:textColor="@color/text_secondary" />
 
@@ -362,6 +412,11 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    app:boxBackgroundColor="@color/input_background"
+                                    app:hintTextColor="@color/text_hint"
+                                    app:boxStrokeColor="@color/primary"
+                                    app:endIconTint="@color/primary"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -372,13 +427,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:background="@drawable/bg_average_value"
                             android:padding="8dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/middle_scale_ajk"
+                                android:fontFamily="@font/roboto_regular"
+                                android:letterSpacing="0.01"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary" />
@@ -388,8 +444,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/zero_0_0000"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textSize="16sp"
-                                android:textColor="@color/primary_amethyst"
+                                android:textColor="@color/primary_dark"
                                 android:textStyle="bold"
                                 android:gravity="center"
                                 android:padding="8dp"
@@ -423,16 +480,16 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_resistance"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_amethyst" />
+                        app:tint="@color/primary_dark" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/resistance_and_const"
+                        android:fontFamily="@font/roboto_regular"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_amethyst"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textColor="@color/text_primary"/>
                 </LinearLayout>
 
                 <!-- Карточка для сопротивления и константы -->
@@ -440,8 +497,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -459,6 +519,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/resistance"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -472,6 +533,7 @@
                                 android:inputType="numberDecimal"
                                 android:textSize="16sp"
                                 android:padding="12dp"
+                                android:fontFamily="@font/roboto_regular"
                                 android:layout_marginTop="8dp"
                                 android:textColor="@color/text_primary"
                                 android:textStyle="bold"
@@ -487,6 +549,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/math_const"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"
@@ -505,10 +568,11 @@
                                     android:id="@+id/constant_text_view"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:text=""
                                     android:textSize="18sp"
                                     android:textStyle="bold"
-                                    android:textColor="@color/primary_amethyst_dark"
+                                    android:textColor="@color/primary_dark"
                                     android:gravity="center" />
                             </LinearLayout>
                         </LinearLayout>
@@ -519,9 +583,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="#E1F5FE">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -533,6 +599,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/math_number"
+                            android:fontFamily="@font/roboto_regular"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
@@ -544,6 +611,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/middle_0_0000"
+                            android:fontFamily="@font/roboto_regular"
                             android:textSize="14sp"
                             android:textColor="@color/text_primary"
                             android:layout_marginTop="8dp"
@@ -575,16 +643,16 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_table"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_amethyst" />
+                        app:tint="@color/primary" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/table_number"
+                        android:fontFamily="@font/roboto_regular"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_amethyst"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textColor="@color/primary"/>
                 </LinearLayout>
 
                 <!-- Блок R = K/0.2 -->
@@ -592,8 +660,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -608,10 +679,11 @@
                             android:text="@string/r_k_0_2"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_amethyst"
+                            android:textColor="@color/primary"
                             android:drawableStart="@drawable/ic_resistor"
                             android:drawablePadding="8dp"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/roboto_regular"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -634,7 +706,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                                 <EditText
                                     android:id="@+id/r02_i_edit_text"
@@ -643,6 +716,7 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -662,7 +736,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                                 <EditText
                                     android:id="@+id/r02_sensor_edit_text"
@@ -671,6 +746,7 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -684,8 +760,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -700,10 +779,11 @@
                             android:text="@string/r_k_0_5"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_amethyst"
+                            android:textColor="@color/primary"
                             android:drawableStart="@drawable/ic_resistor"
                             android:drawablePadding="8dp"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/roboto_regular"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -726,7 +806,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                             <EditText
                                 android:id="@+id/r05_i_edit_text"
@@ -735,6 +816,7 @@
                                 android:inputType="numberDecimal"
                                 android:textSize="14sp"
                                 android:padding="10dp"
+                                android:fontFamily="@font/roboto_regular"
                                 android:layout_marginTop="4dp"
                                 android:textColor="@color/text_primary"
                                 android:background="@drawable/bg_edit_text" />
@@ -754,7 +836,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                                 <EditText
                                     android:id="@+id/r05_sensor_edit_text"
@@ -763,6 +846,7 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -775,8 +859,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -791,10 +878,11 @@
                             android:text="@string/r_k_0_8"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_amethyst"
+                            android:textColor="@color/primary"
                             android:drawableStart="@drawable/ic_resistor"
                             android:drawablePadding="8dp"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/roboto_regular"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -817,7 +905,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_current"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                                 <EditText
                                     android:id="@+id/r08_i_edit_text"
@@ -826,6 +915,7 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -845,7 +935,8 @@
                                     android:textColor="@color/text_secondary"
                                     android:drawableStart="@drawable/ic_gauge"
                                     android:drawablePadding="4dp"
-                                    android:gravity="center_vertical" />
+                                    android:gravity="center_vertical"
+                                    android:fontFamily="@font/roboto_regular"/>
 
                                 <EditText
                                     android:id="@+id/r08_sensor_edit_text"
@@ -854,6 +945,7 @@
                                     android:inputType="numberDecimal"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
                                     android:textColor="@color/text_primary"
                                     android:background="@drawable/bg_edit_text" />
@@ -886,7 +978,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_temperature"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_amethyst" />
+                        app:tint="@color/primary" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -894,8 +986,8 @@
                         android:text="@string/resistance_t_40_c"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_amethyst"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textColor="@color/primary"
+                        android:fontFamily="@font/roboto_regular"/>
                 </LinearLayout>
 
                 <!-- Карточка для сопротивления при 40°C -->
@@ -903,8 +995,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="2dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -919,10 +1014,11 @@
                             android:text="@string/r_k_0_68"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/primary_amethyst"
+                            android:textColor="@color/primary"
                             android:drawableStart="@drawable/ic_thermometer"
                             android:drawablePadding="8dp"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:fontFamily="@font/roboto_regular"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -938,7 +1034,8 @@
                                 android:textColor="@color/text_secondary"
                                 android:drawableStart="@drawable/ic_gauge"
                                 android:drawablePadding="4dp"
-                                android:gravity="center_vertical" />
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/roboto_regular"/>
 
                             <EditText
                                 android:id="@+id/r40_sensor_edit_text"
@@ -948,6 +1045,7 @@
                                 android:textSize="16sp"
                                 android:padding="12dp"
                                 android:layout_marginTop="4dp"
+                                android:fontFamily="@font/roboto_regular"
                                 android:textColor="@color/text_primary"
                                 android:background="@drawable/bg_edit_text" />
                         </LinearLayout>
@@ -969,7 +1067,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_results"
                         android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_amethyst" />
+                        app:tint="@color/primary" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -977,8 +1075,8 @@
                         android:text="@string/total_result"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/primary_amethyst"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textColor="@color/primary"
+                        android:fontFamily="@font/roboto_regular"/>
                 </LinearLayout>
 
                 <!-- Карточка с результатами -->
@@ -1002,8 +1100,8 @@
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:textColor="@color/text_primary"
-                            android:fontFamily="monospace"
-                            android:lineSpacingExtra="4dp" />
+                            android:lineSpacingExtra="4dp"
+                            android:fontFamily="@font/roboto_regular"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -1013,9 +1111,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="3dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="@color/divider"
+                    app:cardBackgroundColor="@color/surface"
+                    app:strokeWidth="0.8dp">
 
                     <TextView
                         android:id="@+id/status_text_view"
@@ -1031,7 +1132,8 @@
                         android:background="@android:color/holo_blue_light"
                         android:visibility="gone"
                         tools:text="Статус операции"
-                        tools:visibility="visible" />
+                        tools:visibility="visible"
+                        android:fontFamily="@font/roboto_regular"/>
                 </androidx.cardview.widget.CardView>
 
                 <!-- Кнопка "Перейти в начало" -->
@@ -1041,7 +1143,6 @@
                     android:layout_height="56dp"
                     android:text="@string/start_new_colibration"
                     android:textSize="16sp"
-                    android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
                     android:textAllCaps="false"
                     android:layout_marginHorizontal="24dp"
@@ -1049,8 +1150,9 @@
                     app:icon="@drawable/ic_restart"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
-                    app:backgroundTint="@color/primary_amethyst_dark"
-                    android:visibility="gone" />
+                    app:backgroundTint="@color/primary_dark"
+                    android:visibility="gone"
+                    android:fontFamily="@font/roboto_regular"/>
             </LinearLayout>
         </FrameLayout>
     </ScrollView>
@@ -1076,12 +1178,15 @@
             android:text="@string/reset"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
-            app:cornerRadius="20dp"
-            app:backgroundTint="#D3D3D3"
-            android:textColor="@android:color/black"
             app:icon="@drawable/ic_reset"
             app:iconGravity="textStart"
-            app:iconPadding="4dp" />
+            app:iconPadding="4dp"
+
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/primary"
+            android:textColor="@color/text_on_primary"
+            app:iconTint="@color/text_on_primary"
+            app:rippleColor="@color/primary_light"/>
 
         <View
             android:layout_width="0dp"
@@ -1096,10 +1201,13 @@
             android:text="@string/next"
             android:textSize="14sp"
             android:fontFamily="sans-serif-medium"
-            app:cornerRadius="20dp"
-            app:backgroundTint="@color/primary_amethyst"
             app:icon="@drawable/ic_next"
             app:iconGravity="textEnd"
-            app:iconPadding="4dp" />
+            app:iconPadding="4dp"
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/primary"
+            android:textColor="@color/text_on_primary"
+            app:iconTint="@color/text_on_primary"
+            app:rippleColor="@color/primary_light"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

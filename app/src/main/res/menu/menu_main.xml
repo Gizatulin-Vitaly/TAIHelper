@@ -4,20 +4,20 @@
         android:id="@+id/action_add_sensor"
         android:icon="@drawable/ic_add_sensor"
         android:title="Добавить датчик"
-        app:iconTint="@color/primary_amethyst"
+        app:iconTint="@color/primary"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="Настройки"
-        app:iconTint="@color/primary_amethyst"
+        app:iconTint="@color/primary"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"
         android:icon="@drawable/ic_info"
         android:title="О приложении"
-        app:iconTint="@color/primary_amethyst"
+        app:iconTint="@color/primary"
         app:showAsAction="never" />
 </menu>

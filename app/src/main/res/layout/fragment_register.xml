@@ -11,10 +11,6 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardForm"
         android:background="?attr/colorSurface"
-        app:cardCornerRadius="32dp"
-        app:cardElevation="16dp"
-        app:strokeColor="@color/primary_amethyst"
-        app:strokeWidth="2dp"
         android:alpha="0.85"
         android:animateLayoutChanges="true"
         android:transitionName="cardFormTransition"
@@ -25,7 +21,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45">
+        app:layout_constraintVertical_bias="0.45"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:strokeColor="@color/divider"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeWidth="0.8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -42,6 +43,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -55,6 +58,8 @@
                 android:text="@string/register_subtitle"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvRegisterTitle" />
@@ -85,14 +90,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="clear_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:startIconDrawable="@drawable/ic_person"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etName"
@@ -115,14 +125,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="clear_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tilName"
                         app:startIconDrawable="@drawable/ic_person"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etLastName"
@@ -145,14 +160,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="clear_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tilLastName"
                         app:startIconDrawable="@drawable/ic_work"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPosition"
@@ -175,14 +195,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="clear_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tilPosition"
                         app:startIconDrawable="@drawable/ic_email"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEmail"
@@ -205,14 +230,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="password_toggle"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tilEmail"
                         app:startIconDrawable="@drawable/ic_lock"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPassword"
@@ -235,14 +265,19 @@
                         app:boxCornerRadiusBottomStart="16dp"
                         app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:boxStrokeWidth="1dp"
                         app:endIconMode="password_toggle"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tilPassword"
                         app:startIconDrawable="@drawable/ic_lock"
-                        app:startIconTint="@color/primary_amethyst">
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:startIconTint="@color/primary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etConfirmPassword"
@@ -265,11 +300,16 @@
                         android:textAllCaps="false"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@color/primary_amethyst"
-                        app:cornerRadius="20dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
+                        app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword"
+                        app:cornerRadius="20dp"
+                        app:backgroundTint="@color/primary"
+                        android:textColor="@color/text_on_primary"
+                        app:iconTint="@color/text_on_primary"
+                        app:rippleColor="@color/primary_light"/>
 
                     <!-- Кнопка Назад в стиле обычной ссылки -->
                     <TextView
@@ -282,7 +322,9 @@
                         android:focusable="true"
                         android:padding="8dp"
                         android:text="@string/back_button"
-                        android:textColor="@color/primary_amethyst"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"
+                        android:textColor="@color/primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -306,6 +348,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:indeterminateTint="@color/primary_amethyst"
+        android:fontFamily="@font/roboto_regular"
+        android:letterSpacing="0.01"
+        android:indeterminateTint="@color/primary"
         android:elevation="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

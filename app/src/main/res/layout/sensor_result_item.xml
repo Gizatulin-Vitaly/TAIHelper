@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/background_light">
+    app:cardBackgroundColor="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,9 @@
             android:text="@string/_9k_606"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/primary_amethyst_dark"
+            android:textColor="@color/primary_dark"
+            android:fontFamily="@font/roboto_regular"
+            android:letterSpacing="0.01"
             android:gravity="center"
             android:layout_marginBottom="8dp"/>
 
@@ -39,17 +41,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/panels"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/panel_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/_3_55"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
                 android:textColor="@color/text_primary"
+                android:textStyle="bold"
                 android:gravity="end"
                 tools:text="3.55"/>
         </LinearLayout>
@@ -66,7 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/testo"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
                 android:textColor="@color/text_primary"/>
 
             <TextView
@@ -74,9 +82,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/_3_55"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/roboto_regular"
+                android:letterSpacing="0.01"
                 android:textColor="@color/text_primary"
+                android:textStyle="bold"
                 android:gravity="end"
                 tools:text="3.55"/>
         </LinearLayout>

@@ -50,7 +50,12 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="@string/reset"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:cornerRadius="20dp"
+                app:backgroundTint="@color/primary"
+                android:textColor="@color/text_on_primary"
+                app:iconTint="@color/text_on_primary"
+                app:rippleColor="@color/primary_light"/>
         </LinearLayout>
 
         <HorizontalScrollView
@@ -75,11 +80,11 @@
         android:id="@+id/offlineIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFC107"
+        android:background="@color/warning"
         android:gravity="center"
         android:padding="4dp"
         android:text="@string/offline"
-        android:textColor="#B71C1C"
+        android:textColor="@color/error"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/categoriesContainer"
         tools:visibility="visible" />

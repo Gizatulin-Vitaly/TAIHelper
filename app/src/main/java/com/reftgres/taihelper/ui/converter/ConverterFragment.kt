@@ -34,9 +34,9 @@ class FragmentConverter : Fragment() {
 
         // Подписка на изменение цвета карточек
         viewModel.isVoltagePrimary.observe(viewLifecycleOwner) { isPrimary ->
-            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_amethyst)
-            val secondaryColor = ContextCompat.getColor(requireContext(), R.color.background_light)
-            val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
+            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
+            val secondaryColor = ContextCompat.getColor(requireContext(), R.color.surface)
+            val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
             val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
 
             binding.card05.setCardBackgroundColor(if (isPrimary) primaryColor else secondaryColor)
@@ -73,12 +73,12 @@ class FragmentConverter : Fragment() {
         )
 
         viewModel.isPrimarySelected.observe(viewLifecycleOwner) { isPrimary ->
-            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary_amethyst)
-            val secondaryColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
-            val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface_white)
-            val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
-            val primaryIconTint = ContextCompat.getColorStateList(requireContext(), R.color.surface_white)
-            val secondaryIconTint = ContextCompat.getColorStateList(requireContext(), R.color.text_secondary)
+            val primaryColor = ContextCompat.getColor(requireContext(), R.color.primary)
+            val secondaryColor = ContextCompat.getColor(requireContext(), R.color.surface)
+            val primaryTextColor = ContextCompat.getColor(requireContext(), R.color.surface)
+            val secondaryTextColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
+            val primaryIconTint = ContextCompat.getColorStateList(requireContext(), R.color.surface)
+            val secondaryIconTint = ContextCompat.getColorStateList(requireContext(), R.color.text_primary)
 
             binding.btnCurrent.apply {
                 setBackgroundColor(if (isPrimary) primaryColor else secondaryColor)

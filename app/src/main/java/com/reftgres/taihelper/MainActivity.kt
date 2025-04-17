@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity() {
             networkStatusText.setTextColor(
                 ContextCompat.getColor(
                     this,
-                    if (isConnected) R.color.success_green else R.color.error_red
+                    if (isConnected) R.color.success else R.color.error
                 )
             )
             Log.d(TAG, "UI обновлен: сеть ${if (isConnected) "доступна" else "недоступна"}")

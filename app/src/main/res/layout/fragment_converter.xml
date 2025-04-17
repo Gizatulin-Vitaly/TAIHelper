@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="8dp"
-                app:strokeColor="@color/primary_amethyst_dark"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/divider"
                 app:strokeWidth="1dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,9 +45,10 @@
                         android:layout_height="wrap_content"
                         android:text="@string/display_sensor"
                         android:gravity="center"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        android:letterSpacing="0.01"
                         android:fontFamily="@font/roboto_regular"
                         android:layout_marginBottom="16dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -59,11 +61,11 @@
                         android:id="@+id/card_05"
                         android:layout_width="70dp"
                         android:layout_height="60dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="@color/primary_amethyst"
+                        app:cardCornerRadius="20dp"
                         app:cardElevation="4dp"
-                        app:strokeWidth="1dp"
-                        app:strokeColor="@color/primary_amethyst_light"
+                        app:cardBackgroundColor="@color/surface"
+                        app:strokeColor="@color/divider"
+                        app:strokeWidth="0.8dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
@@ -77,9 +79,10 @@
                             android:text="@string/_0_5_nma"
                             android:fontFamily="@font/roboto_regular"
                             android:gravity="center"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/surface_white" />
+                            android:textColor="@color/text_primary"
+                            android:letterSpacing="0.01"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Поле ввода для начала шкалы с уменьшенной высотой и иконкой -->
@@ -88,10 +91,11 @@
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="12dp"
-                        app:hintTextColor="@color/primary_amethyst"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
                         app:endIconMode="clear_text"
-                        app:endIconTint="@color/primary_amethyst"
+                        app:endIconTint="@color/primary"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:shapeAppearanceOverlay="@style/RoundedTextInputLayout"
                         app:layout_constraintTop_toTopOf="@id/card_05"
@@ -115,11 +119,11 @@
                         android:id="@+id/card_420"
                         android:layout_width="70dp"
                         android:layout_height="60dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="@color/background_light"
+                        app:cardCornerRadius="20dp"
+                        app:cardBackgroundColor="@color/primary"
+                        app:strokeColor="@color/divider"
+                        app:strokeWidth="0.8dp"
                         app:cardElevation="4dp"
-                        app:strokeWidth="1dp"
-                        app:strokeColor="@color/text_secondary"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
@@ -132,11 +136,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="@string/_4_20_nma"
+                            android:letterSpacing="0.01"
                             android:fontFamily="@font/roboto_regular"
                             android:gravity="center"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_secondary" />
+                            android:textColor="@color/text_on_primary" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Поле ввода для конца шкалы с уменьшенной высотой и иконкой -->
@@ -145,10 +150,12 @@
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="12dp"
-                        app:hintTextColor="@color/primary_amethyst"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        app:boxBackgroundColor="@color/input_background"
+                        android:textColor="@color/text_primary"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
                         app:endIconMode="clear_text"
-                        app:endIconTint="@color/primary_amethyst"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:shapeAppearanceOverlay="@style/RoundedTextInputLayout"
                         app:layout_constraintTop_toTopOf="@id/card_420"
@@ -173,8 +180,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/users_data"
                         android:gravity="center"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="20sp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:letterSpacing="0.01"
                         android:textStyle="bold"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="16dp"
@@ -189,12 +197,13 @@
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:hint="@string/enter_user_scale"
-                        app:hintTextColor="@color/primary_amethyst"
-                        app:boxStrokeColor="@color/primary_amethyst"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:hintTextColor="@color/text_hint"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
                         app:endIconMode="clear_text"
-                        app:endIconTint="@color/primary_amethyst"
                         app:startIconDrawable="@drawable/ic_sensors"
-                        app:startIconTint="@color/primary_amethyst"
+                        app:startIconTint="@color/primary"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:shapeAppearanceOverlay="@style/RoundedTextInputLayout"
                         app:layout_constraintTop_toBottomOf="@id/text_tittle_second"
@@ -212,7 +221,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Заголовок раздела перенесен в верхнюю часть -->
             <TextView
                 android:id="@+id/word_scale"
                 android:layout_width="0dp"
@@ -221,22 +229,20 @@
                 android:layout_marginHorizontal="16dp"
                 android:gravity="center"
                 android:text="@string/what_do_find"
-                android:textColor="@color/surface_white"
-                android:textSize="24sp"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:letterSpacing="0.01"
                 android:textStyle="bold"
                 android:fontFamily="@font/roboto_regular"
-                android:background="@drawable/rounded_title_bg"
                 android:paddingVertical="12dp"
                 app:layout_constraintTop_toBottomOf="@id/change_voltage_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Группа переключателей режима под заголовком -->
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/mode_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 app:checkedButton="@id/btn_current"
                 app:singleSelection="true"
                 app:selectionRequired="true"
@@ -254,12 +260,14 @@
                     app:icon="@drawable/ic_bolt"
                     app:iconSize="28dp"
                     app:iconPadding="8dp"
-                    app:cornerRadius="16dp"
-                    app:rippleColor="?attr/colorPrimaryVariant"
-                    app:strokeColor="?attr/colorPrimary"
-                    app:backgroundTint="@color/primary_amethyst_dark"
-                    app:iconTint="@color/surface_white"
-                    android:textColor="@color/surface_white" />
+                    app:cornerRadius="20dp"
+                    android:elevation="4dp"
+                    app:backgroundTint="@color/primary"
+                    android:textColor="@color/text_on_primary"
+                    app:iconTint="@color/text_on_primary"
+                    app:rippleColor="@color/primary_light"
+                    app:strokeColor="@android:color/transparent"
+                    app:strokeWidth="0dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_sensor"
@@ -271,9 +279,12 @@
                     app:icon="@drawable/ic_current"
                     app:iconSize="28dp"
                     app:iconPadding="8dp"
-                    app:cornerRadius="16dp"
-                    app:rippleColor="?attr/colorPrimaryVariant"
-                    app:strokeColor="?attr/colorPrimary" />
+                    app:cornerRadius="20dp"
+                    app:backgroundTint="@color/surface"
+                    app:rippleColor="@color/text_primary"
+                    android:elevation="4dp"
+                    app:strokeColor="@android:color/transparent"
+                    app:strokeWidth="0dp"/>
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <!-- Карточка для отображения результата -->
@@ -284,13 +295,15 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="12dp"
-                app:strokeColor="@color/primary_amethyst"
-                app:strokeWidth="2dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeWidth="0.8dp"
                 android:alpha="0.9"
                 app:layout_constraintTop_toBottomOf="@id/mode_switch"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/resultButton">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/resultTextView"
@@ -298,11 +311,11 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="ТАИ"
+                    android:letterSpacing="0.01"
                     android:padding="16dp"
                     android:textStyle="bold"
-                    android:textSize="48sp"
-                    android:textColor="@color/primary_amethyst_dark"
-                    android:letterSpacing="0.05"
+                    android:textSize="32sp"
+                    android:textColor="@color/text_primary"
                     tools:text="ТАИ" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -314,12 +327,13 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/mathematical"
-                android:textSize="20sp"
-                android:backgroundTint="@color/primary_amethyst_dark"
-                android:textColor="@color/surface_white"
                 app:cornerRadius="20dp"
+                android:textSize="20sp"
+                app:backgroundTint="@color/primary"
+                android:textColor="@color/text_on_primary"
+                app:iconTint="@color/text_on_primary"
                 app:elevation="8dp"
-                app:rippleColor="@color/primary_amethyst_light"
+                app:rippleColor="@color/primary_light"
                 android:stateListAnimator="@animator/button_state_list_anim"
                 app:icon="@drawable/ic_calculator"
                 app:iconGravity="textStart"
@@ -327,7 +341,8 @@
                 app:iconPadding="8dp"
                 app:layout_constraintTop_toBottomOf="@id/result_card"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
