@@ -113,7 +113,8 @@ class PdfDocumentsViewModel @Inject constructor(
         viewModelScope.launch {
             documentRepository.getAllCategories().collect { result ->
                 when (result) {
-                    is ResourceState.Success -> _categories.value = result.data
+                    is ResourceState.Success -> _categories.value = result.data ?: emptyList()
+
                     else -> { /* Обрабатываем в documents */ }
                 }
             }
