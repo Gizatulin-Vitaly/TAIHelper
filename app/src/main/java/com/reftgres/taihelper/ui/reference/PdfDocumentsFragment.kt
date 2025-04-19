@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.reftgres.taihelper.R
@@ -49,6 +50,28 @@ class PdfDocumentsFragment : Fragment() {
         setupCategoryButtons()
         observeViewModel()
         observeNetwork()
+
+        binding.buttonAddPdf.setOnClickListener {
+            findNavController().navigate(R.id.action_referenceFragment_to_addPdfDocumentFragment)
+        }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrBlank()) {
+                    viewModel.searchDocuments(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) {
+                    viewModel.clearSearch()
+                }
+                return true
+            }
+        })
+
+
     }
 
     private fun setupRecyclerView() {
@@ -111,44 +134,81 @@ class PdfDocumentsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // Наблюдаем за списком документов
-        viewModel.documents.observe(viewLifecycleOwner) { result ->
+        // 🔍 Наблюдаем за результатами поиска (в приоритете)
+        viewModel.searchResults.observe(viewLifecycleOwner) { result ->
             binding.swipeRefreshLayout.isRefreshing = false
 
             when (result) {
                 is ResourceState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
-                    binding.textViewEmpty.visibility = View.GONE
                 }
+
                 is ResourceState.Success -> {
                     binding.progressBar.visibility = View.GONE
 
                     if (result.data.isEmpty()) {
-                        binding.textViewEmpty.visibility = View.VISIBLE
-                        binding.recyclerViewDocuments.visibility = View.GONE
+                        if (binding.searchView.query.isNotEmpty()) {
+                            binding.textViewEmpty.visibility = View.VISIBLE
+                            binding.textViewEmpty.text = "Ничего не найдено"
+                            binding.recyclerViewDocuments.visibility = View.GONE
+                        } else {
+                            // Если поиск пустой — загружаем обычный список
+                            viewModel.loadAllDocuments()
+                        }
                     } else {
                         binding.textViewEmpty.visibility = View.GONE
                         binding.recyclerViewDocuments.visibility = View.VISIBLE
                         adapter.submitList(result.data)
                     }
                 }
+
                 is ResourceState.Error -> {
                     binding.progressBar.visibility = View.GONE
-                    binding.textViewEmpty.visibility = View.VISIBLE
-                    binding.textViewEmpty.text = "Ошибка: ${result.message}"
-                    Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Ошибка поиска: ${result.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        // Наблюдаем за категориями
+        // 📚 Наблюдаем за основным списком документов (если нет поиска)
+        viewModel.documents.observe(viewLifecycleOwner) { result ->
+            // Только если поле поиска пустое!
+            if (binding.searchView.query.isEmpty()) {
+                binding.swipeRefreshLayout.isRefreshing = false
+
+                when (result) {
+                    is ResourceState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.textViewEmpty.visibility = View.GONE
+                    }
+
+                    is ResourceState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+
+                        if (result.data.isEmpty()) {
+                            binding.textViewEmpty.visibility = View.VISIBLE
+                            binding.recyclerViewDocuments.visibility = View.GONE
+                        } else {
+                            binding.textViewEmpty.visibility = View.GONE
+                            binding.recyclerViewDocuments.visibility = View.VISIBLE
+                            adapter.submitList(result.data)
+                        }
+                    }
+
+                    is ResourceState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.textViewEmpty.visibility = View.VISIBLE
+                        binding.textViewEmpty.text = "Ошибка: ${result.message}"
+                        Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        // 🧩 Наблюдаем за категориями
         viewModel.categories.observe(viewLifecycleOwner) { categories ->
             binding.categoriesContainer.visibility = if (categories.isEmpty()) View.GONE else View.VISIBLE
-
-            // Очищаем существующие кнопки
             binding.categoryButtonsContainer.removeAllViews()
 
-            // Добавляем кнопки для каждой категории
             categories.forEach { category ->
                 val button = layoutInflater.inflate(
                     R.layout.category_button,
@@ -164,39 +224,8 @@ class PdfDocumentsFragment : Fragment() {
                 binding.categoryButtonsContainer.addView(button)
             }
         }
-
-        // Наблюдаем за результатами поиска
-        viewModel.searchResults.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is ResourceState.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is ResourceState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-
-                    if (result.data.isEmpty()) {
-                        // Показываем только если был запрос поиска
-                        if (binding.searchView.query.isNotEmpty()) {
-                            binding.textViewEmpty.visibility = View.VISIBLE
-                            binding.textViewEmpty.text = "Ничего не найдено"
-                            binding.recyclerViewDocuments.visibility = View.GONE
-                        } else {
-                            // Если поиск очищен, возвращаемся к основному списку
-                            refreshData()
-                        }
-                    } else {
-                        binding.textViewEmpty.visibility = View.GONE
-                        binding.recyclerViewDocuments.visibility = View.VISIBLE
-                        adapter.submitList(result.data)
-                    }
-                }
-                is ResourceState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(context, "Ошибка поиска: ${result.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
+
 
     private fun observeNetwork() {
         viewModel.networkAvailable.observe(viewLifecycleOwner) { isAvailable ->
@@ -221,6 +250,7 @@ class PdfDocumentsFragment : Fragment() {
             Toast.makeText(context, "Нет подключения к сети. Документ не загружен локально.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

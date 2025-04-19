@@ -3,6 +3,7 @@ package com.reftgres.taihelper.ui.reference
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -31,6 +32,7 @@ class PdfViewerActivity : AppCompatActivity() {
         }
     }
 
+
     private lateinit var binding: PdfViewerBinding
     private val viewModel: PdfViewerViewModel by viewModels()
 
@@ -42,6 +44,8 @@ class PdfViewerActivity : AppCompatActivity() {
         binding = PdfViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding = PdfViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupToolbar()
 
         documentId = intent.getStringExtra(EXTRA_DOCUMENT_ID)
@@ -66,62 +70,103 @@ class PdfViewerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+
     private fun observeViewModel() {
-        // Наблюдаем за документом
         viewModel.document.observe(this) { result ->
             when (result) {
                 is ResourceState.Loading -> {
                     binding.progressBarPdf.visibility = View.VISIBLE
                 }
-                is ResourceState.Success -> {
-                    supportActionBar?.title = result.data.title
 
-                    // Устанавливаем последнюю просмотренную страницу
+                is ResourceState.Success -> {
+                    binding.progressBarPdf.visibility = View.GONE
+                    supportActionBar?.title = result.data.title
                     currentPage = result.data.lastOpenedPage
 
-                    // Если документ уже загружен локально, сразу отображаем его
-                    if (result.data.isDownloaded) {
-                        // Ничего не делаем, т.к. downloadStatus сработает
+                    val file = File(result.data.localPath)
+                    val fileActuallyExists = file.exists()
+
+                    if (fileActuallyExists) {
+                        binding.buttonDeletePdf.visibility = View.VISIBLE
+                        binding.buttonDeletePdf.setOnClickListener {
+                        lifecycleScope.launch {
+                            val docId = result.data.id // ← или .documentId, если по нему сохранялся файл
+                            Log.d("PDF_DEBUG", "Удаляем файл с ID: $docId")
+
+                            val success = viewModel.deleteLocalFile(docId)
+
+                            if (success) {
+                                Toast.makeText(this@PdfViewerActivity, "Файл удалён из памяти", Toast.LENGTH_SHORT).show()
+                                finish() // Закрываем экран
+                            } else {
+                                Toast.makeText(this@PdfViewerActivity, "Ошибка при удалении", Toast.LENGTH_SHORT).show()
+
+                                // Отладка: покажем путь и exists()
+                                val file = File(getExternalFilesDir(null), "pdf_documents/$docId.pdf")
+                                Log.e("PDF_DEBUG", "Путь к файлу: ${file.absolutePath}, exists = ${file.exists()}")
+                            }
+                        }
+                        }
                     } else {
-                        // Автоматически начинаем загрузку
+                        binding.buttonDeletePdf.visibility = View.GONE
                         viewModel.downloadDocument(result.data)
                     }
                 }
+
                 is ResourceState.Error -> {
                     binding.progressBarPdf.visibility = View.GONE
-                    showError("Не удалось загрузить информацию о документе: ${result.message}")
+                    showError("Не удалось загрузить документ: ${result.message}")
+                    binding.buttonDeletePdf.visibility = View.GONE
                 }
             }
         }
 
-        // Наблюдаем за статусом загрузки
         viewModel.downloadStatus.observe(this) { status ->
             when (status) {
+
                 is DownloadStatus.NotStarted -> {
                     binding.progressBarPdf.visibility = View.VISIBLE
                     binding.textViewProgressPdf.visibility = View.GONE
                 }
+
                 is DownloadStatus.Progress -> {
                     binding.progressBarPdf.visibility = View.VISIBLE
                     binding.textViewProgressPdf.visibility = View.VISIBLE
                     binding.textViewProgressPdf.text = "Загрузка файла: ${status.progress}%"
                 }
+
                 is DownloadStatus.Success -> {
                     binding.progressBarPdf.visibility = View.GONE
                     binding.textViewProgressPdf.visibility = View.GONE
 
-                    // Отображаем PDF файл
+                    // Отображаем PDF
                     displayPdf(status.localFilePath)
+
+                    // Обновляем PdfDocument, чтобы isDownloaded стал true
+                    val current = viewModel.document.value
+                    if (current is ResourceState.Success) {
+                        val updated = current.data.copy(
+                            isDownloaded = true,
+                            localPath = status.localFilePath
+                        )
+
+                        // Сохраняем обновлённый документ в LiveData
+                        viewModel.setUpdatedDocument(updated)
+
+                        // Лог
+                        Log.d("PDF_DEBUG", "Файл загружен: ${status.localFilePath}")
+                        Log.d("PDF_DEBUG", "Обновили document с isDownloaded = true")
+                    }
                 }
+
                 is DownloadStatus.Error -> {
                     binding.progressBarPdf.visibility = View.GONE
                     binding.textViewProgressPdf.visibility = View.GONE
-                    showError("Ошибка при загрузке файла: ${status.message}")
+                    showError("Ошибка загрузки файла: ${status.message}")
                 }
             }
         }
 
-        // Наблюдаем за статусом сети
         viewModel.networkAvailable.observe(this) { isAvailable ->
             binding.networkStatusIndicator.visibility = if (isAvailable) View.GONE else View.VISIBLE
         }

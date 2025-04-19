@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Timestamp
 import com.reftgres.taihelper.data.model.DocumentCategory
 import com.reftgres.taihelper.data.model.PdfDocument
 import com.reftgres.taihelper.data.model.ResourceState
@@ -11,6 +12,7 @@ import com.reftgres.taihelper.data.repository.PdfDocumentRepository
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +37,14 @@ class PdfDocumentsViewModel @Inject constructor(
     private val _searchResults = MutableLiveData<ResourceState<List<PdfDocument>>>()
     val searchResults: LiveData<ResourceState<List<PdfDocument>>> = _searchResults
 
+
     // LiveData для статуса сети
     private val _networkAvailable = MutableLiveData(networkService.isNetworkAvailable())
     val networkAvailable: LiveData<Boolean> = _networkAvailable
+
+    private val _filteredDocuments = MutableLiveData<ResourceState<List<PdfDocument>>>()
+    val filteredDocuments: LiveData<ResourceState<List<PdfDocument>>> = _filteredDocuments
+
 
     init {
         loadCategories()
@@ -88,22 +95,15 @@ class PdfDocumentsViewModel @Inject constructor(
      * Поиск документов
      */
     fun searchDocuments(query: String) {
-        if (query.isBlank()) {
-            _searchResults.value = ResourceState.Success(emptyList())
-            return
-        }
-
         viewModelScope.launch {
             _searchResults.value = ResourceState.Loading
-            _searchResults.value = documentRepository.searchDocuments(query)
+            val result = documentRepository.searchDocuments(query)
+            _searchResults.value = result
         }
     }
 
-    /**
-     * Очистка результатов поиска
-     */
     fun clearSearch() {
-        _searchResults.value = ResourceState.Success(emptyList())
+        _filteredDocuments.value = _documents.value // восстановим список
     }
 
     /**
@@ -138,7 +138,28 @@ class PdfDocumentsViewModel @Inject constructor(
     /**
      * Удаление локального файла
      */
+
     suspend fun deleteLocalFile(documentId: String): Boolean {
         return documentRepository.deleteLocalFile(documentId)
     }
+
+    fun submitManualPdfDocument(title: String, description: String, category: String, fileUrl: String) {
+        viewModelScope.launch {
+            val doc = PdfDocument(
+                documentId = "",
+                id = UUID.randomUUID().toString(),
+                title = title,
+                description = description,
+                category = category,
+                fileUrl = fileUrl,
+                fileSize = 0.0,
+                pageCount = 0,
+                createdAt = Timestamp.now(),
+                updatedAt = Timestamp.now(),
+                tags = listOf("")
+            )
+            documentRepository.uploadManualDocument(doc)
+        }
+    }
+
 }

@@ -126,16 +126,22 @@ class PdfDocumentRepository @Inject constructor(
      */
     suspend fun getDocumentById(documentId: String): ResourceState<PdfDocument> = withContext(Dispatchers.IO) {
         try {
-            Log.d(TAG, "Запрос документа с ID: $documentId")
-
-            // Для отладки - проверяем, совпадает ли ID с известным
-            if (documentId == "CNy9HPK730Mivxbd1tIg") {
-                Log.d(TAG, "Запрошен известный документ CNy9HPK730Mivxbd1tIg")
-            }
-
             val document = documentsCollection.document(documentId).get().await()
                 .toObject(PdfDocument::class.java)
 
+            val localFile = document?.let { getLocalFile(it.id) }
+
+            Log.d("PDF_DEBUG", "=== ДОКУМЕНТ ===")
+            Log.d("PDF_DEBUG", "documentId = ${document?.documentId}")
+            Log.d("PDF_DEBUG", "id (поле Firestore) = ${document?.id}")
+            Log.d("PDF_DEBUG", "Ожидаемый путь к файлу: ${localFile?.absolutePath}")
+            Log.d("PDF_DEBUG", "Файл существует: ${localFile?.exists()}")
+            Log.d("PDF_DEBUG", "Список файлов в папке:")
+
+            val dir = getPdfDirectory()
+            dir.listFiles()?.forEach { file ->
+                Log.d("PDF_DEBUG", "- ${file.name} (${file.length() / 1024} КБ)")
+            }
             if (document != null) {
                 Log.d(TAG, "Документ найден: ${document.title}")
                 val localFile = getLocalFile(documentId)
@@ -152,10 +158,12 @@ class PdfDocumentRepository @Inject constructor(
                 Log.e(TAG, "Документ с ID $documentId не найден")
                 ResourceState.Error("Документ не найден")
             }
+
         } catch (e: Exception) {
             Log.e(TAG, "Ошибка при загрузке документа: ${e.message}", e)
             ResourceState.Error("Ошибка при загрузке документа", e)
         }
+
     }
 
     /**
@@ -394,8 +402,12 @@ class PdfDocumentRepository @Inject constructor(
     /**
      * Получение локального файла для документа
      */
-    private fun getLocalFile(documentId: String): File {
+    private fun getLocalFile(id: String): File {
         val pdfDir = getPdfDirectory()
-        return File(pdfDir, "$documentId.pdf")
+        return File(pdfDir, "$id.pdf")
+    }
+
+    suspend fun uploadManualDocument(doc: PdfDocument) {
+        documentsCollection.document(doc.id).set(doc).await()
     }
 }

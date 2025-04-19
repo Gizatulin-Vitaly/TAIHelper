@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.ui.reference
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,9 @@ import com.reftgres.taihelper.data.repository.PdfDocumentRepository
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import com.google.firebase.Timestamp
+import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +22,10 @@ class PdfViewerViewModel @Inject constructor(
     private val documentRepository: PdfDocumentRepository,
     private val networkService: NetworkConnectivityService
 ) : ViewModel() {
+
+    fun setUpdatedDocument(updated: PdfDocument) {
+        _document.postValue(ResourceState.Success(updated))
+    }
 
     // LiveData для текущего документа
     private val _document = MutableLiveData<ResourceState<PdfDocument>>()
@@ -30,6 +38,7 @@ class PdfViewerViewModel @Inject constructor(
     // LiveData для статуса сети
     private val _networkAvailable = MutableLiveData(networkService.isNetworkAvailable())
     val networkAvailable: LiveData<Boolean> = _networkAvailable
+
 
     init {
         // Наблюдаем за состоянием сети
@@ -59,8 +68,14 @@ class PdfViewerViewModel @Inject constructor(
                 } else {
                     _downloadStatus.value = DownloadStatus.Error("Нет подключения к сети. Документ не загружен локально.")
                 }
+                Log.d("PDF_DEBUG", "Документ ${documentResult.data.documentId}")
+                Log.d("PDF_DEBUG", "isDownloaded = ${documentResult.data.isDownloaded}")
+                Log.d("PDF_DEBUG", "localPath = ${documentResult.data.localPath}")
+                Log.d("PDF_DEBUG", "Файл существует = ${File(documentResult.data.localPath).exists()}")
             }
         }
+
+
     }
 
     /**
@@ -72,6 +87,24 @@ class PdfViewerViewModel @Inject constructor(
                 _downloadStatus.value = status
             }
         }
+    }
+
+    suspend fun deleteLocalFile(documentId: String): Boolean {
+        return documentRepository.deleteLocalFile(documentId)
+    }
+
+    /**
+     * Получение размера кеша
+     */
+    suspend fun getCacheSize(): Long {
+        return documentRepository.getLocalDocumentsCacheSize()
+    }
+
+    /**
+     * Очистка кеша
+     */
+    suspend fun clearCache(): Boolean {
+        return documentRepository.clearAllLocalDocuments()
     }
 
     // Добавьте новый метод для загрузки по ID
@@ -96,4 +129,5 @@ class PdfViewerViewModel @Inject constructor(
             documentRepository.saveLastOpenedPage(documentId, pageNumber)
         }
     }
+
 }

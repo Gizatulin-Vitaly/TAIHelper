@@ -40,7 +40,11 @@
         android:id="@+id/referenceFragment"
         android:name="com.reftgres.taihelper.ui.reference.PdfDocumentsFragment"
         android:label="@string/reference_fragment"
-        tools:layout="@layout/references_fragment" />
+        tools:layout="@layout/references_fragment" >
+        <action
+            android:id="@+id/action_referenceFragment_to_addPdfDocumentFragment"
+            app:destination="@id/addPdfDocumentFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addSensorFragment"
@@ -64,5 +68,12 @@
         android:id="@+id/about"
         android:name="com.reftgres.taihelper.ui.about.AboutFragment"
         tools:layout="@layout/about_fragment" />
+
+    <fragment
+        android:id="@+id/addPdfDocumentFragment"
+        android:name="com.reftgres.taihelper.ui.reference.AddPdfDocumentFragment"
+        android:label="Добавить PDF"
+        tools:layout="@layout/fragment_add_pdf_document" />
+
 
 </navigation>

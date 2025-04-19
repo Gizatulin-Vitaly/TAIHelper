@@ -23,7 +23,8 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/placeholder_pdf" />
+            tools:src="@drawable/placeholder_pdf"
+            app:tint="@color/primary_dark"/>
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -67,6 +68,7 @@
             app:layout_constraintTop_toBottomOf="@id/textViewDescription"
             tools:text="01.03.2024" />
 
+
         <TextView
             android:id="@+id/textViewFileSize"
             android:layout_width="wrap_content"
@@ -91,7 +93,6 @@
             app:layout_constraintEnd_toStartOf="@id/textViewFileSize"
             app:layout_constraintTop_toTopOf="@id/textViewFileSize"
             tools:visibility="visible" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
