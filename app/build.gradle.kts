@@ -13,8 +13,8 @@ android {
         applicationId = "com.reftgres.taihelper"
         minSdk = 28
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.5"
+        versionCode = 8
+        versionName = "1.7"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

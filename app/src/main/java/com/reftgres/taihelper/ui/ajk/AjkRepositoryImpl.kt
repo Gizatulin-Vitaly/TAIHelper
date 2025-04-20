@@ -47,6 +47,8 @@ class AjkRepositoryImpl @Inject constructor(
             // Создаем Entity для локального хранения
             val calibrationEntity = CalibrationEntity(
                 id = calibrationId,
+                sensorPosition = data.sensorPosition,
+                sensorSerial = data.sensorSerial,
                 labSensorValues = data.labSensorValues,
                 testSensorValues = data.testSensorValues,
                 labAverage = data.labAverage,
@@ -72,7 +74,7 @@ class AjkRepositoryImpl @Inject constructor(
             // Сохраняем в локальную базу данных
             Log.d(TAG, "Сохраняем в локальную базу данных")
             calibrationDao.insertCalibration(calibrationEntity)
-            Log.d(TAG, "Калибровка сохранена в локальной базе данных")
+            Log.d("AjkRepository", "Сохраняем в Room: ${calibrationEntity.id}")
 
             // Проверяем доступность сети
             val isNetworkAvailable = networkService.isNetworkAvailable()
@@ -143,6 +145,46 @@ class AjkRepositoryImpl @Inject constructor(
         Log.e(TAG, "Непредвиденная ошибка в Flow: ${e.message}", e)
         emit(Result.failure(e))
     }
+
+    override suspend fun importAllFromFirestore() {
+        try {
+            val snapshots = firestore.collection("ajkCalibrations").get().await()
+            for (doc in snapshots.documents) {
+                val map = doc.data ?: continue
+
+                val entity = CalibrationEntity(
+                    id = doc.id,
+                    sensorPosition = map["sensorPosition"] as? String ?: "",
+                    sensorSerial = map["sensorSerial"] as? String ?: "",
+                    labSensorValues = map["labValues"] as? List<String> ?: emptyList(),
+                    testSensorValues = map["testValues"] as? List<String> ?: emptyList(),
+                    labAverage = (map["labAverage"] as? Number)?.toFloat() ?: 0f,
+                    testAverage = (map["testAverage"] as? Number)?.toFloat() ?: 0f,
+                    resistance = map["resistance"] as? String ?: "",
+                    constant = (map["constant"] as? Number)?.toFloat() ?: 0f,
+                    r02Resistance = (map["r02"] as? Map<*, *>)?.get("r")?.toString()?.toFloatOrNull() ?: 0f,
+                    r02I = (map["r02"] as? Map<*, *>)?.get("i") as? String ?: "",
+                    r02SensorValue = (map["r02"] as? Map<*, *>)?.get("sensorValue") as? String ?: "",
+                    r05Resistance = (map["r05"] as? Map<*, *>)?.get("r")?.toString()?.toFloatOrNull() ?: 0f,
+                    r05I = (map["r05"] as? Map<*, *>)?.get("i") as? String ?: "",
+                    r05SensorValue = (map["r05"] as? Map<*, *>)?.get("sensorValue") as? String ?: "",
+                    r08Resistance = (map["r08"] as? Map<*, *>)?.get("r")?.toString()?.toFloatOrNull() ?: 0f,
+                    r08I = (map["r08"] as? Map<*, *>)?.get("i") as? String ?: "",
+                    r08SensorValue = (map["r08"] as? Map<*, *>)?.get("sensorValue") as? String ?: "",
+                    r40DegResistance = (map["r40deg"] as? Map<*, *>)?.get("r")?.toString()?.toFloatOrNull() ?: 0f,
+                    r40DegSensorValue = (map["r40deg"] as? Map<*, *>)?.get("sensorValue") as? String ?: "",
+                    timestamp = (map["timestamp"] as? com.google.firebase.Timestamp)?.toDate() ?: Date(),
+                    userId = map["userId"] as? String ?: "",
+                    isSynced = true
+                )
+
+                calibrationDao.insertCalibration(entity)
+            }
+        } catch (e: Exception) {
+            Log.e("AjkRepository", "Ошибка импорта Firestore → Room: ${e.message}", e)
+        }
+    }
+
 
     // Вспомогательный метод для добавления элемента в очередь синхронизации
     private suspend fun addToSyncQueue(calibrationId: String, calibrationEntity: CalibrationEntity) {

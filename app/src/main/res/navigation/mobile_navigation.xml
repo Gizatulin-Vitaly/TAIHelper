@@ -22,10 +22,34 @@
     </fragment>
 
     <fragment
+        android:id="@+id/calibrationDetailFragment"
+        android:name="com.reftgres.taihelper.ui.ajk.CalibrationDetailFragment"
+        android:label="Детали калибровки"
+        tools:layout="@layout/fragment_calibration_detail">
+        <argument
+            android:name="calibrationId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
         android:id="@+id/verificationAjkFragment"
         android:name="com.reftgres.taihelper.ui.ajk.AjkFragment"
         android:label="@string/ajk_fragment"
-        tools:layout="@layout/fragment_ajk" />
+        tools:layout="@layout/fragment_ajk">
+    <action
+        android:id="@+id/action_ajkFragment_to_calibrationHistoryFragment"
+        app:destination="@id/calibrationHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calibrationHistoryFragment"
+        android:name="com.reftgres.taihelper.ui.ajk.CalibrationHistoryFragment"
+        android:label="История калибровок" >
+        <action
+            android:id="@+id/action_calibrationHistoryFragment_to_calibrationDetailFragment"
+            app:destination="@id/calibrationDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/all_measurements"

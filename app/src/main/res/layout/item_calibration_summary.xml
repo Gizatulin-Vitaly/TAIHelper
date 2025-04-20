@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/item_sensor_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Позиция: 01-KA01"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:id="@+id/item_sensor_serial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Серийный №: 123456"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:paddingTop="2dp" />
+
+        <TextView
+            android:id="@+id/item_calibration_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Дата: 20.04.2025"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:paddingTop="2dp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

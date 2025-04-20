@@ -4,20 +4,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.reftgres.taihelper.data.local.dao.CalibrationDao
+import com.reftgres.taihelper.data.local.entity.toDataAjk
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import com.reftgres.taihelper.service.SyncManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
+import com.reftgres.taihelper.data.local.entity.CalibrationEntity
 
 @HiltViewModel
 class AjkViewModel @Inject constructor(
     private val repository: AjkRepository,
+    private val calibrationDao: CalibrationDao,
     private val networkService: NetworkConnectivityService,
     private val syncManager: SyncManager
 ) : ViewModel() {
+
 
     // Текущий шаг
     private val _currentStep = MutableLiveData<Int>(1)
@@ -101,6 +109,7 @@ class AjkViewModel @Inject constructor(
         // Загружаем историю калибровок при инициализации
         loadCalibrationHistory()
     }
+
 
     private val _sensorPosition = MutableLiveData<String>("")
     val sensorPosition: String get() = _sensorPosition.value ?: ""
@@ -218,6 +227,8 @@ class AjkViewModel @Inject constructor(
         _r40DegSensorValue.value = value
     }
 
+
+
     // Переход к следующему шагу
     fun nextStep() {
         val current = _currentStep.value ?: 1
@@ -286,6 +297,47 @@ class AjkViewModel @Inject constructor(
         }
     }
 
+    fun getCalibrationHistoryLive(): LiveData<List<DataAjk>> {
+        Log.d("AjkViewModel", "LiveData history вызвано")
+        return calibrationDao.getAllCalibrationsLive().map { list ->
+            Log.d("AjkViewModel", "Калибровок получено: ${list.size}")
+            list.map { it.toDataAjk() }
+        }
+    }
+
+    fun observeFilteredHistory(
+        position: String?,
+        serial: String?,
+        dateFrom: Date?,
+        dateTo: Date?
+    ): LiveData<List<DataAjk>> {
+        return calibrationDao.getAllCalibrationsLive().map { list ->
+            list.map { it.toDataAjk() }.filter { calibration ->
+                val matchPosition = position.isNullOrBlank() || calibration.sensorPosition.contains(position, true)
+                val matchSerial = serial.isNullOrBlank() || calibration.sensorSerial.contains(serial, true)
+                val matchDate = (dateFrom == null || (calibration.timestamp != null && calibration.timestamp.after(dateFrom))) &&
+                        (dateTo == null || (calibration.timestamp != null && calibration.timestamp.before(dateTo)))
+                matchPosition && matchSerial && matchDate
+            }
+        }
+    }
+
+    fun setFullHistory(data: List<DataAjk>) {
+        _calibrationHistory.value = data
+    }
+
+    fun getCalibrationById(id: String): LiveData<CalibrationEntity?> {
+        return liveData {
+            emit(calibrationDao.getCalibrationById(id))
+        }
+    }
+
+
+    fun importFirestoreToRoom() {
+        viewModelScope.launch {
+            repository.importAllFromFirestore()
+        }
+    }
 
     // Сохранение данных
     fun saveToCloud() {
@@ -337,6 +389,24 @@ class AjkViewModel @Inject constructor(
             }
         }
     }
+
+    fun filterHistory(
+        position: String?,
+        serial: String?,
+        dateFrom: Date?,
+        dateTo: Date?
+    ): List<DataAjk> {
+        return _calibrationHistory.value.orEmpty().filter { calibration ->
+            val matchPosition = position.isNullOrBlank() || calibration.sensorPosition.contains(position, true)
+            val matchSerial = serial.isNullOrBlank() || calibration.sensorSerial.contains(serial, true)
+            val matchDate = (dateFrom == null || (calibration.timestamp != null && calibration.timestamp.after(dateFrom))) &&
+                    (dateTo == null || (calibration.timestamp != null && calibration.timestamp.before(dateTo)))
+            matchPosition && matchSerial && matchDate
+        }.sortedByDescending { it.timestamp }
+    }
+
+
+
 
     // Подготовка данных для сохранения
     private fun prepareCalibrationData(): DataAjk {

@@ -1,5 +1,6 @@
 package com.reftgres.taihelper.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.reftgres.taihelper.data.local.entity.CalibrationEntity
 import kotlinx.coroutines.flow.Flow
@@ -27,4 +28,8 @@ interface CalibrationDao {
 
     @Query("SELECT * FROM calibrations WHERE isSynced = 0")
     suspend fun getUnsyncedCalibrations(): List<CalibrationEntity>
+
+    @Query("SELECT * FROM calibrations ORDER BY timestamp DESC")
+    fun getAllCalibrationsLive(): LiveData<List<CalibrationEntity>>
+
 }

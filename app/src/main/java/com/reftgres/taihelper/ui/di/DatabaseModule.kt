@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.reftgres.taihelper.data.local.AppDatabase
 import com.reftgres.taihelper.data.local.MIGRATION_1_2
+import com.reftgres.taihelper.data.local.MIGRATION_2_3
 import com.reftgres.taihelper.data.local.dao.CalibrationDao
 import com.reftgres.taihelper.data.local.dao.SensorDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
@@ -27,7 +28,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
         )
-            .addMigrations(MIGRATION_1_2) // Добавляем миграцию здесь
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Добавляем миграцию здесь
             .build()
     }
 

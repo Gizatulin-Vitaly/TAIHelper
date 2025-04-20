@@ -42,7 +42,7 @@
     <string name="reset_password_button">Сбросить пароль</string>
     <string name="discription_app">Это мобильное приложение разработано для упрощения управления повседневными задачами. Оно предлагает удобный и интуитивно понятный интерфейс, который поможет вам повысить продуктивность. Среди основных возможностей приложения: конвертация измерний, сохранение измерений, синхронизация с облачным хранилищем для доступа с разных устройств.</string>
     <string name="about_app_tittle">О приложении</string>
-    <string name="version">Версия 1.5.0</string>
+    <string name="version">Версия 1.7.0</string>
     <string name="Developer">Виталий Гизатулин</string>
     <string name="developer_tittle">разработчик</string>
     <string name="email">my@vgmail.ru</string>

@@ -2,12 +2,15 @@ package com.reftgres.taihelper.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.reftgres.taihelper.ui.ajk.DataAjk
 import java.util.Date
 
 @Entity(tableName = "calibrations")
 data class CalibrationEntity(
     @PrimaryKey
     val id: String,
+    val sensorPosition: String,
+    val sensorSerial: String,
     val labSensorValues: List<String>,
     val testSensorValues: List<String>,
     val labAverage: Float,
@@ -30,3 +33,30 @@ data class CalibrationEntity(
     // Поле для отслеживания синхронизации
     val isSynced: Boolean = true
 )
+
+fun CalibrationEntity.toDataAjk(): DataAjk {
+    return DataAjk(
+        id = id,
+        sensorPosition = sensorPosition,
+        sensorSerial = sensorSerial,
+        labSensorValues = labSensorValues,
+        testSensorValues = testSensorValues,
+        labAverage = labAverage,
+        testAverage = testAverage,
+        resistance = resistance,
+        constant = constant,
+        r02Resistance = r02Resistance,
+        r02I = r02I,
+        r02SensorValue = r02SensorValue,
+        r05Resistance = r05Resistance,
+        r05I = r05I,
+        r05SensorValue = r05SensorValue,
+        r08Resistance = r08Resistance,
+        r08I = r08I,
+        r08SensorValue = r08SensorValue,
+        r40DegResistance = r40DegResistance,
+        r40DegSensorValue = r40DegSensorValue,
+        timestamp = timestamp,
+        userId = userId
+    )
+}

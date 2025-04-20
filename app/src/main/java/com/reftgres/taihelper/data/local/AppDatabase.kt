@@ -33,6 +33,14 @@ val MIGRATION_1_2 = object : Migration(1, 2) { // от версии 1 к вер�
         """)
     }
 }
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE calibrations ADD COLUMN sensorPosition TEXT NOT NULL DEFAULT ''")
+        database.execSQL("ALTER TABLE calibrations ADD COLUMN sensorSerial TEXT NOT NULL DEFAULT ''")
+    }
+}
+
 @Database(
     entities = [
         SensorEntity::class,
@@ -40,7 +48,7 @@ val MIGRATION_1_2 = object : Migration(1, 2) { // от версии 1 к вер�
         SyncQueueEntity::class,
         MeasurementsEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(DateConverter::class, ListConverter::class)

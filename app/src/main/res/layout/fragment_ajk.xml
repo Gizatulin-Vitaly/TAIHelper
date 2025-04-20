@@ -1203,6 +1203,18 @@
         </FrameLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_open_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="История калибровок"
+        android:src="@drawable/ic_history"
+        app:backgroundTint="@color/primary_dark"
+        app:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/button_container"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Кнопки навигации -->
     <LinearLayout
         android:id="@+id/button_container"
