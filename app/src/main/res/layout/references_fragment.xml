@@ -41,9 +41,11 @@
                 android:layout_width="8dp"
                 android:layout_height="wrap_content" />
 
-            <Button
+
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonClearCategory"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:minWidth="0dp"
@@ -57,6 +59,7 @@
                 app:iconTint="@color/text_on_primary"
                 app:rippleColor="@color/primary_light"/>
         </LinearLayout>
+
 
         <HorizontalScrollView
             android:layout_width="match_parent"

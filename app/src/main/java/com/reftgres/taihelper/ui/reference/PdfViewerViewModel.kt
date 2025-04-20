@@ -26,28 +26,24 @@ class PdfDocumentsViewModel @Inject constructor(
     val documents: LiveData<ResourceState<List<PdfDocument>>> = _documents
 
     // LiveData для списка категорий
-    private val _categories = MutableLiveData<List<DocumentCategory>>()
-    val categories: LiveData<List<DocumentCategory>> = _categories
+    private val _categories = MutableLiveData<List<String>>()
+    val categories: LiveData<List<String>> = _categories
+
 
     // LiveData для выбранной категории
-    private val _selectedCategoryId = MutableLiveData<String?>()
+    private val _selectedCategoryId = MutableLiveData<String?>(null)
     val selectedCategoryId: LiveData<String?> = _selectedCategoryId
 
     // LiveData для результатов поиска
     private val _searchResults = MutableLiveData<ResourceState<List<PdfDocument>>>()
     val searchResults: LiveData<ResourceState<List<PdfDocument>>> = _searchResults
 
-
     // LiveData для статуса сети
     private val _networkAvailable = MutableLiveData(networkService.isNetworkAvailable())
     val networkAvailable: LiveData<Boolean> = _networkAvailable
 
-    private val _filteredDocuments = MutableLiveData<ResourceState<List<PdfDocument>>>()
-    val filteredDocuments: LiveData<ResourceState<List<PdfDocument>>> = _filteredDocuments
-
 
     init {
-        loadCategories()
         loadAllDocuments()
 
         // Наблюдаем за состоянием сети
@@ -65,30 +61,58 @@ class PdfDocumentsViewModel @Inject constructor(
         viewModelScope.launch {
             documentRepository.getAllDocuments().collect { result ->
                 _documents.value = result
+
+                if (result is ResourceState.Success) {
+                    val cats = result.data.map { it.category }
+                        .filter { it.isNotBlank() }
+                        .distinct()
+                        .sorted()
+                    _categories.value = cats
+                }
+
+                filterDocuments()
             }
         }
     }
 
-    /**
-     * Загрузка документов по категории
-     */
-    fun loadDocumentsByCategory(categoryId: String) {
-        _selectedCategoryId.value = categoryId
 
-        viewModelScope.launch {
-            _documents.value = ResourceState.Loading
-            documentRepository.getDocumentsByCategory(categoryId).collect { result ->
-                _documents.value = result
-            }
-        }
-    }
 
     /**
      * Сброс фильтра категории
      */
     fun clearCategoryFilter() {
         _selectedCategoryId.value = null
-        loadAllDocuments()
+        filterDocuments()
+    }
+
+
+    fun selectCategory(categoryId: String?) {
+        _selectedCategoryId.value = categoryId
+        filterDocuments()
+    }
+
+    private var currentQuery: String = ""
+
+    fun updateSearchQuery(query: String) {
+        currentQuery = query
+        filterDocuments()
+    }
+
+    private fun filterDocuments() {
+        val originalList = _documents.value
+        val categoryId = _selectedCategoryId.value
+        val query = currentQuery
+
+        if (originalList is ResourceState.Success) {
+            val filtered = originalList.data.filter {
+                (categoryId == null || it.category == categoryId) &&
+                        (query.isBlank() || it.title.contains(query, true) ||
+                                it.description.contains(query, true) ||
+                                it.tags.any { tag -> tag.contains(query, true) })
+            }
+
+            _searchResults.value = ResourceState.Success(filtered)
+        }
     }
 
     /**
@@ -103,22 +127,8 @@ class PdfDocumentsViewModel @Inject constructor(
     }
 
     fun clearSearch() {
-        _filteredDocuments.value = _documents.value // восстановим список
-    }
-
-    /**
-     * Загрузка категорий
-     */
-    private fun loadCategories() {
-        viewModelScope.launch {
-            documentRepository.getAllCategories().collect { result ->
-                when (result) {
-                    is ResourceState.Success -> _categories.value = result.data ?: emptyList()
-
-                    else -> { /* Обрабатываем в documents */ }
-                }
-            }
-        }
+        currentQuery = ""
+        filterDocuments()
     }
 
     /**
@@ -139,9 +149,17 @@ class PdfDocumentsViewModel @Inject constructor(
      * Удаление локального файла
      */
 
-    suspend fun deleteLocalFile(documentId: String): Boolean {
-        return documentRepository.deleteLocalFile(documentId)
+    fun searchDocumentsLocally(query: String) {
+        viewModelScope.launch {
+            val originalList = _documents.value
+            if (originalList is ResourceState.Success) {
+                val result = documentRepository.searchDocumentsLocally(query, originalList.data)
+                _searchResults.value = result
+            }
+        }
     }
+
+
 
     fun submitManualPdfDocument(title: String, description: String, category: String, fileUrl: String) {
         viewModelScope.launch {

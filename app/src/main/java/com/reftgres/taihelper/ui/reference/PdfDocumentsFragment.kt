@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -11,12 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.button.MaterialButton
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.data.model.PdfDocument
 import com.reftgres.taihelper.data.model.ResourceState
 import com.reftgres.taihelper.databinding.ReferencesFragmentBinding
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,6 +54,10 @@ class PdfDocumentsFragment : Fragment() {
         observeViewModel()
         observeNetwork()
 
+        binding.buttonClearCategory.setOnClickListener {
+            viewModel.clearCategoryFilter()
+        }
+
         binding.buttonAddPdf.setOnClickListener {
             findNavController().navigate(R.id.action_referenceFragment_to_addPdfDocumentFragment)
         }
@@ -64,9 +71,9 @@ class PdfDocumentsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrBlank()) {
-                    viewModel.clearSearch()
-                }
+                val query = newText.orEmpty()
+                viewModel.updateSearchQuery(query)
+                adapter.currentSearchQuery = query
                 return true
             }
         })
@@ -100,12 +107,7 @@ class PdfDocumentsFragment : Fragment() {
     }
 
     private fun refreshData() {
-        val currentCategoryId = viewModel.selectedCategoryId.value
-        if (currentCategoryId != null) {
-            viewModel.loadDocumentsByCategory(currentCategoryId)
-        } else {
-            viewModel.loadAllDocuments()
-        }
+        viewModel.loadAllDocuments()
     }
 
     private fun setupSearchView() {
@@ -118,11 +120,16 @@ class PdfDocumentsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrBlank()) {
+                if (!newText.isNullOrBlank()) {
+                    viewModel.searchDocumentsLocally(newText)
+                    adapter.currentSearchQuery = newText
+                } else {
                     viewModel.clearSearch()
+                    adapter.currentSearchQuery = null
                 }
                 return true
             }
+
         })
     }
 
@@ -204,26 +211,29 @@ class PdfDocumentsFragment : Fragment() {
             }
         }
 
-        // 🧩 Наблюдаем за категориями
+        // Наблюдаем за категориями
         viewModel.categories.observe(viewLifecycleOwner) { categories ->
             binding.categoriesContainer.visibility = if (categories.isEmpty()) View.GONE else View.VISIBLE
             binding.categoryButtonsContainer.removeAllViews()
 
+            val allButton = createCategoryButton("Все", null)
+            binding.categoryButtonsContainer.addView(allButton)
+
             categories.forEach { category ->
-                val button = layoutInflater.inflate(
-                    R.layout.category_button,
-                    binding.categoryButtonsContainer,
-                    false
-                )
-                button.findViewById<android.widget.TextView>(R.id.textViewCategoryName).text = category.name
-                button.isSelected = viewModel.selectedCategoryId.value == category.id
-                button.setOnClickListener {
-                    viewModel.loadDocumentsByCategory(category.id)
-                    updateCategorySelection(category.id)
-                }
+                val button = createCategoryButton(category, category)
                 binding.categoryButtonsContainer.addView(button)
             }
         }
+
+
+        viewModel.selectedCategoryId.observe(viewLifecycleOwner) { selectedId ->
+            for (i in 0 until binding.categoryButtonsContainer.childCount) {
+                val button = binding.categoryButtonsContainer.getChildAt(i) as? MaterialButton ?: continue
+                val buttonCategory = if (button.text == "Все") null else button.text.toString()
+                button.isChecked = buttonCategory == selectedId
+            }
+        }
+
     }
 
 
@@ -234,13 +244,15 @@ class PdfDocumentsFragment : Fragment() {
     }
 
     private fun updateCategorySelection(selectedCategoryId: String?) {
-        // Очищаем выделение всех кнопок категорий
         for (i in 0 until binding.categoryButtonsContainer.childCount) {
-            val button = binding.categoryButtonsContainer.getChildAt(i)
-            val category = viewModel.categories.value?.getOrNull(i)
-            button.isSelected = category?.id == selectedCategoryId
+            val btn = binding.categoryButtonsContainer.getChildAt(i) as? MaterialButton ?: continue
+            val isAllButton = btn.text == "Все"
+            val matchedCategory = btn.text.toString()
+            btn.isChecked = if (isAllButton) selectedCategoryId == null else matchedCategory == selectedCategoryId
         }
     }
+
+
 
     private fun openPdfViewer(document: PdfDocument) {
         if (networkService.isNetworkAvailable() || document.isDownloaded) {
@@ -250,6 +262,31 @@ class PdfDocumentsFragment : Fragment() {
             Toast.makeText(context, "Нет подключения к сети. Документ не загружен локально.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun createCategoryButton(title: String, categoryId: String?): MaterialButton {
+        val button = MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+            text = title
+            isCheckable = true
+            isChecked = viewModel.selectedCategoryId.value == categoryId
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(8, 8, 8, 8)
+            }
+            setPadding(24, 0, 24, 0)
+            setTextColor(resources.getColor(R.color.text_on_primary, null))
+            backgroundTintList = resources.getColorStateList(R.color.primary, null)
+            rippleColor = resources.getColorStateList(R.color.primary_light, null)
+            setOnClickListener {
+                viewModel.selectCategory(categoryId)
+            }
+        }
+
+        return button
+    }
+
+
 
 
     override fun onDestroyView() {

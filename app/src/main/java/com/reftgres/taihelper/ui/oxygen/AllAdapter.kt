@@ -51,7 +51,7 @@ class AllAdapter : ListAdapter<Measurement, AllAdapter.ViewHolder>(DiffCallback(
                 item.testoValues.getOrElse(2) { "" }
             )
 
-            // Настройка датчика 9K-603 (бывший first)
+            // Настройка датчика 9K-603 (бывший first)createCategoryButton
             setupSensor(
                 binding.measurementCard.findViewById(R.id.sensor_603),
                 item.iktsValues.getOrElse(0) { "" },

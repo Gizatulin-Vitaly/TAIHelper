@@ -266,6 +266,20 @@ class PdfDocumentRepository @Inject constructor(
         awaitClose { listenerRegistration.remove() }
     }
 
+    suspend fun searchDocumentsLocally(query: String, allDocs: List<PdfDocument>): ResourceState<List<PdfDocument>> {
+        return try {
+            val filtered = allDocs.filter {
+                it.title.contains(query, ignoreCase = true) ||
+                        it.description.contains(query, ignoreCase = true) ||
+                        it.tags.any { tag -> tag.contains(query, ignoreCase = true) }
+            }
+            ResourceState.Success(filtered)
+        } catch (e: Exception) {
+            ResourceState.Error(e.message ?: "Ошибка при локальном поиске")
+        }
+    }
+
+
     /**
      * Поиск документов
      */

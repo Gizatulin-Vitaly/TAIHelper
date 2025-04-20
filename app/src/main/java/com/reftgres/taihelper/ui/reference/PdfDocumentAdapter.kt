@@ -1,5 +1,10 @@
 package com.reftgres.taihelper.ui.reference
 
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +30,32 @@ class PdfDocumentAdapter(
     }
 
     override fun onBindViewHolder(holder: DocumentViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val document = getItem(position)
+        val title = document.title
+        val query = currentSearchQuery.orEmpty()
+
+        val spannable = SpannableString(title)
+
+        val index = title.indexOf(query, ignoreCase = true)
+        if (index >= 0) {
+            spannable.setSpan(
+                ForegroundColorSpan(Color.YELLOW),
+                index,
+                index + query.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        holder.bind(document, spannable)
     }
+
+
+    var currentSearchQuery: String? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     class DocumentViewHolder(
         itemView: View,
@@ -41,8 +70,8 @@ class PdfDocumentAdapter(
         private val downloadedIndicator: ImageView = itemView.findViewById(R.id.imageViewDownloadedStatus)
         // Строку с optionsButton можно удалить или оставить неиспользуемой
 
-        fun bind(document: PdfDocument) {
-            titleTextView.text = document.title
+        fun bind(document: PdfDocument, highlightedTitle: CharSequence) {
+            titleTextView.text = highlightedTitle
             descriptionTextView.text = document.description
 
             // Отображение даты в нужном формате
