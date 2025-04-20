@@ -3,6 +3,8 @@ package com.reftgres.taihelper.ui.ajk
 import java.util.Date
 
 data class DataAjk(
+    val sensorPosition: String = "",
+    val sensorSerial: String = "",
     val id: String = "",
     val labSensorValues: List<String>,
     val testSensorValues: List<String>,

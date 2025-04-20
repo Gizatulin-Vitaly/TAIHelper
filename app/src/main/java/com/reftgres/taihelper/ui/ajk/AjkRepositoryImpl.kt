@@ -81,6 +81,8 @@ class AjkRepositoryImpl @Inject constructor(
                 try {
                     Log.d(TAG, "Синхронизация с Firestore...")
                     val dataMap = hashMapOf(
+                        "sensorPosition" to data.sensorPosition,
+                        "sensorSerial" to data.sensorSerial,
                         "labValues" to data.labSensorValues,
                         "testValues" to data.testSensorValues,
                         "labAverage" to data.labAverage,

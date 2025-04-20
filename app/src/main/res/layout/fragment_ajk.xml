@@ -119,6 +119,52 @@
                         android:fontFamily="sans-serif-medium" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Позиция датчика"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <EditText
+                        android:id="@+id/sensor_position_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Позиция датчика"
+                        android:inputType="text"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:padding="10dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Заводской номер"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                    <EditText
+                        android:id="@+id/sensor_serial_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="113 2012г"
+                        android:inputType="text"
+                        android:background="@drawable/bg_edit_text"
+                        android:padding="10dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
                 <!-- Блок лабораторного датчика -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"

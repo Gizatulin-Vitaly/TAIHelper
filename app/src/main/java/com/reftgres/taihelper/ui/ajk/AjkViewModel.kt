@@ -102,6 +102,18 @@ class AjkViewModel @Inject constructor(
         loadCalibrationHistory()
     }
 
+    private val _sensorPosition = MutableLiveData<String>("")
+    val sensorPosition: String get() = _sensorPosition.value ?: ""
+    fun updateSensorPosition(value: String) {
+        _sensorPosition.value = value
+    }
+
+    private val _sensorSerial = MutableLiveData<String>("")
+    val sensorSerial: String get() = _sensorSerial.value ?: ""
+    fun updateSensorSerial(value: String) {
+        _sensorSerial.value = value
+    }
+
     // Загрузка истории калибровок
     private fun loadCalibrationHistory() {
         viewModelScope.launch {
@@ -117,6 +129,8 @@ class AjkViewModel @Inject constructor(
             }
         }
     }
+
+
 
     // Обновление значений лабораторного датчика
     fun updateLabSensorValue(index: Int, value: String) {
@@ -222,6 +236,8 @@ class AjkViewModel @Inject constructor(
 
     // Убедимся, что reset_data полностью сбрасывает статус
     fun resetData() {
+        _sensorPosition.value = ""
+        _sensorSerial.value = ""
         _labSensorValues.value = listOf("", "", "")
         _testSensorValues.value = listOf("", "", "")
         _labAverage.value = 0f
@@ -246,17 +262,30 @@ class AjkViewModel @Inject constructor(
                 val labValues = _labSensorValues.value
                 val testValues = _testSensorValues.value
 
+                val positionValid = !_sensorPosition.value.isNullOrBlank()
+                val serialValid = !_sensorSerial.value.isNullOrBlank()
+
                 if (labValues == null || testValues == null) return false
 
-                labValues.all { it.isNotEmpty() } && testValues.all { it.isNotEmpty() }
+                labValues.all { it.isNotEmpty() } &&
+                        testValues.all { it.isNotEmpty() } &&
+                        positionValid &&
+                        serialValid
             }
+
             2 -> _resistance.value?.isNotEmpty() == true
-            3 -> _r02I.value?.isNotEmpty() == true && _r02SensorValue.value?.isNotEmpty() == true &&
-                    _r05I.value?.isNotEmpty() == true && _r05SensorValue.value?.isNotEmpty() == true &&
-                    _r08I.value?.isNotEmpty() == true && _r08SensorValue.value?.isNotEmpty() == true
+
+            3 -> _r02I.value?.isNotEmpty() == true &&
+                    _r02SensorValue.value?.isNotEmpty() == true &&
+                    _r05I.value?.isNotEmpty() == true &&
+                    _r05SensorValue.value?.isNotEmpty() == true &&
+                    _r08I.value?.isNotEmpty() == true &&
+                    _r08SensorValue.value?.isNotEmpty() == true
+
             else -> true
         }
     }
+
 
     // Сохранение данных
     fun saveToCloud() {
@@ -314,6 +343,8 @@ class AjkViewModel @Inject constructor(
         val constant = _constant.value ?: 0f
 
         return DataAjk(
+            sensorPosition = _sensorPosition.value ?: "",
+            sensorSerial = _sensorSerial.value ?: "",
             id = "", // ID будет сгенерировано в репозитории
             labSensorValues = _labSensorValues.value ?: listOf(),
             testSensorValues = _testSensorValues.value ?: listOf(),

@@ -26,6 +26,10 @@ class AjkFragment : Fragment() {
 
     private val viewModel: AjkViewModel by viewModels()
 
+    private lateinit var sensorPositionEditText: EditText
+    private lateinit var sensorSerialEditText: EditText
+
+
     // UI элементы
     private lateinit var progressBar: LinearProgressIndicator
     private lateinit var stepTextView: TextView
@@ -106,6 +110,11 @@ class AjkFragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
+
+        sensorPositionEditText = view.findViewById(R.id.sensor_position_edit_text)
+        sensorSerialEditText = view.findViewById(R.id.sensor_serial_edit_text)
+
+
         // Элементы заголовка
         progressBar = view.findViewById(R.id.progress_bar)
         stepTextView = view.findViewById(R.id.step_text_view)
@@ -176,31 +185,31 @@ class AjkFragment : Fragment() {
                 }
             })
         }
-
-        // Лабораторный датчик
         labSensorEditText1.setAfterTextChangedListener { viewModel.updateLabSensorValue(0, it) }
         labSensorEditText2.setAfterTextChangedListener { viewModel.updateLabSensorValue(1, it) }
         labSensorEditText3.setAfterTextChangedListener { viewModel.updateLabSensorValue(2, it) }
 
-        // Поверяемый датчик
         testSensorEditText1.setAfterTextChangedListener { viewModel.updateTestSensorValue(0, it) }
         testSensorEditText2.setAfterTextChangedListener { viewModel.updateTestSensorValue(1, it) }
         testSensorEditText3.setAfterTextChangedListener { viewModel.updateTestSensorValue(2, it) }
 
-        // Сопротивление
         resistanceEditText.setAfterTextChangedListener { viewModel.updateResistance(it) }
 
-        // Таблица значений
         r02IEditText.setAfterTextChangedListener { viewModel.updateR02I(it) }
         r02SensorEditText.setAfterTextChangedListener { viewModel.updateR02SensorValue(it) }
+
         r05IEditText.setAfterTextChangedListener { viewModel.updateR05I(it) }
         r05SensorEditText.setAfterTextChangedListener { viewModel.updateR05SensorValue(it) }
+
         r08IEditText.setAfterTextChangedListener { viewModel.updateR08I(it) }
         r08SensorEditText.setAfterTextChangedListener { viewModel.updateR08SensorValue(it) }
 
-        // Температура
         r40SensorEditText.setAfterTextChangedListener { viewModel.updateR40DegSensorValue(it) }
+
+        sensorPositionEditText.setAfterTextChangedListener { viewModel.updateSensorPosition(it) }
+        sensorSerialEditText.setAfterTextChangedListener { viewModel.updateSensorSerial(it) }
     }
+
 
     private fun setupListeners() {
         // Кнопки навигации
@@ -247,17 +256,17 @@ class AjkFragment : Fragment() {
 
         // Наблюдение за средними значениями
         viewModel.observeLabAverage().observe(viewLifecycleOwner, Observer { average ->
-            labAverageTextView.text = String.format("%.4f", average)
-            labAvgInfoTextView.text = "Среднее (лаб.): ${String.format("%.4f", average)}"
+            labAverageTextView.text = String.format("%.1f", average)
+            labAvgInfoTextView.text = "Среднее (лаб.): ${String.format("%.1f", average)}"
         })
 
         viewModel.observeTestAverage().observe(viewLifecycleOwner, Observer { average ->
-            testAverageTextView.text = String.format("%.4f", average)
+            testAverageTextView.text = String.format("%.1f", average)
         })
 
         // Наблюдение за константой
         viewModel.observeConstant().observe(viewLifecycleOwner, Observer { constant ->
-            constantTextView.text = if (constant > 0) String.format("%.4f", constant) else ""
+            constantTextView.text = if (constant > 0) String.format("%.1f", constant) else ""
             updateResistanceLabels()
         })
 
@@ -307,20 +316,20 @@ class AjkFragment : Fragment() {
         val constant = viewModel.observeConstant().value ?: 0f
 
         if (constant > 0) {
-            r02TextView.text = "R 0.2 = ${String.format("%.3f", constant / 0.2)}"
-            r05TextView.text = "R 0.5 = ${String.format("%.3f", constant / 0.5)}"
-            r08TextView.text = "R 0.8 = ${String.format("%.3f", constant / 0.8)}"
-            r40TextView.text = "R 0.68 = ${String.format("%.3f", constant / 0.68)}"
+            r02TextView.text = "R 0.2 = ${String.format("%.1f", constant / 0.2)}"
+            r05TextView.text = "R 0.5 = ${String.format("%.1f", constant / 0.5)}"
+            r08TextView.text = "R 0.8 = ${String.format("%.1f", constant / 0.8)}"
+            r40TextView.text = "R 0.68 = ${String.format("%.1f", constant / 0.68)}"
 
             // Обновляем итоговые результаты
             val resultText = """
-                Константа: ${String.format("%.4f", constant)}
-                Среднее (лаб): ${String.format("%.4f", viewModel.observeLabAverage().value ?: 0f)}
-                Среднее (пов): ${String.format("%.4f", viewModel.observeTestAverage().value ?: 0f)}
-                R (0.2): ${String.format("%.4f", constant / 0.2)}
-                R (0.5): ${String.format("%.4f", constant / 0.5)}
-                R (0.8): ${String.format("%.4f", constant / 0.8)}
-                R (t=40°C): ${String.format("%.4f", constant / 0.68)}
+                Константа: ${String.format("%.1f", constant)}
+                Среднее (лаб): ${String.format("%.1f", viewModel.observeLabAverage().value ?: 0f)}
+                Среднее (пов): ${String.format("%.1f", viewModel.observeTestAverage().value ?: 0f)}
+                R (0.2): ${String.format("%.1f", constant / 0.2)}
+                R (0.5): ${String.format("%.1f", constant / 0.5)}
+                R (0.8): ${String.format("%.1f", constant / 0.8)}
+                R (t=40°C): ${String.format("%.1f", constant / 0.68)}
             """.trimIndent()
 
             resultTextView.text = resultText
@@ -400,6 +409,10 @@ class AjkFragment : Fragment() {
         testSensorEditText3.setText(viewModel.testSensorValues.getOrNull(2) ?: "")
 
         resistanceEditText.setText(viewModel.resistance)
+
+        sensorPositionEditText.setText(viewModel.sensorPosition)
+        sensorSerialEditText.setText(viewModel.sensorSerial)
+
 
         r02IEditText.setText(viewModel.r02I)
         r02SensorEditText.setText(viewModel.r02SensorValue)
