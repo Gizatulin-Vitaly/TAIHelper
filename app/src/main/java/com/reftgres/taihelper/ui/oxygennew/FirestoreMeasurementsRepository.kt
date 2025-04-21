@@ -72,8 +72,7 @@ class FirestoreMeasurementsRepository @Inject constructor(
         sensorTitle: String,
         midpointValue: String
     ): Result<Boolean> = suspendCoroutine { continuation ->
-        // Формируем ссылку на блок в формате "/blocks/{blockNumber}"
-        val blockReference = "/blocks/${blockNumber - 1}" // Предполагаю, что нумерация начинается с 0
+        val blockReference = blockNumber.toString()
 
         Log.d("SensorUpdate", "Ищем датчик: блок $blockReference, позиция $sensorTitle")
 
@@ -91,11 +90,9 @@ class FirestoreMeasurementsRepository @Inject constructor(
                     return@addOnSuccessListener
                 }
 
-                // Получаем первый найденный документ
                 val sensorDocument = querySnapshot.documents.first()
                 Log.d("SensorUpdate", "Найден документ с ID: ${sensorDocument.id}")
 
-                // Обновляем значение средней точки в поле mid_point
                 sensorDocument.reference
                     .update("mid_point", midpointValue)
                     .addOnSuccessListener {
@@ -113,6 +110,7 @@ class FirestoreMeasurementsRepository @Inject constructor(
             }
     }
 
+
     override suspend fun saveMeasurementOffline(
         measurement: MeasurementRecord,
         sensorUpdates: List<SensorUpdate>
@@ -126,10 +124,11 @@ class FirestoreMeasurementsRepository @Inject constructor(
                     // Обновляем датчики
                     sensorUpdates.forEach { update ->
                         updateSensorMidpoint(
-                            extractBlockNumber(update.blockReference),
+                            update.blockReference.toIntOrNull() ?: 0,
                             update.position,
                             update.midpointValue
                         )
+
                     }
 
                     saveResult

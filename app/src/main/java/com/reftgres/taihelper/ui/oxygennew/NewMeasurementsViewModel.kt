@@ -107,7 +107,8 @@ class NewMeasurementsViewModel @Inject constructor(
                 )
 
                 // Формируем список обновлений для датчиков
-                val blockReference = "/blocks/${currentBlockNumber - 1}"
+                val blockReference = currentBlockNumber.toString()
+
 
                 // Создаем список обновлений датчиков используя тип из репозитория
                 val sensorUpdates = currentSensorsData.map { (title, data) ->

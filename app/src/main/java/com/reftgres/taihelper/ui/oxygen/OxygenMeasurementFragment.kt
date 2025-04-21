@@ -110,16 +110,35 @@ class OxygenMeasurementFragment : Fragment() {
         viewModel.sensors.observe(viewLifecycleOwner) { sensors ->
             Log.d(TAG, "Получены датчики: ${sensors.size}")
 
-            val sortedSensorTitles = sensors.map { it.position }.sorted()  // ← сортировка по возрастанию
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortedSensorTitles)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Сортируем объекты Sensor по position
+            val sortedSensors = sensors.sortedBy { it.position }
+
+            // Сохраняем отсортированный список во ViewModel для onItemSelected
+            viewModel.setSortedSensors(sortedSensors) // 🔧 ты добавишь это ниже 👇
+
+            // Извлекаем только названия для отображения
+            val sortedSensorTitles = sortedSensors.map { it.position }
+
+            // Создаём адаптер
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                sortedSensorTitles
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+
+            // Присваиваем адаптер
             binding.sensorSpinner.adapter = adapter
 
-            // Если список не пустой, выбираем первый элемент
-            if (sensors.isNotEmpty()) {
+            // По умолчанию выбираем первый элемент, если список не пустой
+            if (sortedSensors.isNotEmpty()) {
                 binding.sensorSpinner.setSelection(0)
+                // Программно уведомим о выборе
+                viewModel.selectSensorByPosition(sortedSensors[0].position)
             }
         }
+
 
         // Наблюдение за выбранным датчиком
         viewModel.selectedSensor.observe(viewLifecycleOwner) { sensor ->
@@ -201,15 +220,12 @@ class OxygenMeasurementFragment : Fragment() {
 
         // Слушатель выбора датчика
         binding.sensorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val sensors = viewModel.sensors.value
-                if (sensors != null && position >= 0 && position < sensors.size) {
-                    val sensorPosition = sensors[position].position
-                    Log.d(TAG, "Выбрана позиция датчика: $sensorPosition")
-                    viewModel.selectSensorByPosition(sensorPosition)
-
-                    // Загружаем историю для выбранного датчика
-                    viewModel.loadSensorMeasurementHistory(sensorPosition)
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = viewModel.getSortedSensors().getOrNull(position)
+                if (selected != null) {
+                    Log.d(TAG, "Выбрана позиция датчика: ${selected.position}")
+                    viewModel.selectSensorByPosition(selected.position)
+                    viewModel.loadSensorMeasurementHistory(selected.position)
                 }
             }
 
@@ -267,52 +283,62 @@ class OxygenMeasurementFragment : Fragment() {
     private fun updateCardAllOxygen(measurement: LatestMeasurement) {
         val blockId = measurement.blockNumber
         val sensorTitles = sensorPositionsMap[blockId] ?: listOf("К-601", "К-602", "К-603", "К-604")
+        Log.d("SensorUI", "➡ sensorTitles (по позиции): $sensorTitles")
 
 
+        Log.d("SensorUI", "sensorTitles = $sensorTitles")
+        Log.d("SensorUI", "sensor[0] будет в строке 1: ${sensorTitles.getOrNull(0)}")
+        Log.d("SensorUI", "sensor[1] будет в строке 2: ${sensorTitles.getOrNull(1)}")
+        // Правильный порядок заголовков
+        // Заголовки
+        binding.tvFirstSensorTitle.text  = sensorTitles.getOrNull(0) ?: "--" // К-601
+        binding.tvSecondSensorTitle.text = sensorTitles.getOrNull(1) ?: "--" // К-602
+        binding.tvThirdSensorTitle.text  = sensorTitles.getOrNull(2) ?: "--" // К-603
+        binding.tvFourthSensorTitle.text = sensorTitles.getOrNull(3) ?: "--" // К-604
 
-        // Обновляем заголовки
-        binding.tvFourthSensorTitle.text = sensorTitles.getOrNull(0) ?: "--"
-        binding.tvSecondSensorTitle.text = sensorTitles.getOrNull(1) ?: "--"
-        binding.tvThirdSensorTitle.text  = sensorTitles.getOrNull(2) ?: "--"
-        binding.tvFirstSensorTitle.text  = sensorTitles.getOrNull(3) ?: "--"
-
-        // Обнуляем показания
-        binding.tvFourthIndicate.text = "--"
+// Обнуляем показания
+        binding.tvFirstIndicate.text  = "--"
         binding.tvSecondIndicate.text = "--"
         binding.tvThirdIndicate.text  = "--"
-        binding.tvFirstIndicate.text  = "--"
+        binding.tvFourthIndicate.text = "--"
 
-        binding.tvFourthMiddle.text = ""
+        binding.tvFirstMiddle.text  = ""
         binding.tvSecondMiddle.text = ""
         binding.tvThirdMiddle.text  = ""
-        binding.tvFirstMiddle.text  = ""
+        binding.tvFourthMiddle.text = ""
 
-        // Устанавливаем значения из измерений
+// Значения из измерений
         measurement.sensors.forEach { sensor ->
             val index = sensorTitles.indexOf(sensor.sensorTitle)
+            Log.d("SensorUI", "⬅ Firestore sensor: ${sensor.sensorTitle}, index в sensorTitles = $index")
+
             when (index) {
                 0 -> {
-                    binding.tvFourthIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvFourthMiddle.text   = "(${sensor.panelValue})"
+                    Log.d("SensorUI", "🟩 Присваиваем ${sensor.sensorTitle} → tvFirstIndicate")
+                    binding.tvFirstIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvFirstMiddle.text   = "(${sensor.panelValue})"
                 }
                 1 -> {
+                    Log.d("SensorUI", "🟨 Присваиваем ${sensor.sensorTitle} → tvSecondIndicate")
                     binding.tvSecondIndicate.text = sensor.testoValue.ifEmpty { "--" }
                     binding.tvSecondMiddle.text   = "(${sensor.panelValue})"
                 }
                 2 -> {
+                    Log.d("SensorUI", "🟧 Присваиваем ${sensor.sensorTitle} → tvThirdIndicate")
                     binding.tvThirdIndicate.text = sensor.testoValue.ifEmpty { "--" }
                     binding.tvThirdMiddle.text   = "(${sensor.panelValue})"
                 }
                 3 -> {
-                    binding.tvFirstIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvFirstMiddle.text   = "(${sensor.panelValue})"
+                    Log.d("SensorUI", "🟥 Присваиваем ${sensor.sensorTitle} → tvFourthIndicate")
+                    binding.tvFourthIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvFourthMiddle.text   = "(${sensor.panelValue})"
                 }
             }
         }
 
-        // Устанавливаем дату
         binding.tvDateControl.text = measurement.date
     }
+
 
     /**
      * Обновление отображения конкретного датчика

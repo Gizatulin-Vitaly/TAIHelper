@@ -2,6 +2,7 @@ package com.reftgres.taihelper.ui.oxygennew
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,12 +77,15 @@ class NewMeasurementsFragment : Fragment() {
     }
 
     private fun updateSensorTitlesInUI(titles: List<String>) {
+        Log.d("SensorDebug", "Обновляем заголовки: ${titles.joinToString()}")
+
         if (titles.size >= 4) {
             binding.sensorGroup1.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[0]
             binding.sensorGroup2.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[1]
             binding.sensorGroup3.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[2]
             binding.sensorGroup4.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[3]
         }
+
     }
 
     private fun setupDatePicker() {

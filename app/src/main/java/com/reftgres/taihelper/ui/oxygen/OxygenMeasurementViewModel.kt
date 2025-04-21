@@ -54,6 +54,14 @@ class OxygenMeasurementViewModel @Inject constructor(
     private val _allMeasurements = MutableLiveData<List<LatestMeasurement>>()
     val allMeasurements: LiveData<List<LatestMeasurement>> = _allMeasurements
 
+    private var sortedSensorsCache: List<Sensor> = emptyList()
+
+    fun setSortedSensors(sensors: List<Sensor>) {
+        sortedSensorsCache = sensors
+    }
+
+    fun getSortedSensors(): List<Sensor> = sortedSensorsCache
+
     // Метод для загрузки истории измерений для конкретного датчика
     // В OxygenMeasurementViewModel.kt
     fun loadSensorMeasurementHistory(sensorPosition: String) {
