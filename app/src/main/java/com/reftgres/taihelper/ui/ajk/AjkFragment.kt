@@ -259,17 +259,17 @@ class AjkFragment : Fragment() {
 
         // Наблюдение за средними значениями
         viewModel.observeLabAverage().observe(viewLifecycleOwner, Observer { average ->
-            labAverageTextView.text = String.format("%.1f", average)
-            labAvgInfoTextView.text = "Среднее (лаб.): ${String.format("%.1f", average)}"
+            labAverageTextView.text = String.format("%.3f", average)
+            labAvgInfoTextView.text = "Среднее (лаб.): ${String.format("%.3f", average)}"
         })
 
         viewModel.observeTestAverage().observe(viewLifecycleOwner, Observer { average ->
-            testAverageTextView.text = String.format("%.1f", average)
+            testAverageTextView.text = String.format("%.3f", average)
         })
 
         // Наблюдение за константой
         viewModel.observeConstant().observe(viewLifecycleOwner, Observer { constant ->
-            constantTextView.text = if (constant > 0) String.format("%.1f", constant) else ""
+            constantTextView.text = if (constant > 0) String.format("%.0f", constant) else ""
             updateResistanceLabels()
         })
 
@@ -319,20 +319,20 @@ class AjkFragment : Fragment() {
         val constant = viewModel.observeConstant().value ?: 0f
 
         if (constant > 0) {
-            r02TextView.text = "R 0.2 = ${String.format("%.1f", constant / 0.2)}"
-            r05TextView.text = "R 0.5 = ${String.format("%.1f", constant / 0.5)}"
-            r08TextView.text = "R 0.8 = ${String.format("%.1f", constant / 0.8)}"
-            r40TextView.text = "R 0.68 = ${String.format("%.1f", constant / 0.68)}"
+            r02TextView.text = "R 0.2 = ${String.format("%.0f", constant / 0.2)}"
+            r05TextView.text = "R 0.5 = ${String.format("%.0f", constant / 0.5)}"
+            r08TextView.text = "R 0.8 = ${String.format("%.0f", constant / 0.8)}"
+            r40TextView.text = "R 0.68 = ${String.format("%.0f", constant / 0.68)}"
 
             // Обновляем итоговые результаты
             val resultText = """
-                Константа: ${String.format("%.1f", constant)}
-                Среднее (лаб): ${String.format("%.1f", viewModel.observeLabAverage().value ?: 0f)}
-                Среднее (пов): ${String.format("%.1f", viewModel.observeTestAverage().value ?: 0f)}
-                R (0.2): ${String.format("%.1f", constant / 0.2)}
-                R (0.5): ${String.format("%.1f", constant / 0.5)}
-                R (0.8): ${String.format("%.1f", constant / 0.8)}
-                R (t=40°C): ${String.format("%.1f", constant / 0.68)}
+                Константа: ${String.format("%.0f", constant)}
+                Среднее (лаб): ${String.format("%.3f", viewModel.observeLabAverage().value ?: 0f)}
+                Среднее (пов): ${String.format("%.3f", viewModel.observeTestAverage().value ?: 0f)}
+                R (0.2): ${String.format("%.0f", constant / 0.2)}
+                R (0.5): ${String.format("%.0f", constant / 0.5)}
+                R (0.8): ${String.format("%.0f", constant / 0.8)}
+                R (t=40°C): ${String.format("%.0f", constant / 0.68)}
             """.trimIndent()
 
             resultTextView.text = resultText

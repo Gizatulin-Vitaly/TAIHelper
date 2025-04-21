@@ -17,6 +17,8 @@ import javax.inject.Inject
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.reftgres.taihelper.data.local.entity.CalibrationEntity
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @HiltViewModel
 class AjkViewModel @Inject constructor(
@@ -43,6 +45,8 @@ class AjkViewModel @Inject constructor(
     // Средние значения
     private val _labAverage = MutableLiveData<Float>(0f)
     fun observeLabAverage(): LiveData<Float> = _labAverage
+
+    private val _labAverageBD = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
 
     private val _testAverage = MutableLiveData<Float>(0f)
     fun observeTestAverage(): LiveData<Float> = _testAverage
@@ -163,34 +167,47 @@ class AjkViewModel @Inject constructor(
 
     // Расчет средних значений
     private fun calculateAverages() {
-        val labValues = _labSensorValues.value?.mapNotNull { it.toFloatOrNull() } ?: listOf()
-        val testValues = _testSensorValues.value?.mapNotNull { it.toFloatOrNull() } ?: listOf()
+        val labStrings = _labSensorValues.value ?: listOf("", "", "")
+        val testStrings = _testSensorValues.value ?: listOf("", "", "")
+
+        val labValues = labStrings.mapNotNull { it.toBigDecimalOrNull() }
+        val testValues = testStrings.mapNotNull { it.toFloatOrNull() }
 
         if (labValues.size == 3) {
-            _labAverage.value = labValues.sum() / labValues.size
-            calculateConstant()
+            val sum = labValues.reduce { acc, value -> acc + value }
+            val average = sum.divide(BigDecimal(3), 3, RoundingMode.HALF_UP)
+
+            _labAverageBD.value = average
+            _labAverage.value   = average.toFloat()
+            calculateConstantWithBigDecimal(average)
         }
 
         if (testValues.size == 3) {
-            _testAverage.value = testValues.sum() / testValues.size
+            val testAvg = testValues.sum() / 3
+            _testAverage.value = testAvg
         }
     }
+
+
+
+    private fun calculateConstantWithBigDecimal(labAverage: BigDecimal) {
+        val resistanceValue = _resistance.value?.toBigDecimalOrNull()
+        if (resistanceValue != null && resistanceValue > BigDecimal.ZERO) {
+            val constant = resistanceValue.multiply(labAverage).setScale(0, RoundingMode.HALF_UP)
+            _constant.value = constant.toFloat()
+        }
+    }
+
 
     // Обновление сопротивления
     fun updateResistance(value: String) {
         _resistance.value = value
-        calculateConstant()
-    }
-
-    // Расчет константы
-    private fun calculateConstant() {
-        val resistanceValue = _resistance.value?.toFloatOrNull() ?: 0f
-        val labAverage = _labAverage.value ?: 0f
-
-        if (resistanceValue > 0 && labAverage > 0) {
-            _constant.value = resistanceValue * labAverage
+        // Пересчёт константы по точному BigDecimal‑среднему
+        _labAverageBD.value?.let { labAvgBD ->
+            calculateConstantWithBigDecimal(labAvgBD)
         }
     }
+
 
     fun setCurrentStep(step: Int) {
         if (step in 1..4) {
@@ -440,7 +457,6 @@ class AjkViewModel @Inject constructor(
 
     // Получение ID пользователя (заглушка)
     private fun getUserId(): String {
-        // В реальном приложении здесь должна быть логика получения ID текущего пользователя
         return "user123"
     }
 
