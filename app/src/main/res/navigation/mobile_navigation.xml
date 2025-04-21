@@ -55,6 +55,10 @@
         android:id="@+id/all_measurements"
         android:name="com.reftgres.taihelper.ui.oxygen.AllMeasurementsFragment"
         tools:layout="@layout/all_measurements_fragment" >
+        <argument
+            android:name="blockId"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
             android:id="@+id/action_all_measurements_to_new_measurement"
             app:destination="@id/new_measurement" />

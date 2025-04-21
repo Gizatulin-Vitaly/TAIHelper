@@ -35,6 +35,14 @@ class AllMeasurementsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val blockId = arguments?.getInt("blockId") ?: -1
+        Log.d(TAG, "🧩 Получен blockId = $blockId из аргументов")
+
+        if (blockId != -1) {
+            viewModel.loadLatestMeasurements(blockId) // Загружаем измерения только выбранного блока
+        } else {
+            viewModel.loadLastTenMeasurements() // Фолбэк, если не передали blockId
+        }
         super.onViewCreated(view, savedInstanceState)
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
@@ -61,8 +69,8 @@ class AllMeasurementsFragment : Fragment() {
         Log.d(TAG, "Настройка наблюдателей")
 
         // Наблюдение за списком всех измерений
-        viewModel.allMeasurements.observe(viewLifecycleOwner) { measurements ->
-            Log.d(TAG, "Получены все измерения: ${measurements.size}")
+        viewModel.latestMeasurements.observe(viewLifecycleOwner) { measurements ->
+            Log.d(TAG, "📥 Получено ${measurements.size} измерений для текущего блока")
             allMeasurementsAdapter.submitList(measurements)
         }
     }

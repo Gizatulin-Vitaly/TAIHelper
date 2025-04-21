@@ -237,8 +237,14 @@ class OxygenMeasurementFragment : Fragment() {
         // Карточка с измерениями (переход к истории)
         binding.cardAllOxygen.setOnClickListener {
             Log.d(TAG, "Клик по карточке измерений")
+
+            val blockId = viewModel.getCurrentBlockId()
+            Log.d(TAG, "Передаём blockId = $blockId в AllMeasurementsFragment")
+
             try {
-                findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_all_measurements)
+                val action = OxygenMeasurementFragmentDirections
+                    .actionOxygenMeasurementFragmentToAllMeasurements(blockId)
+                findNavController().navigate(action)
             } catch (e: Exception) {
                 Log.e(TAG, "Ошибка при навигации: ${e.message}")
                 Toast.makeText(requireContext(), "Ошибка при переходе к истории измерений", Toast.LENGTH_SHORT).show()
