@@ -89,6 +89,7 @@ class OxygenMeasurementViewModel @Inject constructor(
 
     // Метод для загрузки последних 10 измерений
     fun loadLastTenMeasurements() {
+
         viewModelScope.launch {
             try {
                 Log.d(TAG, "⭐ Загрузка последних 10 измерений")

@@ -45,6 +45,13 @@ class OxygenMeasurementFragment : Fragment() {
         setupRecyclerView()
         setupObservers()
         setupListeners()
+
+        viewModel.latestMeasurements.observe(viewLifecycleOwner) { list ->
+            list.firstOrNull()?.let {
+                updateCardAllOxygen(it)
+            }
+        }
+
     }
 
     private fun setupRecyclerView() {
@@ -57,12 +64,32 @@ class OxygenMeasurementFragment : Fragment() {
         }
     }
 
+    private val sensorPositionsMap = mapOf(
+        1 to listOf("К-601", "К-602", "К-603", "К-604"),
+        2 to listOf("К-601", "К-602", "К-603", "К-604"),
+        3 to listOf("К-601", "К-602", "К-603", "К-604"),
+        4 to listOf("К-601", "К-602", "К-603", "К-604"),
+        5 to listOf("К-601", "К-602", "К-603", "К-604"),
+        6 to listOf("К-601", "К-602", "К-603", "К-604"),
+        7 to listOf("К-603", "К-604", "К-605", "К-606"),
+        8 to listOf("К-603", "К-604", "К-605", "К-606"),
+        9 to listOf("К-603", "К-604", "К-605", "К-606"),
+        10 to listOf("К-603", "К-604", "К-605", "К-606")
+    )
+
     private fun setupObservers() {
         Log.d(TAG, "Настройка наблюдателей")
 
         // Наблюдение за списком блоков
         viewModel.blocks.observe(viewLifecycleOwner) { blocks ->
             Log.d(TAG, "Получены блоки: ${blocks.size}")
+
+            if (blocks.isNotEmpty()) {
+                val firstBlockId = blocks[0].id
+                binding.blockSpinner.setSelection(0)
+                viewModel.loadSensorsForBlock(firstBlockId)
+                viewModel.loadLatestMeasurements(firstBlockId)
+            }
 
             val adapter = ArrayAdapter(
                 requireContext(),
@@ -83,8 +110,8 @@ class OxygenMeasurementFragment : Fragment() {
         viewModel.sensors.observe(viewLifecycleOwner) { sensors ->
             Log.d(TAG, "Получены датчики: ${sensors.size}")
 
-            val sensorNames = sensors.map { it.position }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sensorNames)
+            val sortedSensorTitles = sensors.map { it.position }.sorted()  // ← сортировка по возрастанию
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortedSensorTitles)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.sensorSpinner.adapter = adapter
 
@@ -133,8 +160,7 @@ class OxygenMeasurementFragment : Fragment() {
             Log.d(TAG, "Получены общие измерения: ${measurements.size}")
 
             if (measurements.isNotEmpty()) {
-                // Обновляем только карточку с показаниями, а не адаптер
-                updateMeasurementsUI(measurements)
+                updateCardAllOxygen(measurements.first())
             } else {
                 clearSensorDisplays()
                 binding.tvDateControl.text = "Нет данных"
@@ -160,11 +186,13 @@ class OxygenMeasurementFragment : Fragment() {
                     val blockId = blocks[position].id
                     Log.d(TAG, "Выбран блок: $blockId")
 
-                    // Загружаем датчики и измерения для выбранного блока
+                    updateSensorTitlesForBlock(blockId)
+
                     viewModel.loadSensorsForBlock(blockId)
                     viewModel.loadLatestMeasurements(blockId)
                 }
             }
+
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Log.d(TAG, "Ничего не выбрано в списке блоков")
@@ -202,6 +230,15 @@ class OxygenMeasurementFragment : Fragment() {
         }
     }
 
+    private fun updateSensorTitlesForBlock(blockId: Int) {
+        val titles = sensorPositionsMap[blockId] ?: listOf("К-601", "К-602", "К-603", "К-604")
+
+        binding.tvFourthSensorTitle.text = titles.getOrNull(0) ?: "--"
+        binding.tvSecondSensorTitle.text = titles.getOrNull(1) ?: "--"
+        binding.tvThirdSensorTitle.text  = titles.getOrNull(2) ?: "--"
+        binding.tvFirstSensorTitle.text  = titles.getOrNull(3) ?: "--"
+    }
+
     /**
      * Обновление UI с последними измерениями
      */
@@ -225,6 +262,56 @@ class OxygenMeasurementFragment : Fragment() {
         updateSensorDisplay(latestMeasurement, "К-602", binding.tvSecondSensorTitle, binding.tvSecondIndicate, binding.tvSecondMiddle)
         updateSensorDisplay(latestMeasurement, "К-603", binding.tvThirdSensorTitle, binding.tvThirdIndicate, binding.tvThirdMiddle)
         updateSensorDisplay(latestMeasurement, "К-604", binding.tvFourthSensorTitle, binding.tvFourthIndicate, binding.tvFourthMiddle)
+    }
+
+    private fun updateCardAllOxygen(measurement: LatestMeasurement) {
+        val blockId = measurement.blockNumber
+        val sensorTitles = sensorPositionsMap[blockId] ?: listOf("К-601", "К-602", "К-603", "К-604")
+
+
+
+        // Обновляем заголовки
+        binding.tvFourthSensorTitle.text = sensorTitles.getOrNull(0) ?: "--"
+        binding.tvSecondSensorTitle.text = sensorTitles.getOrNull(1) ?: "--"
+        binding.tvThirdSensorTitle.text  = sensorTitles.getOrNull(2) ?: "--"
+        binding.tvFirstSensorTitle.text  = sensorTitles.getOrNull(3) ?: "--"
+
+        // Обнуляем показания
+        binding.tvFourthIndicate.text = "--"
+        binding.tvSecondIndicate.text = "--"
+        binding.tvThirdIndicate.text  = "--"
+        binding.tvFirstIndicate.text  = "--"
+
+        binding.tvFourthMiddle.text = ""
+        binding.tvSecondMiddle.text = ""
+        binding.tvThirdMiddle.text  = ""
+        binding.tvFirstMiddle.text  = ""
+
+        // Устанавливаем значения из измерений
+        measurement.sensors.forEach { sensor ->
+            val index = sensorTitles.indexOf(sensor.sensorTitle)
+            when (index) {
+                0 -> {
+                    binding.tvFourthIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvFourthMiddle.text   = "(${sensor.panelValue})"
+                }
+                1 -> {
+                    binding.tvSecondIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvSecondMiddle.text   = "(${sensor.panelValue})"
+                }
+                2 -> {
+                    binding.tvThirdIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvThirdMiddle.text   = "(${sensor.panelValue})"
+                }
+                3 -> {
+                    binding.tvFirstIndicate.text = sensor.testoValue.ifEmpty { "--" }
+                    binding.tvFirstMiddle.text   = "(${sensor.panelValue})"
+                }
+            }
+        }
+
+        // Устанавливаем дату
+        binding.tvDateControl.text = measurement.date
     }
 
     /**
