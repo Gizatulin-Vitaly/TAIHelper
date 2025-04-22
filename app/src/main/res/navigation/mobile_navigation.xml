@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_oxygenMeasurementFragment_to_all_measurements"
             app:destination="@id/all_measurements" />
+        <action
+            android:id="@+id/action_oxygenMeasurementFragment_to_new_measurement"
+            app:destination="@id/new_measurement" />
     </fragment>
 
     <fragment
@@ -59,9 +62,6 @@
             android:name="blockId"
             app:argType="integer"
             android:defaultValue="-1" />
-        <action
-            android:id="@+id/action_all_measurements_to_new_measurement"
-            app:destination="@id/new_measurement" />
     </fragment>
 
     <fragment

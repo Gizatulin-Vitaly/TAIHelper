@@ -49,7 +49,6 @@ class AllMeasurementsFragment : Fragment() {
 
         setupRecyclerView()
         setupObservers()
-        setupListeners()
 
         // Загружаем последние 10 измерений
         viewModel.loadLastTenMeasurements()
@@ -72,20 +71,6 @@ class AllMeasurementsFragment : Fragment() {
         viewModel.latestMeasurements.observe(viewLifecycleOwner) { measurements ->
             Log.d(TAG, "📥 Получено ${measurements.size} измерений для текущего блока")
             allMeasurementsAdapter.submitList(measurements)
-        }
-    }
-
-    private fun setupListeners() {
-        Log.d(TAG, "Настройка обработчиков событий")
-
-        // Обработчик для кнопки создания нового измерения
-        binding.newMeasurensBtn.setOnClickListener {
-            Log.d(TAG, "Клик по кнопке новых измерений")
-            try {
-                findNavController().navigate(R.id.action_all_measurements_to_new_measurement)
-            } catch (e: Exception) {
-                Log.e(TAG, "Ошибка при навигации: ${e.message}")
-            }
         }
     }
 
