@@ -85,7 +85,19 @@ class NewMeasurementsFragment : Fragment() {
             binding.sensorGroup3.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[2]
             binding.sensorGroup4.root.findViewById<TextView>(R.id.sensor_title)?.text = titles[3]
         }
+        val correctionMap = viewModel.sensorsData.value ?: return
 
+        binding.sensorGroup1.root.findViewById<TextInputEditText>(R.id.midpoint_correction_value)
+            ?.setText(correctionMap[titles[0]]?.correction ?: "")
+
+        binding.sensorGroup2.root.findViewById<TextInputEditText>(R.id.midpoint_correction_value)
+            ?.setText(correctionMap[titles[1]]?.correction ?: "")
+
+        binding.sensorGroup3.root.findViewById<TextInputEditText>(R.id.midpoint_correction_value)
+            ?.setText(correctionMap[titles[2]]?.correction ?: "")
+
+        binding.sensorGroup4.root.findViewById<TextInputEditText>(R.id.midpoint_correction_value)
+            ?.setText(correctionMap[titles[3]]?.correction ?: "")
     }
 
     private fun setupDatePicker() {
@@ -123,11 +135,12 @@ class NewMeasurementsFragment : Fragment() {
 
         (binding.blockDropdown.editText as? AutoCompleteTextView)?.apply {
             setAdapter(adapter)
-            setText("1", false) // Значение по умолчанию
+            setText("1", false)
 
             setOnItemClickListener { _, _, position, _ ->
                 val selectedBlock = adapter.getItem(position)?.toIntOrNull() ?: 1
                 viewModel.setBlockNumber(selectedBlock)
+                viewModel.preloadMidpointsForBlock(selectedBlock)
             }
         }
     }

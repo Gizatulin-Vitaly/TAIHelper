@@ -98,6 +98,7 @@
                     app:boxCornerRadiusTopStart="16dp"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
                     app:endIconTint="@color/primary"
                     app:boxStrokeWidth="1dp"
                     app:endIconMode="clear_text"
@@ -112,6 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
+                        android:textCursorDrawable="@color/text_primary"
                         android:fontFamily="@font/roboto_regular"
                         android:paddingVertical="12dp"
                         android:letterSpacing="0.01"
@@ -139,6 +141,7 @@
                     app:startIconTint="@color/primary"
                     app:boxBackgroundColor="@color/input_background"
                     app:hintTextColor="@color/text_hint"
+                    android:textCursorDrawable="@color/text_primary"
                     app:boxStrokeColor="@color/primary"
                     app:endIconTint="@color/primary">
 

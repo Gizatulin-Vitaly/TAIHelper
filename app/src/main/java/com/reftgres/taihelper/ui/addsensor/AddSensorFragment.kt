@@ -45,7 +45,6 @@ class AddSensorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         binding.actvSensorType.setOnClickListener {
             Log.d(TAG, "Клик по actvSensorType")

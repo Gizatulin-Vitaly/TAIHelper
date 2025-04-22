@@ -16,6 +16,7 @@
         android:background="@drawable/gradient_bg"
         android:elevation="4dp"
         android:padding="12dp"
+
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -74,84 +75,64 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:padding="12dp"
+
         android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
         app:layout_constraintTop_toBottomOf="@id/progress_bar"
         app:layout_constraintBottom_toTopOf="@id/button_container">
 
         <FrameLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <!-- Шаг 1: Ввод значений датчиков -->
+
+            <!-- Шаг 2: Сопротивление и константа -->
             <LinearLayout
                 android:id="@+id/step1_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="visible">
 
-                <!-- Заголовок с иконкой -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/bg_step_header"
-                    android:padding="8dp"
-                    android:layout_marginBottom="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_sensors"
-                        android:layout_marginEnd="8dp"
-                        app:tint="@color/primary_dark" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/enter_measurements_sensor"
-                        android:textSize="18sp"
-                        android:letterSpacing="0.01"
-                        android:textStyle="bold"
-                        android:textColor="@color/primary_dark"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:orientation="vertical"
                     android:paddingBottom="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
                         android:text="Позиция датчика"
-                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/roboto_regular"/>
+                        android:textSize="14sp" />
 
                     <EditText
                         android:id="@+id/sensor_position_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:hint="Позиция датчика"
                         android:inputType="text"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_edit_text"
                         android:padding="10dp"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:hintTextColor="@color/text_hint" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
                         android:text="Заводской номер"
-                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/roboto_regular"/>
+                        android:textSize="14sp" />
 
                     <EditText
                         android:id="@+id/sensor_serial_edit_text"
@@ -159,21 +140,26 @@
                         android:layout_height="wrap_content"
                         android:hint="113 2012г"
                         android:inputType="text"
-                        android:background="@drawable/bg_edit_text"
                         android:padding="10dp"
                         android:textColor="@color/text_primary"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        app:boxBackgroundColor="@color/input_background"
+                        app:boxStrokeColor="@color/primary"
+                        app:endIconTint="@color/primary"
+                        app:hintTextColor="@color/text_hint" />
                 </LinearLayout>
 
                 <!-- Блок лабораторного датчика -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="@color/surface"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
                     app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/surface"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -185,119 +171,112 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/enter_labs"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"
-                            android:paddingBottom="8dp"
-                            android:letterSpacing="0.01"
+                            android:drawablePadding="8dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:drawablePadding="8dp" />
+                            android:letterSpacing="0.01"
+                            android:paddingBottom="8dp"
+                            android:text="@string/enter_labs"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginEnd="6dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_1"
-                                    android:textSize="12sp"
-                                    android:letterSpacing="0.01"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textColor="@color/text_secondary" />
+                                    android:letterSpacing="0.01"
+                                    android:text="@string/input_1"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/lab_sensor_edit_text_1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="numberDecimal"
-                                    android:textSize="14sp"
-                                    android:padding="10dp"
-                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:inputType="numberDecimal"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
-                                    app:endIconTint="@color/primary"/>
+                                    app:endIconTint="@color/primary"
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="3dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginHorizontal="3dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_2"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textSize="12sp"
                                     android:letterSpacing="0.01"
-                                    android:textColor="@color/text_secondary" />
+                                    android:text="@string/input_2"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/lab_sensor_edit_text_2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="numberDecimal"
-                                    android:textSize="14sp"
-                                    android:padding="10dp"
-                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:inputType="numberDecimal"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
                                     app:endIconTint="@color/primary"
-                                    />
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginStart="6dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_3"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textSize="12sp"
                                     android:letterSpacing="0.01"
-                                    android:textColor="@color/text_secondary" />
+                                    android:text="@string/input_3"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/lab_sensor_edit_text_3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="numberDecimal"
-                                    android:textSize="14sp"
-                                    android:padding="10dp"
-                                    android:fontFamily="@font/roboto_regular"
                                     android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:inputType="numberDecimal"
+                                    android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
-                                    app:endIconTint="@color/primary"/>
+                                    app:endIconTint="@color/primary"
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -310,27 +289,27 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/middle_scale_ajk"
                                 android:fontFamily="@font/roboto_regular"
-                                android:textSize="12sp"
                                 android:letterSpacing="0.01"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:text="@string/middle_scale_ajk"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/lab_average_text_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto_regular"
-                                android:text="@string/zero_0_0000"
-                                android:textSize="16sp"
-                                android:letterSpacing="0.01"
-                                android:textColor="@color/primary_dark"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:padding="8dp"
                                 android:layout_marginTop="4dp"
-                                android:background="@android:color/white" />
+                                android:background="@color/surface"
+                                android:fontFamily="@font/roboto_regular"
+                                android:gravity="center"
+                                android:letterSpacing="0.01"
+                                android:padding="8dp"
+                                android:text="@string/zero_0_0000"
+                                android:textColor="@color/primary_dark"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -339,10 +318,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:cardBackgroundColor="@color/surface"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
                     app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/surface"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -354,118 +335,106 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/check_sensor"
+                            android:drawablePadding="8dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:textSize="16sp"
                             android:letterSpacing="0.01"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"
                             android:paddingBottom="8dp"
-                            android:drawablePadding="8dp" />
+                            android:text="@string/check_sensor"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginEnd="6dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_1"
-                                    android:letterSpacing="0.01"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/text_secondary" />
+                                    android:letterSpacing="0.01"
+                                    android:text="@string/input_1"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/test_sensor_edit_text_1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="numberDecimal"
-                                    android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
                                     app:endIconTint="@color/primary"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="3dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginHorizontal="3dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_2"
-                                    android:letterSpacing="0.01"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/text_secondary" />
+                                    android:letterSpacing="0.01"
+                                    android:text="@string/input_2"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/test_sensor_edit_text_2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="numberDecimal"
-                                    android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
                                     app:endIconTint="@color/primary"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_marginStart="6dp">
+                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/input_3"
-                                    android:letterSpacing="0.01"
                                     android:fontFamily="@font/roboto_regular"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/text_secondary" />
+                                    android:letterSpacing="0.01"
+                                    android:text="@string/input_3"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp" />
 
                                 <EditText
                                     android:id="@+id/test_sensor_edit_text_3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="numberDecimal"
-                                    android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:textSize="14sp"
                                     app:boxBackgroundColor="@color/input_background"
-                                    app:hintTextColor="@color/text_hint"
                                     app:boxStrokeColor="@color/primary"
                                     app:endIconTint="@color/primary"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:layout_marginTop="4dp"
-                                    android:textColor="@color/text_primary"
-                                    android:background="@drawable/bg_edit_text" />
+                                    app:hintTextColor="@color/text_hint" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -478,32 +447,31 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/middle_scale_ajk"
                                 android:fontFamily="@font/roboto_regular"
                                 android:letterSpacing="0.01"
+                                android:text="@string/middle_scale_ajk"
+                                android:textColor="@color/text_primary"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/text_primary" />
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/test_average_text_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/zero_0_0000"
+                                android:layout_marginTop="4dp"
+                                android:background="@color/surface"
                                 android:fontFamily="@font/roboto_regular"
-                                android:textSize="16sp"
-                                android:textColor="@color/primary_dark"
-                                android:textStyle="bold"
                                 android:gravity="center"
                                 android:padding="8dp"
-                                android:layout_marginTop="4dp"
-                                android:background="@android:color/white" />
+                                android:text="@string/zero_0_0000"
+                                android:textColor="@color/primary_dark"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Шаг 2: Сопротивление и константа -->
             <LinearLayout
                 android:id="@+id/step2_container"
                 android:layout_width="match_parent"
@@ -542,11 +510,13 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -581,9 +551,10 @@
                                 android:padding="12dp"
                                 android:fontFamily="@font/roboto_regular"
                                 android:layout_marginTop="8dp"
-                                android:textColor="@color/text_primary"
-                                android:textStyle="bold"
-                                android:background="@drawable/bg_edit_text" />
+                                app:boxBackgroundColor="@color/input_background"
+                                app:hintTextColor="@color/text_hint"
+                                app:boxStrokeColor="@color/primary"
+                                app:endIconTint="@color/primary"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -629,10 +600,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -705,11 +678,13 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -806,10 +781,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -905,10 +882,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -1041,10 +1020,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <LinearLayout
@@ -1129,6 +1110,8 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="2dp">
@@ -1156,12 +1139,14 @@
                     android:id="@+id/status_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     android:visibility="gone"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/divider"
                     app:cardBackgroundColor="@color/surface"
+                    app:strokeColor="@color/divider"
                     app:strokeWidth="0.8dp">
 
                     <TextView
@@ -1187,6 +1172,8 @@
                     android:id="@+id/back_to_start_button"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:text="@string/start_new_colibration"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -1211,7 +1198,7 @@
         android:contentDescription="История калибровок"
         android:src="@drawable/ic_history"
         app:backgroundTint="@color/primary_dark"
-        app:tint="@android:color/white"
+        app:tint="@color/surface"
         app:layout_constraintBottom_toTopOf="@id/button_container"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -1221,7 +1208,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal"
-        android:background="@android:color/white"
+        android:background="@color/surface"
         android:elevation="8dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"

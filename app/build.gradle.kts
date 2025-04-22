@@ -12,7 +12,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.reftgres.taihelper"
-        minSdk = 28
+        minSdk = 29
         targetSdk = 34
         versionCode = 9
         versionName = "1.8"

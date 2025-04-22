@@ -42,6 +42,9 @@ class OxygenMeasurementFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fabNewMeasurens.setOnClickListener {
+            findNavController().navigate(R.id.action_oxygenMeasurementFragment_to_new_measurement)
+        }
         setupRecyclerView()
         setupObservers()
         setupListeners()
@@ -320,24 +323,20 @@ class OxygenMeasurementFragment : Fragment() {
 
             when (index) {
                 0 -> {
-                    Log.d("SensorUI", "🟩 Присваиваем ${sensor.sensorTitle} → tvFirstIndicate")
                     binding.tvFirstIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvFirstMiddle.text   = "(${sensor.panelValue})"
+                    binding.tvFirstMiddle.text   = "(${sensor.correctionValue})"
                 }
                 1 -> {
-                    Log.d("SensorUI", "🟨 Присваиваем ${sensor.sensorTitle} → tvSecondIndicate")
                     binding.tvSecondIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvSecondMiddle.text   = "(${sensor.panelValue})"
+                    binding.tvSecondMiddle.text   = "(${sensor.correctionValue})"
                 }
                 2 -> {
-                    Log.d("SensorUI", "🟧 Присваиваем ${sensor.sensorTitle} → tvThirdIndicate")
                     binding.tvThirdIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvThirdMiddle.text   = "(${sensor.panelValue})"
+                    binding.tvThirdMiddle.text   = "(${sensor.correctionValue})"
                 }
                 3 -> {
-                    Log.d("SensorUI", "🟥 Присваиваем ${sensor.sensorTitle} → tvFourthIndicate")
                     binding.tvFourthIndicate.text = sensor.testoValue.ifEmpty { "--" }
-                    binding.tvFourthMiddle.text   = "(${sensor.panelValue})"
+                    binding.tvFourthMiddle.text   = "(${sensor.correctionValue})"
                 }
             }
         }

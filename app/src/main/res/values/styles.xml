@@ -7,16 +7,16 @@
     </style>
 
     <style name="CustomOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-        <!-- Используем собственную иконку -->
-        <item name="android:src">@drawable/ic_menu_custom</item>
 
         <!-- Тонирование иконки - исправлено название цвета -->
-        <item name="tint">@color/divider</item>
+        <item name="tint">@color/surface</item>
 
         <!-- Опционально: изменение размера -->
         <item name="android:minWidth">36dp</item>
         <item name="android:minHeight">36dp</item>
-    </style>
+        <item name="android:tint">@color/surface</item>
 
+        <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
+    </style>
 </resources>
 

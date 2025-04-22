@@ -117,9 +117,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/primary"
-        android:textColor="@color/text_on_primary"
-        app:iconTint="@color/text_on_primary"
+        app:backgroundTint="@color/primary_dark"
+        app:tint="@color/surface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_add_sensor" />

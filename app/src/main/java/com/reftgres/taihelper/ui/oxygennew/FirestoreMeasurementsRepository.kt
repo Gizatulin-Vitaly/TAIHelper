@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.reftgres.taihelper.data.local.dao.MeasurementsDao
 import com.reftgres.taihelper.data.local.dao.SyncQueueDao
 import com.reftgres.taihelper.data.local.entity.MeasurementsEntity
+import com.reftgres.taihelper.model.Sensor
 import com.reftgres.taihelper.service.NetworkConnectivityService
 import com.reftgres.taihelper.service.SyncManager
 import com.reftgres.taihelper.ui.model.MeasurementRecord
@@ -109,6 +110,27 @@ class FirestoreMeasurementsRepository @Inject constructor(
                 continuation.resume(Result.failure(e))
             }
     }
+
+
+
+    override suspend fun getSensorsForBlock(blockNumber: Int): Result<List<MeasurementsRepository.Sensor>> = suspendCoroutine { continuation ->
+        firestore.collection("sensors")
+            .whereEqualTo("block", blockNumber.toString())
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val sensors = snapshot.documents.mapNotNull { doc ->
+                    val position = doc.getString("position") ?: return@mapNotNull null
+                    val mid = doc.getString("mid_point") ?: ""
+                    MeasurementsRepository.Sensor(position, mid)
+                }
+                continuation.resume(Result.success(sensors))
+            }
+            .addOnFailureListener { e ->
+                continuation.resume(Result.failure(e))
+            }
+    }
+
+
 
 
     override suspend fun saveMeasurementOffline(

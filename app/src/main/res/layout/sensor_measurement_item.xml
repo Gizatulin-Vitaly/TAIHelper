@@ -61,6 +61,7 @@
             app:boxBackgroundColor="@color/input_background"
             app:hintTextColor="@color/text_hint"
             app:boxStrokeColor="@color/primary"
+            android:textCursorDrawable="@color/text_primary"
             app:endIconTint="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -87,6 +88,7 @@
             app:endIconMode="clear_text"
             app:boxBackgroundColor="@color/input_background"
             app:hintTextColor="@color/text_hint"
+            android:textCursorDrawable="@color/text_primary"
             app:boxStrokeColor="@color/primary"
             app:endIconTint="@color/primary">
 
@@ -117,6 +119,7 @@
         app:layout_constraintTop_toBottomOf="@id/first_row_inputs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textCursorDrawable="@color/text_primary"
         app:boxBackgroundColor="@color/input_background"
         app:hintTextColor="@color/text_hint"
         app:boxStrokeColor="@color/primary"

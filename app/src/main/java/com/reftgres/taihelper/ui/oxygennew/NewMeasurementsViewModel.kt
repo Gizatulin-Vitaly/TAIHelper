@@ -39,31 +39,46 @@ class NewMeasurementsViewModel @Inject constructor(
         val correction: String = ""
     )
 
-    // Первоначальная инициализация
-    init {
-        updateSensorTitles(1)
-    }
-
     // Методы для обновления данных
     fun setBlockNumber(number: Int) {
         _blockNumber.value = number
-        updateSensorTitles(number)
+        preloadMidpointsForBlock(number)
     }
+
 
     fun setMeasurementDate(date: String) {
         _measurementDate.value = date
     }
 
-    private fun updateSensorTitles(blockNumber: Int) {
-        val titles = when (blockNumber) {
+    fun preloadMidpointsForBlock(blockNumber: Int) {
+        viewModelScope.launch {
+            val result = measurementsRepository.getSensorsForBlock(blockNumber)
+            if (result.isSuccess) {
+                val sensors = result.getOrThrow()
+                val currentTitles = getSensorTitlesForBlock(blockNumber)
+                val data = sensors.associate {
+                    it.position to SensorData(
+                        title = it.position,
+                        correction = it.midPoint
+                    )
+                }
+
+                val filled = currentTitles.associateWith {
+                    data[it] ?: SensorData(title = it)
+                }
+
+                _sensorTitles.value = filled.keys.toList()
+                _sensorsData.value = filled
+            }
+        }
+    }
+
+    private fun getSensorTitlesForBlock(blockNumber: Int): List<String> {
+        return when (blockNumber) {
             in 1..6 -> listOf("К-601", "К-602", "К-603", "К-604")
             in 7..10 -> listOf("К-603", "К-604", "К-605", "К-606")
             else -> listOf("К-601", "К-602", "К-603", "К-604")
         }
-        _sensorTitles.value = titles
-
-        // Инициализация пустых данных датчиков с новыми заголовками
-        _sensorsData.value = titles.associateWith { SensorData(it) }
     }
 
     fun updateSensorData(index: Int, panel: String, testo: String, correction: String) {

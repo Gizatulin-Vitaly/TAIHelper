@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_new_sensor"
-        android:textColor="@android:color/white"
+        android:textColor="@color/surface"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="24dp"
@@ -56,7 +56,6 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:hint="@string/type_sensor"
                     app:boxCornerRadiusBottomEnd="16dp"
                     app:boxCornerRadiusBottomStart="16dp"
@@ -69,6 +68,7 @@
                     app:boxBackgroundColor="@color/input_background"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
                     app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
@@ -100,6 +100,7 @@
                     app:boxBackgroundColor="@color/input_background"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
                     app:endIconTint="@color/primary" >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -131,6 +132,7 @@
                     app:boxBackgroundColor="@color/input_background"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
                     app:endIconTint="@color/primary" >
 
                     <AutoCompleteTextView
@@ -162,6 +164,7 @@
                     app:boxBackgroundColor="@color/input_background"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
                     app:endIconTint="@color/primary" >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -192,6 +195,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilMidPoint"
                     app:boxBackgroundColor="@color/input_background"
+                    android:textCursorDrawable="@color/text_primary"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
                     app:endIconTint="@color/primary" >
@@ -223,6 +227,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilModification"
                     app:boxBackgroundColor="@color/input_background"
+                    android:textCursorDrawable="@color/text_primary"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
                     app:endIconTint="@color/primary" >
@@ -253,6 +258,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilBlock"
                     app:boxBackgroundColor="@color/input_background"
+                    android:textCursorDrawable="@color/text_primary"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
                     app:endIconTint="@color/primary" >
@@ -283,6 +289,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tilMeasurementStart"
                     app:boxBackgroundColor="@color/input_background"
+                    android:textCursorDrawable="@color/text_primary"
                     app:hintTextColor="@color/text_hint"
                     app:boxStrokeColor="@color/primary"
                     app:endIconTint="@color/primary" >

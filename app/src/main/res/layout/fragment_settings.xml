@@ -89,13 +89,12 @@
                     android:buttonTint="@color/primary"
                     android:letterSpacing="0.01"
                     android:drawableStart="@drawable/ic_light_mode"
-                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
                     android:fontFamily="@font/roboto_regular"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:drawableEnd="@drawable/radio_selector" />
 
                 <!-- Вариант 2: Темная тема -->
                 <RadioButton
@@ -107,14 +106,13 @@
                     android:button="@null"
                     android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_dark_mode"
-                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
                     android:letterSpacing="0.01"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
                     android:fontFamily="@font/roboto_regular"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:drawableEnd="@drawable/radio_selector" />
 
                 <!-- Вариант 3: Системная тема -->
                 <RadioButton
@@ -126,14 +124,13 @@
                     android:button="@null"
                     android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_system_mode"
-                    android:drawableTint="@color/primary"
                     android:drawablePadding="16dp"
                     android:paddingStart="0dp"
                     android:letterSpacing="0.01"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
                     android:fontFamily="@font/roboto_regular"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:drawableEnd="@drawable/radio_selector" />
             </RadioGroup>
 
             <!-- Описание текущей темы -->
@@ -209,26 +206,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
 
-                <!-- Русский -->
                 <RadioButton
                     android:id="@+id/radioRussian"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/russian"
-                    android:letterSpacing="0.01"
-                    android:textSize="16sp"
                     android:button="@null"
-                    android:fontFamily="@font/roboto_regular"
                     android:buttonTint="@color/primary"
                     android:drawableStart="@drawable/ic_flag_russia"
+                    android:drawableEnd="@drawable/radio_selector"
                     android:drawablePadding="16dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:letterSpacing="0.01"
+                    android:paddingVertical="8dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
-                    android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:text="@string/russian"
+                    android:textSize="16sp" />
 
-                <!-- Английский -->
                 <RadioButton
                     android:id="@+id/radioEnglish"
                     android:layout_width="match_parent"
@@ -244,10 +238,8 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:drawableEnd="@drawable/radio_selector" />
 
-                <!-- Албанский -->
                 <RadioButton
                     android:id="@+id/radioAlbanian"
                     android:layout_width="match_parent"
@@ -263,8 +255,7 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="16dp"
                     android:paddingVertical="8dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorSingle" />
+                    android:drawableEnd="@drawable/radio_selector" />
             </RadioGroup>
 
             <!-- Описание выбора языка -->

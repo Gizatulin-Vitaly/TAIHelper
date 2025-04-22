@@ -12,16 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Верхняя панель с кнопкой назад -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/primary_light"
-            app:titleTextColor="@color/text_on_primary"
-            app:title="О приложении"/>
-
         <!-- Карточка с информацией о приложении -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAbout"
@@ -38,7 +28,7 @@
             app:cardBackgroundColor="@color/surface"
             app:strokeWidth="0.8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

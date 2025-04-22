@@ -42,7 +42,7 @@
     <string name="reset_password_button">Rivendos fjalëkalimin</string>
     <string name="discription_app">Ky aplikacion është krijuar për të lehtësuar menaxhimin e detyrave të përditshme. Ofron ndërfaqe të thjeshtë dhe intuitive për të rritur produktivitetin. Përfshin: konvertim matjesh, ruajtje të të dhënave dhe sinkronizim në cloud për akses në pajisje të ndryshme.</string>
     <string name="about_app_tittle">Rreth aplikacionit</string>
-    <string name="version">Versioni 1.3.0</string>
+    <string name="version">Versioni 1.8.0</string>
     <string name="Developer">Vitaliy Gizatulin</string>
     <string name="developer_tittle">zhvilluesi</string>
     <string name="email">my@vgmail.ru</string>

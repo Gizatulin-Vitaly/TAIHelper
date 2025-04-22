@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
         // Создаем AppBarConfiguration и определяем верхний уровень навигации
         // Здесь указываем id фрагментов, которые считаются корневыми (на них не показываем кнопку назад)
         appBarConfiguration = AppBarConfiguration(
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         // Настраиваем ActionBar с NavController и AppBarConfiguration
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        // ВАЖНО - настраиваем белую стрелку назад независимо от темы
+        // Настраиваем белую стрелку назад независимо от темы
         setupWhiteBackArrow()
 
         // Слушатель для повторной установки белой стрелки при изменении темы
@@ -108,30 +107,16 @@ class MainActivity : AppCompatActivity() {
 
         // Наблюдение за изменениями пунктов назначения навигации
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            // Вызываем установку белой стрелки при каждой навигации
             setupWhiteBackArrow()
 
-            // Скрываем/показываем bottomNavigationView в зависимости от текущего экрана
-            when (destination.id) {
-                R.id.addSensorFragment, R.id.settingsFragment -> {
-                    bottomNavigationView.visibility = View.GONE
-                    // На экране настроек НЕ показываем заголовок
-                    supportActionBar?.let { actionBar ->
-                        actionBar.title = when (destination.id) {
-                            R.id.addSensorFragment -> "Добавление датчика"
-                            // Убираем заголовок "Настройки"
-                            R.id.settingsFragment -> ""
-                            else -> ""
-                        }
-                    }
-                    // Повторно устанавливаем белую стрелку
-                    setupWhiteBackArrow()
-                }
-                else -> {
-                    bottomNavigationView.visibility = View.VISIBLE
-                    supportActionBar?.title = ""
-                }
-            }
+            val isTopLevel = appBarConfiguration.topLevelDestinations.contains(destination.id)
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(!isTopLevel)
+
+            findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility =
+                if (isTopLevel) View.VISIBLE else View.GONE
+
+            supportActionBar?.title = if (destination.id == R.id.settingsFragment) "" else ""
         }
 
         // Получение информации о пользователе из intent
@@ -155,7 +140,6 @@ class MainActivity : AppCompatActivity() {
                     AppTheme.DARK -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     AppTheme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 }
-                // Еще раз устанавливаем белую стрелку после изменения темы
                 setupWhiteBackArrow()
             }
         }
@@ -186,8 +170,9 @@ class MainActivity : AppCompatActivity() {
             // Получаем стандартную стрелку назад
             val upArrow = ContextCompat.getDrawable(this, androidx.appcompat.R.drawable.abc_ic_ab_back_material)?.mutate()
 
-            // Программно меняем цвет на белый (0xFFFFFFFF включает и значение альфа-канала)
-            upArrow?.colorFilter = PorterDuffColorFilter(0xFFFFFFFF.toInt(), PorterDuff.Mode.SRC_ATOP)
+            val surfaceColor = ContextCompat.getColor(this, R.color.surface)
+            upArrow?.colorFilter = PorterDuffColorFilter(surfaceColor, PorterDuff.Mode.SRC_ATOP)
+
 
             // Устанавливаем модифицированную стрелку
             supportActionBar?.setHomeAsUpIndicator(upArrow)
@@ -238,7 +223,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showExitConfirmationDialog() {
-        androidx.appcompat.app.AlertDialog.Builder(this)
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle("Выход из приложения")
             .setMessage("Вы действительно хотите выйти из приложения?")
             .setPositiveButton("Да") { _, _ -> finish() }

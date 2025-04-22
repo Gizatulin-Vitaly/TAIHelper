@@ -40,13 +40,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 is RegisterState.Loading -> showLoading(true)
                 is RegisterState.Success -> navigateToLogin()
                 is RegisterState.Error -> showError(result.message)
+                else -> Unit // если появятся новые состояния — они не будут теряться
             }
         }
 
         registerViewModel.navigateToLogin.observe(viewLifecycleOwner) { shouldNavigate ->
             if (shouldNavigate) {
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                registerViewModel.onBackHandled() // Сброс события, чтобы не повторялось
+                registerViewModel.onBackHandled()
             }
         }
     }

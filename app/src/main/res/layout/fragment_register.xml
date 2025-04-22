@@ -99,6 +99,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:startIconDrawable="@drawable/ic_person"
                         app:boxBackgroundColor="@color/input_background"
+                        android:textCursorDrawable="@color/text_primary"
                         app:hintTextColor="@color/text_hint"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
@@ -134,6 +135,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tilName"
                         app:startIconDrawable="@drawable/ic_person"
                         app:boxBackgroundColor="@color/input_background"
+                        android:textCursorDrawable="@color/text_primary"
                         app:hintTextColor="@color/text_hint"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
@@ -169,6 +171,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tilLastName"
                         app:startIconDrawable="@drawable/ic_work"
                         app:boxBackgroundColor="@color/input_background"
+                        android:textCursorDrawable="@color/text_primary"
                         app:hintTextColor="@color/text_hint"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
@@ -206,6 +209,7 @@
                         app:boxBackgroundColor="@color/input_background"
                         app:hintTextColor="@color/text_hint"
                         app:boxStrokeColor="@color/primary"
+                        android:textCursorDrawable="@color/text_primary"
                         app:endIconTint="@color/primary"
                         app:startIconTint="@color/primary">
 
@@ -240,6 +244,7 @@
                         app:startIconDrawable="@drawable/ic_lock"
                         app:boxBackgroundColor="@color/input_background"
                         app:hintTextColor="@color/text_hint"
+                        android:textCursorDrawable="@color/text_primary"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
                         app:startIconTint="@color/primary">
@@ -275,6 +280,7 @@
                         app:startIconDrawable="@drawable/ic_lock"
                         app:boxBackgroundColor="@color/input_background"
                         app:hintTextColor="@color/text_hint"
+                        android:textCursorDrawable="@color/text_primary"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
                         app:startIconTint="@color/primary">

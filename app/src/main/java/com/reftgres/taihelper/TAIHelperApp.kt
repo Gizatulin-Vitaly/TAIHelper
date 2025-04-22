@@ -55,6 +55,7 @@ class TAIHelperApp : Application(), Configuration.Provider {
             }
             withContext(Dispatchers.Main) {
                 AppCompatDelegate.setDefaultNightMode(mode)
+                setupSync()
             }
         }
     }

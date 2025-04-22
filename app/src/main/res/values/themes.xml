@@ -6,7 +6,7 @@
 
         <!-- Background -->
         <item name="colorOnBackground">@color/text_primary</item>
-
+        <item name="colorOnPrimary">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
         <!-- Текст -->
@@ -17,38 +17,16 @@
         <item name="materialButtonStyle">@style/Widget.Button.Primary</item>
         <item name="buttonStyle">@style/Widget.Button.Primary</item>
 
-        <!-- Поля ввода -->
-        <item name="textInputStyle">@style/Widget.InputLayout</item>
-
         <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
+
     </style>
 
     <!-- Стиль для кнопок -->
     <style name="Widget.Button.Primary" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/button_primary</item>
+        <item name="backgroundTint">@color/primary_light</item>
         <item name="cornerRadius">12dp</item>
         <item name="android:elevation">2dp</item>
         <item name="hoveredFocusedTranslationZ">4dp</item>
     </style>
-
-    <!-- Стиль для полей ввода -->
-    <style name="Widget.InputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/input_border</item>
-        <item name="hintTextColor">@color/input_hint</item>
-        <item name="boxCornerRadiusTopStart">16dp</item>
-        <item name="boxCornerRadiusTopEnd">16dp</item>
-        <item name="boxCornerRadiusBottomStart">16dp</item>
-        <item name="boxCornerRadiusBottomEnd">16dp</item>
-    </style>
-
-    <style name="Theme.YourAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
-        <item name="popupMenuStyle">@style/AppTheme.PopupMenu</item>
-    </style>
-
-    <style name="AppTheme.PopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/popup_menu_background</item>
-    </style>
-
 
 </resources>

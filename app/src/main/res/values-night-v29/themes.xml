@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="Theme.TAIHelper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+                <item name="android:windowBackground">@drawable/gradient_bg</item>
+                <item name="android:forceDarkAllowed">true</item>
+
+                <!-- Primary brand color. -->
+                <item name="colorPrimary">@color/cardview_shadow_end_color</item>
+                <item name="colorPrimaryVariant">@color/cardview_shadow_end_color</item>
+                <item name="colorOnPrimary">@color/cardview_shadow_end_color</item>
+                <!-- Secondary brand color. -->
+                <item name="colorSecondary">@color/cardview_shadow_end_color</item>
+                <item name="colorSecondaryVariant">@color/cardview_shadow_end_color</item>
+                <item name="colorOnSecondary">@color/cardview_shadow_end_color</item>
+                <!-- Status bar color. -->
+                <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+                <!-- Customize your theme here. -->
+        </style>
+</resources>
