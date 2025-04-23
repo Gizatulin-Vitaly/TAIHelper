@@ -12,17 +12,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:paddingBottom="40dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
+            android:padding="16dp"
             tools:context="com.reftgres.taihelper.ui.oxygen.OxygenMeasurementFragment">
 
             <!-- Блок выбора блока и позиции -->
@@ -31,12 +27,9 @@
                 style="@style/TextAppearance.Material3.TitleLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginHorizontal="8dp"
                 android:gravity="center"
                 android:text="@string/number_block"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toStartOf="@id/tv_sensor_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -50,9 +43,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
                 android:elevation="6dp"
                 android:padding="8dp"
                 android:textAlignment="center"
@@ -69,11 +59,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="center"
                 android:text="@string/add_position"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_block_title"
                 app:layout_constraintTop_toTopOf="parent"
@@ -87,10 +74,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:padding="8dp"
-                android:layout_marginTop="8dp"
                 app:strokeColor="@android:color/transparent"
                 app:strokeWidth="0dp"
                 android:textAlignment="center"
@@ -106,7 +90,6 @@
                 android:id="@+id/card_sensor_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +110,6 @@
                         style="@style/TextAppearance.Material3.TitleMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:text="@string/info_about_sensors"
                         android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent"
@@ -367,29 +349,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:dividerColor="@color/divider"
-
+                        android:layout_marginVertical="16dp"
                         app:layout_constraintTop_toBottomOf="@id/container_fourth_reading" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tv_date_control"
                         style="@style/TextAppearance.Material3.TitleMedium"
-                        android:layout_marginTop="16dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/roboto_regular"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:letterSpacing="0.01"
-                        app:layout_constraintBottom_toTopOf="@id/divider2"
                         app:layout_constraintTop_toBottomOf="@id/divider"
-                        tools:layout_editor_absoluteX="16dp"
-                        tools:text="23.02.2025" />
+                        tools:text="23.02.2025"
+                        android:fontFamily="@font/roboto_regular"
+                        android:letterSpacing="0.01"/>
 
                     <com.google.android.material.divider.MaterialDivider
                         android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:dividerColor="@color/divider"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginVertical="16dp"
                         app:layout_constraintTop_toBottomOf="@id/tv_date_control" />
 
                     <!-- Нижний ряд датчиков -->
@@ -490,17 +469,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_new_measurens"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:contentDescription="@string/new_measurens"
-                android:src="@drawable/ic_add"
-                app:backgroundTint="@color/primary_dark"
-                app:tint="@color/surface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+
             <!-- История измерений -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_history"
@@ -543,6 +512,9 @@
                         tools:listitem="@layout/last_measurements" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
