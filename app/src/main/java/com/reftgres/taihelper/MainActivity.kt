@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var networkStatusText: TextView
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var userStatus: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val languageRepository = LanguagePreferencesRepository(dataStore)
@@ -121,7 +123,8 @@ class MainActivity : AppCompatActivity() {
 
         // Получение информации о пользователе из intent
         val userName = intent.getStringExtra("USER_NAME") ?: "Неизвестный"
-        val userStatus = intent.getStringExtra("USER_STATUS") ?: "Обычный"
+        userStatus = intent.getStringExtra("USER_STATUS") ?: "Обычный"
+
 
         // Установка информации о пользователе
         findViewById<TextView>(R.id.tvUserName).text = userName
@@ -154,6 +157,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun hasFullAccess(): Boolean {
+        return userStatus != "3"
     }
 
     private fun setAppLocale(language: String) {
@@ -252,6 +259,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        if (!hasFullAccess()) {
+            menu.findItem(R.id.action_add_sensor)?.isVisible = false
+        }
+
         return true
     }
 

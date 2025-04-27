@@ -46,7 +46,7 @@
     <string name="Developer">Виталий Гизатулин</string>
     <string name="developer_tittle">разработчик</string>
     <string name="email">my@vgmail.ru</string>
-    <string name="about_developer">Привет! Я начинающий разработчик мобильных приложений в области Android-разработки. Это мой дипломный проект. В своей работе уделяю особое внимание качеству кода и производительности. Я стремлюсь создавать приложения, которые решают реальные проблемы пользователей и делают их жизнь проще и удобнее.</string>
+    <string name="about_developer">Привет! Я начинающий разработчик мобильных приложений в области Android-разработки. Это мой дипломный проект. Я стремлюсь создавать приложения, которые решают реальные проблемы пользователей и делают их жизнь проще и удобнее.</string>
     <string name="logo">Logo</string>
     <string name="tai_helper">TAI-Helper</string>
     <string name="about_author_tittle">Об авторе</string>

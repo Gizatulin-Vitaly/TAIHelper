@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.databinding.FragmentOxigenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.reftgres.taihelper.R
@@ -53,6 +54,11 @@ class OxygenMeasurementFragment : Fragment() {
             list.firstOrNull()?.let {
                 updateCardAllOxygen(it)
             }
+        }
+
+        val mainActivity = requireActivity() as MainActivity
+        if (!mainActivity.hasFullAccess()) {
+            binding.fabNewMeasurens.visibility = View.GONE
         }
 
     }

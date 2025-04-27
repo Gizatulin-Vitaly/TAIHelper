@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
+import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.data.model.PdfDocument
 import com.reftgres.taihelper.data.model.ResourceState
@@ -57,6 +58,15 @@ class PdfDocumentsFragment : Fragment() {
         binding.buttonClearCategory.setOnClickListener {
             viewModel.clearCategoryFilter()
         }
+
+        val mainActivity = requireActivity() as MainActivity
+
+        val addPdfButton = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.buttonAddPdf)
+
+        if (!mainActivity.hasFullAccess()) {
+            addPdfButton.visibility = View.GONE
+        }
+
 
         binding.buttonAddPdf.setOnClickListener {
             findNavController().navigate(R.id.action_referenceFragment_to_addPdfDocumentFragment)

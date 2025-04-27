@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.R
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -110,6 +111,16 @@ class AjkFragment : Fragment() {
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_ajkFragment_to_calibrationHistoryFragment)
         }
+
+        val mainActivity = requireActivity() as MainActivity
+        if (!mainActivity.hasFullAccess()) {
+            fab.visibility = View.GONE
+        }
+
+        fab.setOnClickListener {
+            findNavController().navigate(R.id.action_ajkFragment_to_calibrationHistoryFragment)
+        }
+
     }
 
     private fun initializeViews(view: View) {
