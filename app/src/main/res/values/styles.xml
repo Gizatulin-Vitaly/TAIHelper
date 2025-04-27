@@ -1,22 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Стиль для скругленных полей ввода -->
+
     <style name="RoundedTextInputLayout" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
 
     <style name="CustomOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-
-        <!-- Тонирование иконки - исправлено название цвета -->
         <item name="tint">@color/text_primary</item>
-
-        <!-- Опционально: изменение размера -->
         <item name="android:minWidth">36dp</item>
         <item name="android:minHeight">36dp</item>
-        <item name="android:tint">@color/surface</item>
+        <item name="android:tint">@color/text_primary</item>
+    </style>
 
-        <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
+    <style name="MenuItemTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <!-- Новый стиль для выпадающего меню -->
+    <style name="CustomPopupMenu" parent="Widget.MaterialComponents.PopupMenu">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:background">@color/surface</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButton</item>
+    </style>
+
+    <style name="AlertDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/primary</item>
     </style>
 
 </resources>

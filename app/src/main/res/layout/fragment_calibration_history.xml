@@ -33,7 +33,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="С: —"
+                    android:text="@string/date_start"
+                    app:backgroundTint="@color/primary"
+                    android:textColor="@color/text_on_primary"
+                    app:iconTint="@color/text_on_primary"
+                    app:elevation="8dp"
+                    app:rippleColor="@color/primary_light"
                     android:textAllCaps="false" />
 
                 <View
@@ -45,52 +50,80 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ПО: —"
+                    android:text="@string/date_end"
+                    app:backgroundTint="@color/primary"
+                    android:textColor="@color/text_on_primary"
+                    app:iconTint="@color/text_on_primary"
+                    app:elevation="8dp"
+                    app:rippleColor="@color/primary_light"
                     android:textAllCaps="false" />
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:layout_marginBottom="8dp"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusTopStart="16dp">
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/filter_serial_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Заводской номер"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="62dp"
+                    android:layout_marginBottom="8dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    android:layout_marginEnd="4dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:layout_marginBottom="8dp"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusTopStart="16dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/filter_serial_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/create_number"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/filter_position_input"
-                    android:layout_width="match_parent"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:layout_height="match_parent"
-                    android:hint="Позиция датчика"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="62dp"
+                    android:layout_marginBottom="8dp"
+                    app:boxBackgroundMode="outline"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundColor="@color/input_background"
+                    app:hintTextColor="@color/text_hint"
+                    app:boxStrokeColor="@color/primary"
+                    app:endIconTint="@color/primary"
+                    android:textCursorDrawable="@color/text_primary"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusTopStart="16dp"
+                    android:layout_marginStart="4dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filter_position_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/position_sensorio"
+                        android:inputType="text"
+                        android:padding="@dimen/activity_horizontal_margin" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/filter_button"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="Показать калибровки"
+                android:text="@string/show_calobrations"
                 android:textAllCaps="false"
                 android:textColor="@color/text_on_primary"
                 app:backgroundTint="@color/primary"

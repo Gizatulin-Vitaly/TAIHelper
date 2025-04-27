@@ -74,13 +74,14 @@ class CalibrationDetailFragment : Fragment() {
                 resistanceText.text = "Сопротивление: ${calibration.resistance}"
                 constantText.text = "Константа: ${calibration.constant}"
 
-                val rList = listOf(
-                    "R 0.2: ${calibration.r02Resistance} | I: ${calibration.r02I} | Показания: ${calibration.r02SensorValue}",
-                    "R 0.5: ${calibration.r05Resistance} | I: ${calibration.r05I} | Показания: ${calibration.r05SensorValue}",
-                    "R 0.8: ${calibration.r08Resistance} | I: ${calibration.r08I} | Показания: ${calibration.r08SensorValue}",
-                    "R 40°C: ${calibration.r40DegResistance} | Показания: ${calibration.r40DegSensorValue}"
-                )
-                rSeriesText.text = rList.joinToString("\n")
+                val rList = buildList {
+                    add("▪ 0.2\n   R: ${calibration.r02Resistance} Ом\n   I: ${calibration.r02I} мА\n   Показания: ${calibration.r02SensorValue}")
+                    add("▪ 0.5\n   R: ${calibration.r05Resistance} Ом\n   I: ${calibration.r05I} мА\n   Показания: ${calibration.r05SensorValue}")
+                    add("▪ 0.8\n   R: ${calibration.r08Resistance} Ом\n   I: ${calibration.r08I} мА\n   Показания: ${calibration.r08SensorValue}")
+                    add("▪ 40°C\n   R: ${calibration.r40DegResistance} Ом\n   Показания: ${calibration.r40DegSensorValue}")
+                }
+                rSeriesText.text = rList.joinToString("\n\n")
+
             } else {
                 positionText.text = "Ошибка: калибровка не найдена"
             }
@@ -89,8 +90,6 @@ class CalibrationDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Очистка ссылок, чтобы избежать утечек
-        // Особенно важно, если у ViewModel есть long-lived observers
         positionText = TextView(requireContext())
         serialText = TextView(requireContext())
         dateText = TextView(requireContext())

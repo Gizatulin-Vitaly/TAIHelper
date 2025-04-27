@@ -155,4 +155,9 @@
     <string name="_3_55">3.55</string>
     <string name="delete_from_memort">Удалить из памяти</string>
     <string name="categoryes">Категория</string>
+    <string name="date_start">Дата С: —</string>
+    <string name="date_end">Дата ПО: —</string>
+    <string name="create_number">Заводской номер</string>
+    <string name="position_sensorio">Позиция датчика</string>
+    <string name="show_calobrations">Показать калибровки</string>
 </resources>

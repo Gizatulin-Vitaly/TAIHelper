@@ -36,7 +36,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:paddingBottom="16dp">
 
                     <!-- Заголовок "Показания датчика" -->
                     <com.google.android.material.textview.MaterialTextView
@@ -63,6 +63,7 @@
                         android:layout_height="60dp"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="4dp"
+                        android:layout_marginStart="16dp"
                         app:cardBackgroundColor="@color/surface"
                         app:strokeColor="@color/divider"
                         app:strokeWidth="0.8dp"
@@ -96,6 +97,7 @@
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
                         android:textCursorDrawable="@color/text_primary"
+                        android:layout_marginEnd="16dp"
                         app:endIconMode="clear_text"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         app:shapeAppearanceOverlay="@style/RoundedTextInputLayout"
@@ -123,6 +125,7 @@
                         app:cardCornerRadius="20dp"
                         app:cardBackgroundColor="@color/primary"
                         app:strokeColor="@color/divider"
+                        android:layout_marginStart="16dp"
                         app:strokeWidth="0.8dp"
                         app:cardElevation="4dp"
                         android:clickable="true"
@@ -154,6 +157,7 @@
                         app:boxBackgroundColor="@color/input_background"
                         android:textColor="@color/text_primary"
                         app:hintTextColor="@color/text_hint"
+                        android:layout_marginEnd="16dp"
                         android:textCursorDrawable="@color/text_primary"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
@@ -203,6 +207,8 @@
                         app:hintTextColor="@color/text_hint"
                         app:boxStrokeColor="@color/primary"
                         app:endIconTint="@color/primary"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         app:endIconMode="clear_text"
                         app:startIconDrawable="@drawable/ic_sensors"
                         android:textCursorDrawable="@color/text_primary"
@@ -244,10 +250,12 @@
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/mode_switch"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 app:checkedButton="@id/btn_current"
                 app:singleSelection="true"
+                android:layout_marginHorizontal="24dp"
                 app:selectionRequired="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_scale"
@@ -260,6 +268,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/electrics"
                     android:textSize="20sp"
+
                     app:icon="@drawable/ic_bolt"
                     app:iconSize="28dp"
                     app:iconPadding="8dp"
@@ -270,6 +279,7 @@
                     app:iconTint="@color/text_on_primary"
                     app:rippleColor="@color/primary_light"
                     app:strokeColor="@android:color/transparent"
+                    android:layout_marginBottom="8dp"
                     app:strokeWidth="0dp"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -277,19 +287,20 @@
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/sensor"
-                    android:textSize="20sp"
-                    app:icon="@drawable/ic_current"
-                    app:iconSize="28dp"
-                    app:iconPadding="8dp"
-                    app:cornerRadius="20dp"
-                    app:backgroundTint="@color/surface"
                     android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    app:backgroundTint="@color/surface"
+                    app:cornerRadius="20dp"
+                    app:icon="@drawable/ic_current"
+                    app:iconPadding="8dp"
+                    app:iconSize="28dp"
                     app:iconTint="@color/text_primary"
                     app:rippleColor="@color/primary_light"
-                    android:elevation="4dp"
                     app:strokeColor="@android:color/transparent"
-                    app:strokeWidth="0dp"/>
+                    app:strokeWidth="0dp" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <!-- Карточка для отображения результата -->

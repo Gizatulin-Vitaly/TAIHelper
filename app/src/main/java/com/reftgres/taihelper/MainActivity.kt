@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.di.dataStore
 import com.reftgres.taihelper.ui.settings.LanguagePreferencesRepository
@@ -231,13 +232,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showExitConfirmationDialog() {
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
             .setTitle("Выход из приложения")
             .setMessage("Вы действительно хотите выйти из приложения?")
             .setPositiveButton("Да") { _, _ -> finish() }
             .setNegativeButton("Нет", null)
             .show()
     }
+
 
 
     private fun updateNetworkIndicator(isConnected: Boolean) {
@@ -268,8 +270,21 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        Log.d("MenuDebug", "onCreateOptionsMenu called")
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val color = ContextCompat.getColor(this, R.color.primary_dark)
+
+        for (i in 0 until menu.size()) {
+            val menuItem = menu.getItem(i)
+            val spanString = android.text.SpannableString(menuItem.title)
+            spanString.setSpan(
+                android.text.style.ForegroundColorSpan(color),
+                0,
+                spanString.length,
+                0
+            )
+            menuItem.title = spanString
+        }
 
         if (!hasFullAccess()) {
             menu.findItem(R.id.action_add_sensor)?.isVisible = false
@@ -277,6 +292,7 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Сначала пробуем обработать с помощью NavController
