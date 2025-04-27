@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity() {
                     AppTheme.SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 }
                 setupWhiteBackArrow()
+                invalidateOptionsMenu()
             }
         }
 
@@ -267,6 +268,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d("MenuDebug", "onCreateOptionsMenu called")
         menuInflater.inflate(R.menu.menu_main, menu)
 
         if (!hasFullAccess()) {

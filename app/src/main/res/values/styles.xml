@@ -9,7 +9,7 @@
     <style name="CustomOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
 
         <!-- Тонирование иконки - исправлено название цвета -->
-        <item name="tint">@color/surface</item>
+        <item name="tint">@color/text_primary</item>
 
         <!-- Опционально: изменение размера -->
         <item name="android:minWidth">36dp</item>
@@ -18,5 +18,7 @@
 
         <item name="actionOverflowButtonStyle">@style/CustomOverflowButtonStyle</item>
     </style>
+
 </resources>
+
 
