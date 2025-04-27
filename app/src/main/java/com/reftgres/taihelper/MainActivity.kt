@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -29,9 +27,9 @@ import com.reftgres.taihelper.ui.settings.ThemePreferencesRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import android.graphics.drawable.Drawable
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.di.dataStore
 import com.reftgres.taihelper.ui.settings.LanguagePreferencesRepository
 import kotlinx.coroutines.flow.first
@@ -43,6 +41,8 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
     private val loginViewModel: LoginViewModel by viewModels()
+    private var networkSnackbar: Snackbar? = null
+
 
     @Inject
     lateinit var themeRepository: ThemePreferencesRepository
@@ -238,15 +238,12 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+
     private fun updateNetworkIndicator(isConnected: Boolean) {
         Log.d(TAG, "updateNetworkIndicator: $isConnected")
-        // Используем runOnUiThread для безопасного обновления UI
         runOnUiThread {
-            // Обновляем индикатор
             networkIndicator.isActivated = isConnected
-            // Обновляем текст
             networkStatusText.text = if (isConnected) "Онлайн" else "Офлайн"
-            // Обновляем цвет текста
             networkStatusText.setTextColor(
                 ContextCompat.getColor(
                     this,
@@ -254,8 +251,20 @@ class MainActivity : AppCompatActivity() {
                 )
             )
             Log.d(TAG, "UI обновлен: сеть ${if (isConnected) "доступна" else "недоступна"}")
+
+            // 👉 Показать Snackbar если сеть пропала
+            if (!isConnected) {
+                if (networkSnackbar == null || !networkSnackbar!!.isShown) {
+                    networkSnackbar = Snackbar.make(findViewById(android.R.id.content), "Нет подключения к сети", Snackbar.LENGTH_INDEFINITE)
+                    networkSnackbar?.show()
+                }
+            } else {
+                networkSnackbar?.dismiss()
+            }
         }
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -301,7 +310,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 } catch (e: Exception) {
                     Log.e(TAG, "Ошибка при навигации к aboutFragment: ${e.message}")
-                    Toast.makeText(this, "Не удалось открыть экран О приложении", Toast.LENGTH_SHORT).show()
                     false
                 }
             }

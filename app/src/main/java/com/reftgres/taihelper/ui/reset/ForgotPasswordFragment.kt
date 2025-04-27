@@ -2,10 +2,10 @@ package com.reftgres.taihelper.ui.reset
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.ui.utils.SnackbarUtils
 import com.reftgres.taihelper.databinding.FragmentForgotPasswordBinding
@@ -59,7 +59,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

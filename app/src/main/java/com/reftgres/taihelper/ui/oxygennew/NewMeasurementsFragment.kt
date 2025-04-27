@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -17,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.databinding.NewMeasuremensBinding
@@ -165,28 +165,28 @@ class NewMeasurementsFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
                         binding.saveButton.text = "Сохранить"
-                        Toast.makeText(context, "Данные успешно сохранены", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Данные успешно сохранены", Snackbar.LENGTH_SHORT).show()
                         findNavController().navigateUp()
                     }
                     is SaveResult.OfflineSuccess -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
                         binding.saveButton.text = "Сохранить"
-                        Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), result.message, Snackbar.LENGTH_LONG).show()
                         findNavController().navigateUp()
                     }
                     is SaveResult.PartialSuccess -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
                         binding.saveButton.text = "Сохранить"
-                        Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), result.message, Snackbar.LENGTH_LONG).show()
                         // Можно оставить пользователя на странице для возможности повторной попытки
                     }
                     is SaveResult.Error -> {
                         binding.progressBar.visibility = View.GONE
                         binding.saveButton.isEnabled = true
                         binding.saveButton.text = "Сохранить"
-                        Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), "Ошибка: ${result.message}", Snackbar.LENGTH_LONG).show()
                     }
                 }
             }

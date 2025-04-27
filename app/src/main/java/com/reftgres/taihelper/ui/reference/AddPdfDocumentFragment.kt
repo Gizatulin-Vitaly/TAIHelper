@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.databinding.FragmentAddPdfDocumentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +33,7 @@ class AddPdfDocumentFragment : Fragment() {
             val fileUrl = binding.editTextFileUrl.text.toString().trim()
 
             if (title.isBlank() || fileUrl.isBlank()) {
-                Toast.makeText(requireContext(), "Заполните обязательные поля: название и ссылка", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Заполните обязательные поля: название и ссылка", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -41,7 +41,7 @@ class AddPdfDocumentFragment : Fragment() {
             viewModel.submitManualPdfDocument(title, description, category, fileUrl)
 
             // ✅ Сообщение об успешной отправке
-            Toast.makeText(requireContext(), "Документ добавлен", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Документ добавлен", Snackbar.LENGTH_SHORT).show()
 
             // (необязательно) можно очистить поля:
             binding.editTextTitle.text?.clear()

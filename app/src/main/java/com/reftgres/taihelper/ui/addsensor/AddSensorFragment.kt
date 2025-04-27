@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.databinding.FragmentAddSensorBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -77,7 +77,7 @@ class AddSensorFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (errorMessage.isNotEmpty()) {
                 Log.e(TAG, "Ошибка: $errorMessage")
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -85,7 +85,7 @@ class AddSensorFragment : Fragment() {
         viewModel.saveSuccess.observe(viewLifecycleOwner) { success ->
             if (success) {
                 Log.d(TAG, "Датчик успешно сохранен")
-                Toast.makeText(requireContext(), "Датчик успешно сохранен", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Датчик успешно сохранен", Snackbar.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
         }
@@ -279,7 +279,7 @@ class AddSensorFragment : Fragment() {
         // Проверяем тип датчика
         if (selectedTypeId == null) {
             Log.w(TAG, "Тип датчика не выбран")
-            Toast.makeText(requireContext(), "Выберите тип датчика", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Выберите тип датчика", Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -287,21 +287,21 @@ class AddSensorFragment : Fragment() {
         val blockId = selectedBlockId
         if (blockId == null) {
             Log.w(TAG, "Блок не выбран")
-            Toast.makeText(requireContext(), "Выберите блок", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Выберите блок", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val measurementStartId = selectedMeasurementStartId
         if (measurementStartId == null) {
             Log.w(TAG, "Начало измерения не выбрано")
-            Toast.makeText(requireContext(), "Выберите начало измерения", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Выберите начало измерения", Snackbar.LENGTH_SHORT).show()
             return
         }
 
         val measurementEndId = selectedMeasurementEndId
         if (measurementEndId == null) {
             Log.w(TAG, "Окончание измерения не выбрано")
-            Toast.makeText(requireContext(), "Выберите окончание измерения", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Выберите окончание измерения", Snackbar.LENGTH_SHORT).show()
             return
         }
 

@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.reftgres.taihelper.R
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.data.model.DownloadStatus
 import com.reftgres.taihelper.data.model.ResourceState
 import com.reftgres.taihelper.databinding.PdfViewerBinding
@@ -96,10 +95,10 @@ class PdfViewerActivity : AppCompatActivity() {
                             val success = viewModel.deleteLocalFile(docId)
 
                             if (success) {
-                                Toast.makeText(this@PdfViewerActivity, "Файл удалён из памяти", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(android.R.id.content), "Файл удалён из памяти", Snackbar.LENGTH_SHORT).show()
                                 finish() // Закрываем экран
                             } else {
-                                Toast.makeText(this@PdfViewerActivity, "Ошибка при удалении", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(android.R.id.content), "Ошибка при удалении", Snackbar.LENGTH_SHORT).show()
 
                                 // Отладка: покажем путь и exists()
                                 val file = File(getExternalFilesDir(null), "pdf_documents/$docId.pdf")
@@ -229,7 +228,7 @@ class PdfViewerActivity : AppCompatActivity() {
     private fun showError(message: String) {
         binding.textViewErrorPdf.visibility = View.VISIBLE
         binding.textViewErrorPdf.text = message
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

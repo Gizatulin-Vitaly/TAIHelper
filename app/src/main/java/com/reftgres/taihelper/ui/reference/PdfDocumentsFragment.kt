@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.R
 import com.reftgres.taihelper.data.model.PdfDocument
@@ -111,7 +111,7 @@ class PdfDocumentsFragment : Fragment() {
                 refreshData()
             } else {
                 binding.swipeRefreshLayout.isRefreshing = false
-                Toast.makeText(context, "Сеть недоступна", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Сеть недоступна", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -181,7 +181,7 @@ class PdfDocumentsFragment : Fragment() {
 
                 is ResourceState.Error -> {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(context, "Ошибка поиска: ${result.message}", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "Ошибка поиска: ${result.message}", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -215,7 +215,7 @@ class PdfDocumentsFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.textViewEmpty.visibility = View.VISIBLE
                         binding.textViewEmpty.text = "Ошибка: ${result.message}"
-                        Toast.makeText(context, "Ошибка: ${result.message}", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Ошибка: ${result.message}", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -269,7 +269,7 @@ class PdfDocumentsFragment : Fragment() {
             val intent = PdfViewerActivity.createIntent(requireContext(), document.documentId)
             startActivity(intent)
         } else {
-            Toast.makeText(context, "Нет подключения к сети. Документ не загружен локально.", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Нет подключения к сети. Документ не загружен локально.", Snackbar.LENGTH_SHORT).show()
         }
     }
 

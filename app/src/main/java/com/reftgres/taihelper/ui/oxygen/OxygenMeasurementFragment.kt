@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.databinding.FragmentOxigenBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -256,7 +255,7 @@ class OxygenMeasurementFragment : Fragment() {
                 findNavController().navigate(action)
             } catch (e: Exception) {
                 Log.e(TAG, "Ошибка при навигации: ${e.message}")
-                Toast.makeText(requireContext(), "Ошибка при переходе к истории измерений", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Ошибка при переходе к истории измерений", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

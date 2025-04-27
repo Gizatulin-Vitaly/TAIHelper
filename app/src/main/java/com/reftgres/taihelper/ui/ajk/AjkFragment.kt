@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -20,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.reftgres.taihelper.MainActivity
 import com.reftgres.taihelper.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -242,7 +242,7 @@ class AjkFragment : Fragment() {
                 if (viewModel.canProceedToNextStep()) {
                     viewModel.nextStep()
                 } else {
-                    Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "Поля не могут быть пустыми", Snackbar.LENGTH_SHORT).show()
                 }
             } else {
                 // Если мы на последнем шаге и кнопка нажата, сохраняем данные
